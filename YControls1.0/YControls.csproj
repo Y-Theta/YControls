@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Command\CommandBase.cs" />
     <Compile Include="Command\CommandHandleAndArgs.cs" />
+    <Compile Include="Dialogs\DialogBasicStyle.cs" />
+    <Compile Include="Dialogs\YT_ColorPicker.cs" />
     <Compile Include="FontIconButtons\IFontIconButton.cs" />
     <Compile Include="IFontIcon\IFontLabelExtension.cs" />
     <Compile Include="SlideControls\ScrollbarLayout.cs" />

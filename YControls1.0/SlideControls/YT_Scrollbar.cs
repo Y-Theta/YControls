@@ -66,14 +66,11 @@ namespace YControls.SlideControls {
         #endregion
 
         #region Methods
-        private void YT_Scrollbar_Loaded(object sender, RoutedEventArgs e) {
-           
-        }
         #endregion
 
         #region Constructors
         public YT_Scrollbar() {
-            Loaded += YT_Scrollbar_Loaded;
+            
         }
 
         static YT_Scrollbar() {

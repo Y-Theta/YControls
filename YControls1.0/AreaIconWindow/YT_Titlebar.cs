@@ -99,6 +99,7 @@ namespace YControls.AreaIconWindow {
         /// </summary>
         public void ShowTitleBar() {
             //_cliptransform.BeginAnimation(TranslateTransform.YProperty, _fadeoutanimation);
+
             if (!TitleBarVisible)
                 _fadeout.Begin(this);
 

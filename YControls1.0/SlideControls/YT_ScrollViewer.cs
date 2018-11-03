@@ -55,6 +55,7 @@ namespace YControls.SlideControls {
         private SplineDoubleKeyFrame _keyshow1;
 
         #endregion
+
         #endregion
         /// <summary>
         /// 滚动条布局
@@ -144,10 +145,33 @@ namespace YControls.SlideControls {
             if (((YT_ScrollViewer)d)._keyin1 != null)
                 ((YT_ScrollViewer)d)._keyin1.Value = ((YT_ScrollViewer)d).ScrollbarThickness - (double)e.NewValue;
         }
+
+        /// <summary>
+        /// 暴露出竖直滚动条的样式
+        /// </summary>
+        public Style VerticalScrollBarStyle {
+            get { return (Style)GetValue(VerticalScrollBarStyleProperty); }
+            set { SetValue(VerticalScrollBarStyleProperty, value); }
+        }
+        public static readonly DependencyProperty VerticalScrollBarStyleProperty =
+            DependencyProperty.Register("VerticalScrollBarStyle", typeof(Style), 
+                typeof(YT_ScrollViewer), new PropertyMetadata(null));
+
+        /// <summary>
+        /// 暴露出水平滚动条的样式
+        /// </summary>
+        public Style HorizontalScrollBarStyle {
+            get { return (Style)GetValue(HorizontalScrollBarStyleProperty); }
+            set { SetValue(HorizontalScrollBarStyleProperty, value); }
+        }
+        public static readonly DependencyProperty HorizontalScrollBarStyleProperty =
+            DependencyProperty.Register("HorizontalScrollBarStyle", typeof(Style),
+                typeof(YT_ScrollViewer), new PropertyMetadata(null));
         #endregion
 
         #region Methods
 
+        #region Animation
         public void ScrollBarMini() {
             _verticalTranslate.BeginAnimation(TranslateTransform.XProperty, _fadeinanimation);
             _horizontalTranslate.BeginAnimation(TranslateTransform.YProperty, _fadeinanimation);
@@ -247,6 +271,7 @@ namespace YControls.SlideControls {
             _verticalTranslate = null;
             _horizontalTranslate = null;
         }
+        #endregion
 
         private void YT_ScrollViewer_MouseLeave(object sender, MouseEventArgs e) {
             HideScrollbar();
@@ -263,6 +288,7 @@ namespace YControls.SlideControls {
         private void _ScrollPanel_MouseEnter(object sender, MouseEventArgs e) {
             ScrollBarNormal();
         }
+
 
         #endregion
 

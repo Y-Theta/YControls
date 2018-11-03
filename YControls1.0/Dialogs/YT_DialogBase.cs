@@ -8,15 +8,31 @@ using System.Windows.Input;
 using YControls.Command;
 
 namespace YControls.Dialogs {
-    public class YT_DialogBase :Window {
+    /// <summary>
+    /// 自定义对话框类型
+    /// </summary>
+    public class YT_DialogBase : Window {
         #region Properties
-        public Visibility YseButtonVisibility {
-            get { return (Visibility)GetValue(YseButtonVisibilityProperty); }
-            set { SetValue(YseButtonVisibilityProperty, value); }
+        /// <summary>
+        /// 控件布局方式
+        /// </summary>
+        public DialogBasicStyle ControlLayout {
+            get { return (DialogBasicStyle)GetValue(ControlLayoutProperty); }
+            set { SetValue(ControlLayoutProperty, value); }
         }
-        public static readonly DependencyProperty YseButtonVisibilityProperty =
-            DependencyProperty.Register("YseButtonVisibility", typeof(Visibility),
-                typeof(YT_DialogBase), new FrameworkPropertyMetadata(Visibility.Visible, 
+        public static readonly DependencyProperty ControlLayoutProperty =
+            DependencyProperty.Register("ControlLayout", typeof(DialogBasicStyle),
+                typeof(YT_DialogBase), new PropertyMetadata(DialogBasicStyle.ButtonBottomRight));
+
+        #region ButtonUI
+
+        public Visibility YesButtonVisibility {
+            get { return (Visibility)GetValue(YesButtonVisibilityProperty); }
+            set { SetValue(YesButtonVisibilityProperty, value); }
+        }
+        public static readonly DependencyProperty YesButtonVisibilityProperty =
+            DependencyProperty.Register("YesButtonVisibility", typeof(Visibility),
+                typeof(YT_DialogBase), new FrameworkPropertyMetadata(Visibility.Visible,
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Visibility NoButtonVisibility {
@@ -25,7 +41,7 @@ namespace YControls.Dialogs {
         }
         public static readonly DependencyProperty NoButtonVisibilityProperty =
             DependencyProperty.Register("NoButtonVisibility", typeof(Visibility),
-                typeof(YT_DialogBase), new FrameworkPropertyMetadata(Visibility.Visible, 
+                typeof(YT_DialogBase), new FrameworkPropertyMetadata(Visibility.Visible,
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Visibility CancelButtonVisibility {
@@ -34,33 +50,70 @@ namespace YControls.Dialogs {
         }
         public static readonly DependencyProperty CancelButtonVisibilityProperty =
             DependencyProperty.Register("CancelButtonVisibility", typeof(Visibility),
-                typeof(YT_DialogBase), new FrameworkPropertyMetadata(Visibility.Visible, 
+                typeof(YT_DialogBase), new FrameworkPropertyMetadata(Visibility.Visible,
                     FrameworkPropertyMetadataOptions.Inherits));
 
-        public CommandBase CancelCommand {
-            get { return (CommandBase)GetValue(CancelCommandProperty); }
-            set { SetValue(CancelCommandProperty, value); }
+        public string YesButtonIcon {
+            get { return (string)GetValue(YesButtonIconProperty); }
+            set { SetValue(YesButtonIconProperty, value); }
         }
-        public static readonly DependencyProperty CancelCommandProperty =
-            DependencyProperty.Register("CancelCommand", typeof(CommandBase),
-                typeof(YT_DialogBase), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+        public static readonly DependencyProperty YesButtonIconProperty =
+            DependencyProperty.Register("YesButtonIcon", typeof(string), 
+                typeof(YT_DialogBase), new FrameworkPropertyMetadata("", 
+                    FrameworkPropertyMetadataOptions.Inherits));
 
-        public CommandBase YesCommand {
-            get { return (CommandBase)GetValue(YesCommandProperty); }
-            set { SetValue(YesCommandProperty, value); }
+        public string YesButtonLabel {
+            get { return (string)GetValue(YesButtonLabelProperty); }
+            set { SetValue(YesButtonLabelProperty, value); }
         }
-        public static readonly DependencyProperty YesCommandProperty =
-            DependencyProperty.Register("YesCommand", typeof(CommandBase),
-                typeof(YT_DialogBase), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+        public static readonly DependencyProperty YesButtonLabelProperty =
+            DependencyProperty.Register("YesButtonLabel", typeof(string), 
+                typeof(YT_DialogBase), new FrameworkPropertyMetadata("YES",
+                    FrameworkPropertyMetadataOptions.Inherits));
 
-        public CommandBase NoCommand {
-            get { return (CommandBase)GetValue(NoCommandProperty); }
-            set { SetValue(NoCommandProperty, value); }
+        public string NoButtonIcon {
+            get { return (string)GetValue(NoButtonIconProperty); }
+            set { SetValue(NoButtonIconProperty, value); }
         }
-        public static readonly DependencyProperty NoCommandProperty =
-            DependencyProperty.Register("NoCommand", typeof(CommandBase),
-                typeof(YT_DialogBase), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+        public static readonly DependencyProperty NoButtonIconProperty =
+            DependencyProperty.Register("NoButtonIcon", typeof(string),
+                typeof(YT_DialogBase), new FrameworkPropertyMetadata("",
+                    FrameworkPropertyMetadataOptions.Inherits));
 
+        public string NoButtonLabel {
+            get { return (string)GetValue(NoButtonLabelProperty); }
+            set { SetValue(NoButtonLabelProperty, value); }
+        }
+        public static readonly DependencyProperty NoButtonLabelProperty =
+            DependencyProperty.Register("NoButtonLabel", typeof(string),
+                typeof(YT_DialogBase), new FrameworkPropertyMetadata("No",
+                    FrameworkPropertyMetadataOptions.Inherits));
+
+        public Style BottomButtonStyle {
+            get { return (Style)GetValue(BottomButtonStyleProperty); }
+            set { SetValue(BottomButtonStyleProperty, value); }
+        }
+        public static readonly DependencyProperty BottomButtonStyleProperty =
+            DependencyProperty.Register("BottomButtonStyle", typeof(Style),
+                typeof(YT_DialogBase), new FrameworkPropertyMetadata(null,
+                    FrameworkPropertyMetadataOptions.Inherits));
+
+        public Style CancelButtonStyle {
+            get { return (Style)GetValue(CancelButtonStyleProperty); }
+            set { SetValue(CancelButtonStyleProperty, value); }
+        }
+        public static readonly DependencyProperty CancelButtonStyleProperty =
+            DependencyProperty.Register("CancelButtonStyle", typeof(Style),
+                typeof(YT_DialogBase), new FrameworkPropertyMetadata(null,
+                    FrameworkPropertyMetadataOptions.Inherits));
+
+        #endregion
+
+        public CommandBase CancelCommand { get; set; }
+
+        public CommandBase YesCommand { get; set; }
+
+        public CommandBase NoCommand { get; set; }
 
         private event CommandAction _yesAction;
         public event CommandAction YesAction {
@@ -116,6 +169,7 @@ namespace YControls.Dialogs {
         #endregion
 
         #region Override
+
         public virtual void ShowDialog(Window Holder) {
             WindowStartupLocation = WindowStartupLocation.CenterOwner;
             Owner = Holder;
@@ -124,12 +178,12 @@ namespace YControls.Dialogs {
         #endregion
 
         #region Constructors
-        public YT_DialogBase() {
+        public YT_DialogBase() : base() {
             InitCommands();
         }
 
         static YT_DialogBase() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(YT_DialogBase), new FrameworkPropertyMetadata(typeof(YT_DialogBase)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(YT_DialogBase), new FrameworkPropertyMetadata(typeof(YT_DialogBase), FrameworkPropertyMetadataOptions.Inherits));
         }
         #endregion
     }

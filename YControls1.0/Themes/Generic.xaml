@@ -3,6 +3,7 @@
                     xmlns:windowbase="clr-namespace:YControls.AreaIconWindow"
                     xmlns:slide="clr-namespace:YControls.SlideControls"
                     xmlns:fontbutton="clr-namespace:YControls.FontIconButtons"
+                    xmlns:dialog="clr-namespace:YControls.Dialogs"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <!--#region                                                         -->
     <!--YT_Controls Default Styles-->
@@ -157,6 +158,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
+                            Margin="{TemplateBinding Margin}"
                             SnapsToDevicePixels="True">
                         <Grid x:Name="rgrid"
                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -1004,7 +1006,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="slide:YT_ScrollViewer">
                     <Border x:Name="rborder"
-                            Background="{TemplateBinding Background}"
+                            Background="{x:Null}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid x:Name="rgrid"
@@ -1039,6 +1041,7 @@
                                                     Maximum="{TemplateBinding ScrollableHeight}"
                                                     Minimum="0"
                                                     Orientation="Vertical"
+                                                    Style="{TemplateBinding VerticalScrollBarStyle}"
                                                     ViewportSize="{TemplateBinding ViewportHeight}"
                                                     Value="{TemplateBinding VerticalOffset}"
                                                     Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}">
@@ -1058,11 +1061,12 @@
                                                     Maximum="{TemplateBinding ScrollableWidth}"
                                                     Minimum="0"
                                                     Orientation="Horizontal"
+                                                    Style="{TemplateBinding HorizontalScrollBarStyle}"
                                                     ViewportSize="{TemplateBinding ViewportWidth}"
                                                     Value="{TemplateBinding HorizontalOffset}"
                                                     Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}">
                                     <slide:YT_Scrollbar.RenderTransform>
-                                        <TranslateTransform x:Name="HorizontalTranslate"/>
+                                        <TranslateTransform x:Name="HorizontalTranslate" />
                                     </slide:YT_Scrollbar.RenderTransform>
                                 </slide:YT_Scrollbar>
                             </Grid>
@@ -1083,8 +1087,208 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    
+
+    <!--YT_Slider-->
+    <Style TargetType="slide:YT_Slider">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="slide:YT_Slider">
+                    <Border x:Name="rborder"
+                            Background="{x:Null}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid x:Name="rgrid"
+                              ClipToBounds="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion-->
+
+    <!--#region                                                         Dialog-->
+
+    <!--YT_Dialog-->
+    <sys:Double x:Key="DefaultDialogWidth">260</sys:Double>
+    <sys:Double x:Key="DefaultDialogHeight">140</sys:Double>
+    <Style x:Key="DefaultDialogBottomButtonStyle"
+           TargetType="fontbutton:FIconButton">
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Margin"
+                Value="5,4,5,2" />
+        <Setter Property="IconVisibility"
+                Value="Collapsed" />
+        <Setter Property="LabelMargin"
+                Value="4,1" />
+        <Setter Property="IconFgNormal"
+                Value="Black" />
+        <Setter Property="LabelFgNormal"
+                Value="Black" />
+        <Setter Property="IconFgOver"
+                Value="Black" />
+        <Setter Property="LabelFgOver"
+                Value="Black" />
+        <Setter Property="IconFgPressed"
+                Value="Black" />
+        <Setter Property="LabelFgPressed"
+                Value="Black" />
+        <Setter Property="IconBgNormal"
+                Value="Transparent" />
+        <Setter Property="LabelBgNormal"
+                Value="Transparent" />
+        <Setter Property="IconBgOver"
+                Value="#8000aaff" />
+        <Setter Property="LabelBgOver"
+                Value="#8000aaff" />
+        <Setter Property="IconBgPressed"
+                Value="#c000aaff" />
+        <Setter Property="LabelBgPressed"
+                Value="#c000aaff" />
+    </Style>
+    <Style x:Key="DefaultDialogCancelButtonStyle"
+           TargetType="fontbutton:FIconButton">
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="LabelVisibility"
+                Value="Collapsed" />
+        <Setter Property="Margin"
+                Value="0,2,2,0" />
+        <Setter Property="Content"
+                Value="&#xE106;" />
+        <Setter Property="IconMargin"
+                Value="2,2" />
+        <Setter Property="IconFgNormal"
+                Value="Black" />
+        <Setter Property="IconFgOver"
+                Value="Black" />
+        <Setter Property="IconFgPressed"
+                Value="Black" />
+        <Setter Property="IconBgNormal"
+                Value="Transparent" />
+        <Setter Property="IconBgOver"
+                Value="#8000aaff" />
+        <Setter Property="IconBgPressed"
+                Value="#c000aaff" />
+    </Style>
+    <Style TargetType="dialog:YT_DialogBase">
+        <Setter Property="ResizeMode"
+                Value="NoResize" />
+        <Setter Property="ShowInTaskbar"
+                Value="False" />
+        <Setter Property="AllowsTransparency"
+                Value="True" />
+        <Setter Property="WindowStyle"
+                Value="None" />
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="BorderBrush"
+                Value="Black" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="BottomButtonStyle"
+                Value="{StaticResource DefaultDialogBottomButtonStyle}" />
+        <Setter Property="CancelButtonStyle"
+                Value="{StaticResource DefaultDialogCancelButtonStyle}" />
+        <Setter Property="Height"
+                Value="{StaticResource DefaultDialogHeight}" />
+        <Setter Property="Width"
+                Value="{StaticResource DefaultDialogWidth}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="dialog:YT_DialogBase">
+                    <Border x:Name="rborder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Margin="{TemplateBinding Margin}">
+                        <Grid x:Name="rgrid"
+                              Margin="{TemplateBinding Padding}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <AdornerDecorator x:Name="ContentLayer"
+                                              Grid.Row="1">
+                                <ContentPresenter Content="{TemplateBinding Content}" />
+                            </AdornerDecorator>
+                            <Grid x:Name="HeadLayer"
+                                  Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <fontbutton:FIconButton  x:Name="Button_CANCEL"
+                                                         Grid.Column="1"
+                                                         Style="{TemplateBinding CancelButtonStyle}"
+                                                         Visibility="{TemplateBinding CancelButtonVisibility}"
+                                                         Command="{Binding CancelCommand, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </Grid>
+                            <Grid x:Name="FootLayer"
+                                  Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <fontbutton:FIconButton x:Name="Button_YES"
+                                                        Grid.Column="2"
+                                                        Content="{TemplateBinding YesButtonIcon}"
+                                                        LabelString="{TemplateBinding YesButtonLabel}"
+                                                        Style="{TemplateBinding BottomButtonStyle}"
+                                                        Visibility="{TemplateBinding YesButtonVisibility}"
+                                                        Command="{Binding CancelCommand, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <fontbutton:FIconButton  x:Name="Button_NO"
+                                                         Grid.Column="3"
+                                                         Content="{TemplateBinding NoButtonIcon}"
+                                                         LabelString="{TemplateBinding NoButtonLabel}"
+                                                         Style="{TemplateBinding BottomButtonStyle}"
+                                                         Visibility="{TemplateBinding NoButtonVisibility}"
+                                                         Command="{Binding  NoCommand, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ControlLayout"
+                                 Value="MessageStyle">
+                            <Setter TargetName="ContentLayer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="ContentLayer"
+                                    Property="Grid.RowSpan"
+                                    Value="2" />
+                            <Setter TargetName="HeadLayer"
+                                    Property="Grid.RowSpan"
+                                    Value="2" />
+                            <Setter TargetName="FootLayer"
+                                    Property="Visibility"
+                                    Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="ControlLayout"
+                                 Value="ButtonBottomSeparate">
+                            <Setter TargetName="Button_YES"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="Button_NO"
+                                    Property="Grid.Column"
+                                    Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <!--#endregion-->
 
@@ -1092,7 +1296,6 @@
 
 
     <!--#endregion-->
-
 
 
 </ResourceDictionary>
