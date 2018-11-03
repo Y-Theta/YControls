@@ -10,9 +10,20 @@ namespace YControls.FontIconButtons {
 
         #region ToolTip
         /// <summary>
+        /// 鼠标提示样式
+        /// </summary>
+        Style ToolTipStyle { get; set; }
+
+        /// <summary>
+        /// 鼠标提示中默认文本控件的样式
+        /// </summary>
+        Style ToolTipTextStyle { get; set; }
+
+        /// <summary>
         /// 鼠标提示可见性
         /// </summary>
         Visibility ToolTipVisibility { get; set; }
+
         /// <summary>
         /// 鼠标提示内容
         /// </summary>

@@ -69,10 +69,6 @@ namespace YControls.SlideControls {
         #endregion
 
         #region Constructors
-        public YT_Scrollbar() {
-            
-        }
-
         static YT_Scrollbar() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(YT_Scrollbar), new FrameworkPropertyMetadata(typeof(YT_Scrollbar)));
         }

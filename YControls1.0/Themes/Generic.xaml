@@ -116,6 +116,27 @@
     <!--#region                                                         ButtonAbout-->
 
     <!--FontIconButton-->
+    <sys:Double x:Key="DefaultToolTipFontSize">12</sys:Double>
+    <Style x:Key="DefaultToolTipStyle"
+           TargetType="ToolTip">
+        <Setter Property="Placement"
+                Value="MousePoint" />
+        <Setter Property="HorizontalOffset"
+                Value="8" />
+        <Setter Property="VerticalOffset"
+                Value="24" />
+        <Setter Property="Padding"
+                Value="0" />
+        <Setter Property="DataContext"
+                Value="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}" />
+    </Style>
+    <Style x:Key="DefaultToolTipTextBlockStyle"
+           TargetType="TextBlock">
+        <Setter Property="Margin"
+                Value="6,3" />
+        <Setter Property="FontSize"
+                Value="{StaticResource DefaultToolTipFontSize}" />
+    </Style>
     <Style TargetType="fontbutton:FIconButton">
         <Setter Property="FontFamily"
                 Value="Segoe MDL2 Assets" />
@@ -149,6 +170,20 @@
                 Value="Stretch" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Stretch" />
+        <Setter Property="ToolTipStyle"
+                Value="{StaticResource DefaultToolTipStyle}" />
+        <Setter Property="ToolTipTextStyle"
+                Value="{StaticResource DefaultToolTipTextBlockStyle}" />
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip Style="{Binding ToolTipStyle}"
+                         Visibility="{Binding ToolTipVisibility}"
+                         DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                    <TextBlock Style="{Binding ToolTipTextStyle}"
+                               Text="{Binding ToolTipString}" />
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="fontbutton:FIconButton">
@@ -411,6 +446,20 @@
                 Value="Stretch" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Stretch" />
+        <Setter Property="ToolTipStyle"
+                Value="{StaticResource DefaultToolTipStyle}" />
+        <Setter Property="ToolTipTextStyle"
+                Value="{StaticResource DefaultToolTipTextBlockStyle}" />
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip Style="{Binding ToolTipStyle}"
+                         Visibility="{Binding ToolTipVisibility}"
+                         DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                    <TextBlock Style="{Binding ToolTipTextStyle}"
+                               Text="{Binding ToolTipString}" />
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="fontbutton:FIconToggleButton">
@@ -727,11 +776,24 @@
                 Value="Segoe MDL2 Assets" />
         <Setter Property="FontSize"
                 Value="14" />
+        <Setter Property="ToolTipStyle"
+                Value="{StaticResource DefaultToolTipStyle}" />
+        <Setter Property="ToolTipTextStyle"
+                Value="{StaticResource DefaultToolTipTextBlockStyle}" />
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip Style="{Binding ToolTipStyle}"
+                         Visibility="{Binding ToolTipVisibility}"
+                         DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                    <TextBlock Style="{Binding ToolTipTextStyle}"
+                               Text="{Binding ToolTipString}" />
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="slide:YT_Thumb">
-                    <Grid x:Name="rgrid"
-                          Background="{TemplateBinding IconBgNormal}">
+                    <Grid x:Name="rgrid">
                         <Grid x:Name="Thumb_Path"
                               Visibility="Collapsed">
                             <Grid.ColumnDefinitions>
@@ -750,6 +812,7 @@
                                     Width="20"
                                     Height="20">
                                 <Path Fill="{Binding Fill, ElementName=MainPath}"
+                                      Stroke="{Binding Stroke, ElementName=MainPath}"
                                       Data="{Binding PathCapLoT, RelativeSource={RelativeSource Mode=TemplatedParent} }" />
                             </Canvas>
                             <Viewbox Stretch="Fill"
@@ -758,6 +821,7 @@
                                 <Canvas Width="20"
                                         Height="20">
                                     <Path x:Name="MainPath"
+                                          Stroke="{TemplateBinding IconBgNormal}"
                                           Fill="{TemplateBinding IconFgNormal}"
                                           Data="{Binding ThumbIcon, RelativeSource={RelativeSource Mode=TemplatedParent} }" />
                                 </Canvas>
@@ -768,13 +832,15 @@
                                     Width="20"
                                     Height="20">
                                 <Path Fill="{Binding Fill, ElementName=MainPath}"
+                                      Stroke="{Binding Stroke, ElementName=MainPath}"
                                       Data="{Binding PathCapRoB, RelativeSource={RelativeSource Mode=TemplatedParent} }" />
                             </Canvas>
                         </Grid>
                         <TextBlock x:Name="Thumb_Font"
                                    Visibility="Collapsed"
-                                   VerticalAlignment="Center"
+                                   VerticalAlignment="Stretch"
                                    HorizontalAlignment="Stretch"
+                                   Background="{Binding Stroke, ElementName=MainPath}"
                                    TextAlignment="{TemplateBinding IconTextAlignment}"
                                    Margin="{TemplateBinding IconMargin}"
                                    Foreground="{Binding Fill, ElementName=MainPath}"
@@ -782,8 +848,13 @@
                                    FontSize="{TemplateBinding FontSize}"
                                    FontWeight="{TemplateBinding FontWeight}"
                                    Text="{TemplateBinding ThumbIcon}" />
+                        <Rectangle x:Name="Thumb_Rect"
+                                   Visibility="Visible"
+                                   Stroke="{Binding Stroke, ElementName=MainPath}"
+                                   Fill="{Binding Fill, ElementName=MainPath}" />
                         <Ellipse x:Name="Thumb_Ellipse"
                                  Visibility="Collapsed"
+                                 Stroke="{Binding Stroke, ElementName=MainPath}"
                                  Fill="{Binding Fill, ElementName=MainPath}" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -810,6 +881,9 @@
                             <Setter TargetName="Thumb_Font"
                                     Property="Visibility"
                                     Value="Visible" />
+                            <Setter TargetName="Thumb_Rect"
+                                    Property="Visibility"
+                                    Value="Collapsed" />
                             <Setter TargetName="Thumb_Ellipse"
                                     Property="Visibility"
                                     Value="Collapsed" />
@@ -822,6 +896,9 @@
                             <Setter TargetName="Thumb_Font"
                                     Property="Visibility"
                                     Value="Collapsed" />
+                            <Setter TargetName="Thumb_Rect"
+                                    Property="Visibility"
+                                    Value="Collapsed" />
                             <Setter TargetName="Thumb_Ellipse"
                                     Property="Visibility"
                                     Value="Collapsed" />
@@ -832,6 +909,9 @@
                                     Property="Visibility"
                                     Value="Collapsed" />
                             <Setter TargetName="Thumb_Font"
+                                    Property="Visibility"
+                                    Value="Collapsed" />
+                            <Setter TargetName="Thumb_Rect"
                                     Property="Visibility"
                                     Value="Collapsed" />
                             <Setter TargetName="Thumb_Ellipse"
@@ -848,8 +928,8 @@
                             <Setter TargetName="MainPath"
                                     Property="Fill"
                                     Value="{Binding IconFgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter TargetName="rgrid"
-                                    Property="Background"
+                            <Setter TargetName="MainPath"
+                                    Property="Stroke"
                                     Value="{Binding IconBgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </MultiTrigger>
                         <MultiTrigger>
@@ -862,8 +942,8 @@
                             <Setter TargetName="MainPath"
                                     Property="Fill"
                                     Value="{Binding IconFgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter TargetName="rgrid"
-                                    Property="Background"
+                            <Setter TargetName="MainPath"
+                                    Property="Stroke"
                                     Value="{Binding IconBgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
@@ -873,6 +953,8 @@
     </Style>
 
     <!--YT_Scrollbar-->
+    <sys:Double x:Key="YT_ScrollbarDefaultThickness">24</sys:Double>
+    <sys:Int32 x:Key="YT_ScrollbarDefaultInterval">50</sys:Int32>
     <Style x:Key="ScrollRepeatButton"
            TargetType="RepeatButton">
         <Setter Property="Background"
@@ -884,17 +966,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
-                    <Grid Background="{TemplateBinding Background}">
-                        <ContentPresenter Content="{TemplateBinding Content}"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Stretch" />
-                    </Grid>
+                    <Grid Background="{TemplateBinding Background}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <sys:Double x:Key="YT_ScrollbarDefaultThickness">24</sys:Double>
-    <sys:Int32 x:Key="YT_ScrollbarDefaultInterval">50</sys:Int32>
     <Style TargetType="slide:YT_Scrollbar">
         <Setter Property="Orientation"
                 Value="Vertical" />
@@ -1007,6 +1083,7 @@
                 <ControlTemplate TargetType="slide:YT_ScrollViewer">
                     <Border x:Name="rborder"
                             Background="{x:Null}"
+                            Margin="{TemplateBinding Margin}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid x:Name="rgrid"
@@ -1089,29 +1166,148 @@
     </Style>
 
     <!--YT_Slider-->
+    <sys:Double x:Key="DefaultSliderThumbSize">4</sys:Double>
+    <sys:Double x:Key="DefaultSliderTrackThickness">4</sys:Double>
+    <Style x:Key="DefaultSliderDecreaseButton"
+           TargetType="RepeatButton">
+        <Setter Property="Background"
+                Value="#006688" />
+        <Setter Property="BorderBrush"
+                Value="Transparent" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Height"
+                Value="{StaticResource DefaultSliderTrackThickness}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Grid Background="{TemplateBinding Background}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="DefaultSliderIncreaseButton"
+           TargetType="RepeatButton">
+        <Setter Property="Background"
+                Value="#606060" />
+        <Setter Property="BorderBrush"
+                Value="Transparent" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Height"
+                Value="{StaticResource DefaultSliderTrackThickness}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Grid Background="{TemplateBinding Background}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="DefaultSliderThumbStyle"
+           TargetType="slide:YT_Thumb">
+        <Setter Property="Width"
+                Value="{StaticResource DefaultSliderThumbSize}" />
+        <Setter Property="Height"
+                Value="{StaticResource DefaultSliderThumbSize}" />
+        <Setter Property="IconMode"
+                Value="Rect" />
+        <Setter Property="IconFgNormal"
+                Value="#c0c0c0" />
+        <Setter Property="IconFgOver"
+                Value="#00bbee" />
+        <Setter Property="IconFgPressed"
+                Value="#006688" />
+        <Setter Property="IconBgNormal"
+                Value="#c0c0c0" />
+        <Setter Property="IconBgOver"
+                Value="#00bbee" />
+        <Setter Property="IconBgPressed"
+                Value="#006688" />
+    </Style>
     <Style TargetType="slide:YT_Slider">
+        <Setter Property="Orientation"
+                Value="Vertical" />
+        <Setter Property="ThumbVertival"
+                Value="{StaticResource DefaultSliderThumbStyle}" />
+        <Setter Property="ThumbHorizontal"
+                Value="{StaticResource DefaultSliderThumbStyle}" />
+        <Setter Property="IncreaseButtonVertival"
+                Value="{StaticResource DefaultSliderIncreaseButton}" />
+        <Setter Property="DecreaseButtonVertival"
+                Value="{StaticResource DefaultSliderDecreaseButton}" />
+        <Setter Property="IncreaseButtonHorizontal"
+                Value="{StaticResource DefaultSliderIncreaseButton}" />
+        <Setter Property="DecreaseButtonHorizontal"
+                Value="{StaticResource DefaultSliderDecreaseButton}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="slide:YT_Slider">
                     <Border x:Name="rborder"
-                            Background="{x:Null}"
+                            Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid x:Name="rgrid"
+                              Margin="{TemplateBinding Padding}"
                               ClipToBounds="True">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
+                            <Track x:Name="PART_Track">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
+                                                  Style="{TemplateBinding DecreaseButtonVertival}" />
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <slide:YT_Thumb x:Name="Thumb"
+                                                    ToolTipString="{Binding Value, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                    Focusable="{TemplateBinding Focusable}"
+                                                    Style="{TemplateBinding ThumbVertival}"
+                                                    HorizontalAlignment="Center" />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="{x:Static Slider.IncreaseLarge}"
+                                                  Style="{TemplateBinding IncreaseButtonVertival}" />
+                                </Track.IncreaseRepeatButton>
+                            </Track>
                         </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="Orientation"
+                     Value="Horizontal">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="slide:YT_Slider">
+                            <Border x:Name="rborder"
+                                    Background="{x:Null}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <Grid x:Name="rgrid"
+                                      ClipToBounds="True">
+                                    <Track x:Name="PART_Track">
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
+                                                          Style="{TemplateBinding DecreaseButtonHorizontal}" />
+                                        </Track.DecreaseRepeatButton>
+                                        <Track.Thumb>
+                                            <slide:YT_Thumb x:Name="Thumb"
+                                                            ToolTipString="{Binding Value, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                            Focusable="{TemplateBinding Focusable}"
+                                                            Style="{TemplateBinding ThumbHorizontal}"
+                                                            VerticalAlignment="Center" />
+                                        </Track.Thumb>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton Command="{x:Static Slider.IncreaseLarge}"
+                                                          Style="{TemplateBinding IncreaseButtonHorizontal}" />
+                                        </Track.IncreaseRepeatButton>
+                                    </Track>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     <!--#endregion-->
 

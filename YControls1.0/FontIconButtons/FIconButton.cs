@@ -248,6 +248,22 @@ namespace YControls.FontIconButtons {
 
         #endregion
 
+        public Style ToolTipStyle {
+            get { return (Style)GetValue(ToolTipStyleProperty); }
+            set { SetValue(ToolTipStyleProperty, value); }
+        }
+        public static readonly DependencyProperty ToolTipStyleProperty =
+            DependencyProperty.Register("ToolTipStyle", typeof(Style),
+                typeof(FIconButton), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+
+        public Style ToolTipTextStyle {
+            get { return (Style)GetValue(ToolTipTextStyleProperty); }
+            set { SetValue(ToolTipTextStyleProperty, value); }
+        }
+        public static readonly DependencyProperty ToolTipTextStyleProperty =
+            DependencyProperty.Register("ToolTipTextStyle", typeof(Style),
+                typeof(FIconButton), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+
         public Visibility ToolTipVisibility {
             get { return (Visibility)GetValue(ToolTipVisibilityProperty); }
             set { SetValue(ToolTipVisibilityProperty, value); }

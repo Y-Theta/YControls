@@ -180,6 +180,38 @@ namespace YControls.SlideControls {
 
         #endregion
 
+        public Style ToolTipTextStyle {
+            get { return (Style)GetValue(ToolTipTextStyleProperty); }
+            set { SetValue(ToolTipTextStyleProperty, value); }
+        }
+        public static readonly DependencyProperty ToolTipTextStyleProperty =
+            DependencyProperty.Register("ToolTipTextStyle", typeof(Style),
+                typeof(YT_Thumb), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+
+        public Style ToolTipStyle {
+            get { return (Style)GetValue(ToolTipStyleProperty); }
+            set { SetValue(ToolTipStyleProperty, value); }
+        }
+        public static readonly DependencyProperty ToolTipStyleProperty =
+            DependencyProperty.Register("ToolTipStyle", typeof(Style),
+                typeof(YT_Thumb), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+
+        public Visibility ToolTipVisibility {
+            get { return (Visibility)GetValue(ToolTipVisibilityProperty); }
+            set { SetValue(ToolTipVisibilityProperty, value); }
+        }
+        public static readonly DependencyProperty ToolTipVisibilityProperty =
+            DependencyProperty.Register("ToolTipVisibility", typeof(Visibility),
+                typeof(YT_Thumb), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.Inherits));
+
+        public string ToolTipString {
+            get { return (string)GetValue(ToolTipStringProperty); }
+            set { SetValue(ToolTipStringProperty, value); }
+        }
+        public static readonly DependencyProperty ToolTipStringProperty =
+            DependencyProperty.Register("ToolTipString", typeof(string),
+                typeof(YT_Thumb), new FrameworkPropertyMetadata("This is a ToolTip", FrameworkPropertyMetadataOptions.Inherits));
+
         #endregion
 
         #region Methods
