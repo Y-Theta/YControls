@@ -82,6 +82,17 @@ namespace YControls.SlideControls {
             DependencyProperty.Register("Orientation", typeof(Orientation), 
                 typeof(YT_Thumb), new PropertyMetadata(Orientation.Vertical));
 
+        /// <summary>
+        /// 图标的描边
+        /// </summary>
+        public double StrokeThickness {
+            get { return (double)GetValue(StrokeThicknessProperty); }
+            set { SetValue(StrokeThicknessProperty, value); }
+        }
+        public static readonly DependencyProperty StrokeThicknessProperty =
+            DependencyProperty.Register("StrokeThickness", typeof(double), 
+                typeof(YT_Thumb), new PropertyMetadata(1.0));
+
         #region Icon
         public Visibility IconVisibility {
             get { return (Visibility)GetValue(IconVisibilityProperty); }
@@ -152,6 +163,14 @@ namespace YControls.SlideControls {
             DependencyProperty.Register("IconFgPressed", typeof(Brush),
                 typeof(YT_Thumb), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)), FrameworkPropertyMetadataOptions.Inherits));
 
+        public Brush IconFgDisabled {
+            get { return (Brush)GetValue(IconFgDisabledProperty); }
+            set { SetValue(IconFgDisabledProperty, value); }
+        }
+        public static readonly DependencyProperty IconFgDisabledProperty =
+            DependencyProperty.Register("IconFgDisabled", typeof(Brush),
+                typeof(YT_Thumb), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 32, 32, 32)), FrameworkPropertyMetadataOptions.Inherits));
+
         public Brush IconBgNormal {
             get { return (Brush)GetValue(IconBgNormalProperty); }
             set { SetValue(IconBgNormalProperty, value); }
@@ -174,6 +193,14 @@ namespace YControls.SlideControls {
         }
         public static readonly DependencyProperty IconBgPressedProperty =
             DependencyProperty.Register("IconBgPressed", typeof(Brush),
+                typeof(YT_Thumb), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 80, 80, 80)), FrameworkPropertyMetadataOptions.Inherits));
+
+        public Brush IconBgDisabled {
+            get { return (Brush)GetValue(IconBgDisabledProperty); }
+            set { SetValue(IconBgDisabledProperty, value); }
+        }
+        public static readonly DependencyProperty IconBgDisabledProperty =
+            DependencyProperty.Register("IconBgDisabled", typeof(Brush),
                 typeof(YT_Thumb), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 80, 80, 80)), FrameworkPropertyMetadataOptions.Inherits));
 
         #endregion
@@ -201,8 +228,8 @@ namespace YControls.SlideControls {
             set { SetValue(ToolTipVisibilityProperty, value); }
         }
         public static readonly DependencyProperty ToolTipVisibilityProperty =
-            DependencyProperty.Register("ToolTipVisibility", typeof(Visibility),
-                typeof(YT_Thumb), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.Inherits));
+            DependencyProperty.Register("ToolTipVisibility", typeof(Visibility), 
+                typeof(YT_Thumb), new PropertyMetadata(Visibility.Collapsed));
 
         public string ToolTipString {
             get { return (string)GetValue(ToolTipStringProperty); }

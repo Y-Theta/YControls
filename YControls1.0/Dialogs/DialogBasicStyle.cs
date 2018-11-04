@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace YControls.Dialogs {
+﻿namespace YControls.Dialogs {
     /// <summary>
     /// YT_DialogBase的一些基础样式可以通过此枚举选择
     /// </summary>

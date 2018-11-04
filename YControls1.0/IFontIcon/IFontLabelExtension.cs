@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
@@ -49,9 +45,11 @@ namespace YControls.IFontIcon {
         Brush LabelFgNormal { get; set; }
         Brush LabelFgOver { get; set; }
         Brush LabelFgPressed { get; set; }
+        Brush LabelFgDisabled { get; set; }
         Brush LabelBgNormal { get; set; }
         Brush LabelBgOver { get; set; }
         Brush LabelBgPressed { get; set; }
+        Brush LabelBgDisabled { get; set; }
         #endregion
 
         #endregion

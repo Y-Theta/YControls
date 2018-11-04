@@ -1,10 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using YControls.IFontIcon;
 
@@ -60,6 +58,15 @@ namespace YControls.FontIconButtons {
                 typeof(FIconToggleButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 180, 180, 180)), 
                     FrameworkPropertyMetadataOptions.Inherits));
 
+        public Brush IconSelectFgDisabled {
+            get { return (Brush)GetValue(IconSelectFgDisabledProperty); }
+            set { SetValue(IconSelectFgDisabledProperty, value); }
+        }
+        public static readonly DependencyProperty IconSelectFgDisabledProperty =
+            DependencyProperty.Register("IconSelectFgDisabled", typeof(Brush),
+                typeof(FIconToggleButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 120, 120, 120)),
+                    FrameworkPropertyMetadataOptions.Inherits));
+
         public Brush IconSelectBgNormal {
             get { return (Brush)GetValue(IconSelectBgNormalProperty); }
             set { SetValue(IconSelectBgNormalProperty, value); }
@@ -87,6 +94,14 @@ namespace YControls.FontIconButtons {
                 typeof(FIconToggleButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 16, 16, 16)), 
                     FrameworkPropertyMetadataOptions.Inherits));
 
+        public Brush IconSelectBgDisabled {
+            get { return (Brush)GetValue(IconSelectBgDisabledProperty); }
+            set { SetValue(IconSelectBgDisabledProperty, value); }
+        }
+        public static readonly DependencyProperty IconSelectBgDisabledProperty =
+            DependencyProperty.Register("IconSelectBgDisabled", typeof(Brush),
+                typeof(FIconToggleButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 80, 80, 80)),
+                    FrameworkPropertyMetadataOptions.Inherits));
         #endregion
 
         #endregion
@@ -129,6 +144,15 @@ namespace YControls.FontIconButtons {
                 typeof(FIconToggleButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 180, 180, 180)), 
                     FrameworkPropertyMetadataOptions.Inherits));
 
+        public Brush LabelSelectFgDisabled {
+            get { return (Brush)GetValue(LabelSelectFgDisabledProperty); }
+            set { SetValue(LabelSelectFgDisabledProperty, value); }
+        }
+        public static readonly DependencyProperty LabelSelectFgDisabledProperty =
+            DependencyProperty.Register("LabelSelectFgDisabled", typeof(Brush),
+                typeof(FIconToggleButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 120, 120, 120)),
+                    FrameworkPropertyMetadataOptions.Inherits));
+
         public Brush LabelSelectBgNormal {
             get { return (Brush)GetValue(LabelSelectBgNormalProperty); }
             set { SetValue(LabelSelectBgNormalProperty, value); }
@@ -154,6 +178,15 @@ namespace YControls.FontIconButtons {
         public static readonly DependencyProperty LabelSelectBgPressedProperty =
             DependencyProperty.Register("LabelSelectBgPressed", typeof(Brush),
                 typeof(FIconToggleButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 16, 16, 16)),
+                    FrameworkPropertyMetadataOptions.Inherits));
+
+        public Brush LabelSelectBgDisabled {
+            get { return (Brush)GetValue(LabelSelectBgDisabledProperty); }
+            set { SetValue(LabelSelectBgDisabledProperty, value); }
+        }
+        public static readonly DependencyProperty LabelSelectBgDisabledProperty =
+            DependencyProperty.Register("LabelSelectBgDisabled", typeof(Brush),
+                typeof(FIconToggleButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 80, 80, 80)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         #endregion

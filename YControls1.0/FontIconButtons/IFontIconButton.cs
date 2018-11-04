@@ -20,11 +20,6 @@ namespace YControls.FontIconButtons {
         Style ToolTipTextStyle { get; set; }
 
         /// <summary>
-        /// 鼠标提示可见性
-        /// </summary>
-        Visibility ToolTipVisibility { get; set; }
-
-        /// <summary>
         /// 鼠标提示内容
         /// </summary>
         string ToolTipString { get; set; }

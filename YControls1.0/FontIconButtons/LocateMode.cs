@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace YControls.FontIconButtons {
+﻿namespace YControls.FontIconButtons {
     /// <summary>
     /// IFontIconExtension 的按钮的图标布局方式
     /// </summary>

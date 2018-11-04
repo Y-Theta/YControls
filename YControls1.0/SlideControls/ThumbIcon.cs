@@ -25,6 +25,10 @@ namespace YControls.SlideControls {
         /// 圆形
         /// </summary>
         Ellipse,
+        /// <summary>
+        /// 只有MainPath
+        /// </summary>
+        PathMain,
     }
 
 }

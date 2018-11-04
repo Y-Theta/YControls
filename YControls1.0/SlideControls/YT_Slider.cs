@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace YControls.SlideControls {
@@ -58,6 +53,14 @@ namespace YControls.SlideControls {
         public static readonly DependencyProperty DecreaseButtonHorizontalProperty =
             DependencyProperty.Register("DecreaseButtonHorizontal", typeof(Style),
                 typeof(YT_Slider), new PropertyMetadata(null));
+
+        public Visibility ThumbToolTipVisiblity {
+            get { return (Visibility)GetValue(ThumbToolTipVisiblityProperty); }
+            set { SetValue(ThumbToolTipVisiblityProperty, value); }
+        }
+        public static readonly DependencyProperty ThumbToolTipVisiblityProperty =
+            DependencyProperty.Register("ThumbToolTipVisiblity", typeof(Visibility), 
+                typeof(YT_Slider), new PropertyMetadata(Visibility.Collapsed));
         #endregion
 
         #region Methods

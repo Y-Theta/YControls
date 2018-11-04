@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
-using System.Windows.Input;
 using ContextMenu = System.Windows.Controls.ContextMenu;
 using Control = System.Windows.Controls.Control;
-using Forms = System.Windows.Forms;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 using MouseEventHandler = System.Windows.Forms.MouseEventHandler;
 

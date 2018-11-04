@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
-using YControls.FontIconButtons;
 
 namespace YControls.IFontIcon {
     /// <summary>
@@ -34,9 +28,11 @@ namespace YControls.IFontIcon {
         Brush IconFgNormal { get; set; }
         Brush IconFgOver { get; set; }
         Brush IconFgPressed { get; set; }
+        Brush IconFgDisabled { get; set; }
         Brush IconBgNormal { get; set; }
         Brush IconBgOver { get; set; }
         Brush IconBgPressed { get; set; }
+        Brush IconBgDisabled { get; set; }
         #endregion
 
         #endregion
