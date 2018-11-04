@@ -70,7 +70,8 @@ namespace YControls.AreaIconWindow {
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
-            AttachedWindow.DragMove();
+            if (e.LeftButton == MouseButtonState.Pressed)
+                AttachedWindow.DragMove();
             base.OnMouseLeftButtonDown(e);
         }
 

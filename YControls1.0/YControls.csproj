@@ -58,9 +58,14 @@
   <ItemGroup>
     <Compile Include="Command\CommandBase.cs" />
     <Compile Include="Command\CommandHandleAndArgs.cs" />
+    <Compile Include="Converters\NumberConverter.cs" />
     <Compile Include="Converters\StringConverter.cs" />
     <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Dialogs\DialogBasicStyle.cs" />
+    <Compile Include="FlowControls\PopupRelativeMode.cs" />
+    <Compile Include="FlowControls\YT_ContextMenu.cs" />
+    <Compile Include="FlowControls\YT_MenuItem.cs" />
+    <Compile Include="FlowControls\YT_PopupBase.cs" />
     <Compile Include="FontIconButtons\IFontIconButton.cs" />
     <Compile Include="IFontIcon\IFontLabelExtension.cs" />
     <Compile Include="SlideControls\ScrollbarLayout.cs" />
@@ -111,9 +116,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FlowControls\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\YMvvmBase\YMvvmBase\YFrameworkBase.csproj">
       <Project>{DC63E2D7-36B8-455E-9644-1FFF2C95FA24}</Project>
