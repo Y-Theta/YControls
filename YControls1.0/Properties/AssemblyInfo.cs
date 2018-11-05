@@ -8,7 +8,7 @@ using System.Windows;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("YControls1.0")]
-[assembly: AssemblyDescription("Some WPFControlStyles")]
+[assembly: AssemblyDescription("Some WPF controls and styles")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Y_Theta")]
 [assembly: AssemblyProduct("YControls1.0")]

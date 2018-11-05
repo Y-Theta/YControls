@@ -1,6 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:YControls.Themes">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <FontFamily x:Key="Segoe">
+        pack://application:,,,/YControls;component/Resources/Segoe.ttf#Segoe
+    </FontFamily>
+
     <!--#region                                                         Frame-->
     <Style x:Key="DefaultFrame"
            TargetType="Frame">

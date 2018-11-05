@@ -77,6 +77,7 @@
     <Compile Include="TextControls\SubmitMode.cs" />
     <Compile Include="TextControls\TextBinding.cs" />
     <Compile Include="TextControls\YT_TextBox.cs" />
+    <Compile Include="WinAPI\DllImportMethods.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -116,12 +117,14 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\YMvvmBase\YMvvmBase\YFrameworkBase.csproj">
       <Project>{DC63E2D7-36B8-455E-9644-1FFF2C95FA24}</Project>
       <Name>YFrameworkBase</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Segoe.ttf" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

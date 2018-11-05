@@ -1,15 +1,19 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using YControls.Command;
+using YControls.WinAPI;
 
 namespace YControls.FlowControls {
     public class YT_PopupBase : Popup {
         #region Properties
+
         /// <summary>
         /// 自动淡出计时器
         /// </summary>
@@ -100,6 +104,21 @@ namespace YControls.FlowControls {
         }
 
         /// <summary>
+        /// 是否至于最前显示
+        /// </summary>
+        public bool TopMost {
+            get { return (bool)GetValue(TopMostProperty); }
+            set { SetValue(TopMostProperty, value); }
+        }
+        public static readonly DependencyProperty TopMostProperty =
+            DependencyProperty.Register("TopMost", typeof(bool), 
+                typeof(YT_PopupBase), new FrameworkPropertyMetadata(false,
+                    FrameworkPropertyMetadataOptions.Inherits,
+                    OnTopMostChanged));
+        private static void OnTopMostChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((YT_PopupBase)d).UpdateZlayer();
+        }
+        /// <summary>
         /// 依赖对象改变事件
         /// </summary>
         public new UIElement PlacementTarget {
@@ -143,6 +162,11 @@ namespace YControls.FlowControls {
             base.IsOpen = true;
         }
 
+        protected override void OnOpened(EventArgs e) {
+            base.OnOpened(e);
+            UpdateZlayer();
+        }
+
         protected override void OnMouseMove(MouseEventArgs e) {
             if (AutoHide)
                 _autohide.Enabled = false;
@@ -163,6 +187,17 @@ namespace YControls.FlowControls {
                 typeof(Popup).GetMethod("UpdatePosition",
                   System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(this, null);
         }
+
+        /// <summary>
+        /// 刷新叠放次序
+        /// </summary>
+        private void UpdateZlayer() {
+            var hwnd = ((HwndSource)PresentationSource.FromVisual(Child)).Handle;
+            DllImportMethods.RECT rect;
+            if (DllImportMethods.GetWindowRect(hwnd, out rect)) {
+                DllImportMethods.SetWindowPos(hwnd, TopMost ? -1 : -2, rect.Left, rect.Top, (int)this.Width, (int)this.Height, 0);
+            }
+        }  
 
         /// <summary>
         /// 获取popup所属窗口
@@ -190,6 +225,7 @@ namespace YControls.FlowControls {
                     ComputeOffset();
                 }
                 _holder.LocationChanged += (s, e) => UpdateLocation();
+                _holder.SizeChanged += (s, e) => UpdateLocation();
                 _holder.IsVisibleChanged += _holder_IsVisibleChanged;
             }
             _Inited = true;
