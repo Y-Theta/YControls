@@ -16,6 +16,10 @@ namespace YControls.SlideControls {
     /// 自定义ScrollViewer
     /// 暴露scrollbar，并添加一些动画效果
     /// </summary>
+    [TemplatePart(Name = "VerticalScrollBarPanel", Type = typeof(UIElement))]
+    [TemplatePart(Name = "HorizontalScrollBarPanel", Type = typeof(UIElement))]
+    [TemplatePart(Name = "VerticalTranslate", Type = typeof(TranslateTransform))]
+    [TemplatePart(Name = "HorizontalTranslate", Type = typeof(TranslateTransform))]
     public sealed class YT_ScrollViewer : ScrollViewer {
         #region Properties
 

@@ -35,6 +35,25 @@
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\YControls.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
@@ -70,10 +89,12 @@
     <Compile Include="IFontIcon\IFontLabelExtension.cs" />
     <Compile Include="SlideControls\ScrollbarLayout.cs" />
     <Compile Include="SlideControls\ThumbIcon.cs" />
+    <Compile Include="SlideControls\YT_ProgressBarBase.cs" />
     <Compile Include="SlideControls\YT_Scrollbar.cs" />
     <Compile Include="SlideControls\YT_Slider.cs" />
     <Compile Include="SlideControls\YT_Thumb.cs" />
     <Compile Include="SlideControls\YT_ScrollViewer.cs" />
+    <Compile Include="SlideControls\YT_WinXProgressBar.cs" />
     <Compile Include="TextControls\SubmitMode.cs" />
     <Compile Include="TextControls\TextBinding.cs" />
     <Compile Include="TextControls\YT_TextBox.cs" />

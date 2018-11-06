@@ -9,7 +9,6 @@ namespace YControls.Converters {
     /// Visibility相关转换器
     /// 用于将其它类型转换成Visibility
     /// 当value是字符类型时，则在字符不为空时返回可见
-    /// 
     /// </summary>
     public class VisibilityConverter : IValueConverter {
         #region Properties
@@ -23,6 +22,15 @@ namespace YControls.Converters {
                 return Visibility.Collapsed;
             else if (value is string)
                 return string.IsNullOrWhiteSpace(value.ToString()) ? Visibility.Collapsed : Visibility.Visible;
+            else if (value is bool) {
+                if (parameter is null)
+                    return (bool)value ? Visibility.Visible : Visibility.Collapsed;
+                else
+                    return (bool)value ? Visibility.Collapsed : Visibility.Visible;
+            }
+            else if (value is Enum) {
+                return value.ToString().Equals(parameter.ToString()) ? Visibility.Visible : Visibility.Collapsed;
+            }
             else
                 return Visibility.Visible;
         }

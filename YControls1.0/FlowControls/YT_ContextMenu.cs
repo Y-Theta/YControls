@@ -12,6 +12,9 @@ namespace YControls.FlowControls {
         #endregion
 
         #region Methods
+        public override void OnApplyTemplate() {
+            base.OnApplyTemplate();
+        }
         #endregion
 
         #region Constructors

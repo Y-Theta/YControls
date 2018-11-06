@@ -6,7 +6,6 @@
                     xmlns:dialog="clr-namespace:YControls.Dialogs"
                     xmlns:text="clr-namespace:YControls.TextControls"
                     xmlns:flow="clr-namespace:YControls.FlowControls"
-                    xmlns:conv="clr-namespace:YControls.Converters"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/YControls;component/Themes/Styles.xaml" />
@@ -14,7 +13,7 @@
     <!--#region                                                         -->
     <!--YT_Controls Default Styles-->
     <!--#endregion-->
-    
+
     <!--#region                                                         WindowAbout-->
 
     <!--YT_SizeBorder-->
@@ -76,9 +75,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="windowbase:YT_Window">
-                    <Border BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
+                    <Border Padding="{TemplateBinding Padding}"
                             Margin="{TemplateBinding Margin}">
                         <Grid Background="{TemplateBinding Background}">
                             <Grid.RowDefinitions>
@@ -183,7 +180,7 @@
         <Setter Property="ToolTip">
             <Setter.Value>
                 <ToolTip Style="{Binding ToolTipStyle}"
-                         Visibility="{Binding ToolTipString,Converter={x:Static conv:VisibilityConverter.Singleton}}"
+                         Visibility="{Binding ToolTipString,Converter={StaticResource VisibilityConverter}}"
                          DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
                     <TextBlock Style="{Binding ToolTipTextStyle}"
                                Text="{Binding ToolTipString}" />
@@ -474,7 +471,7 @@
         <Setter Property="ToolTip">
             <Setter.Value>
                 <ToolTip Style="{Binding ToolTipStyle}"
-                         Visibility="{Binding ToolTipString,Converter={x:Static conv:VisibilityConverter.Singleton}}"
+                         Visibility="{Binding ToolTipString,Converter={StaticResource VisibilityConverter}}"
                          DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
                     <TextBlock Style="{Binding ToolTipTextStyle}"
                                Text="{Binding ToolTipString}" />
@@ -866,7 +863,7 @@
                             <TextBlock x:Name="YT_PlaceHolder"
                                        IsHitTestVisible="False"
                                        Foreground="{TemplateBinding Foreground}"
-                                       Visibility="{Binding PlaceHolderText, RelativeSource={RelativeSource Mode=TemplatedParent},Converter={x:Static conv:VisibilityConverter.Singleton}}"
+                                       Visibility="{Binding PlaceHolderText, RelativeSource={RelativeSource Mode=TemplatedParent},Converter={StaticResource VisibilityConverter}}"
                                        Text="{TemplateBinding PlaceHolderText}"
                                        FontSize="{TemplateBinding FontSize}"
                                        Margin="{TemplateBinding PlaceHolderMargin}" />
@@ -1473,7 +1470,7 @@
                                 <Track.Thumb>
                                     <slide:YT_Thumb x:Name="Thumb"
                                                     ToolTipVisibility="{TemplateBinding ThumbToolTipVisiblity}"
-                                                    ToolTipString="{Binding Value, RelativeSource={RelativeSource Mode=TemplatedParent},Converter={x:Static conv:StringConverter.Singleton},ConverterParameter={StaticResource DefaultValueFormat}}"
+                                                    ToolTipString="{Binding Value, RelativeSource={RelativeSource Mode=TemplatedParent},Converter={StaticResource StringConverter},ConverterParameter={StaticResource DefaultValueFormat}}"
                                                     Focusable="{TemplateBinding Focusable}"
                                                     Style="{TemplateBinding ThumbVertival}"
                                                     HorizontalAlignment="Center" />
@@ -1508,7 +1505,7 @@
                                         <Track.Thumb>
                                             <slide:YT_Thumb x:Name="Thumb"
                                                             ToolTipVisibility="{TemplateBinding ThumbToolTipVisiblity}"
-                                                            ToolTipString="{Binding Value, RelativeSource={RelativeSource Mode=TemplatedParent},Converter={x:Static conv:StringConverter.Singleton},ConverterParameter={StaticResource DefaultValueFormat}}"
+                                                            ToolTipString="{Binding Value, RelativeSource={RelativeSource Mode=TemplatedParent},Converter={StaticResource StringConverter},ConverterParameter={StaticResource DefaultValueFormat}}"
                                                             Focusable="{TemplateBinding Focusable}"
                                                             Style="{TemplateBinding ThumbHorizontal}"
                                                             VerticalAlignment="Center" />
@@ -1526,6 +1523,50 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <!--YT_WinXProgressBar-->
+
+    <Style TargetType="slide:YT_WinXProgressBar">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="slide:YT_WinXProgressBar">
+                    <Border x:Name="rborder">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="PB_IndeterminateState">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition From="Fixed"
+                                                      To="UnKnown">
+
+                                    </VisualTransition>
+                                    <VisualTransition From="UnKnown"
+                                                      To="Fixed">
+
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Fixed">
+
+                                </VisualState>
+                                <VisualState x:Name="UnKnown">
+                                    
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid x:Name="rgrid">
+                            <Grid x:Name="FixedPanel"
+                                  Visibility="{Binding IsIndeterminate, RelativeSource={RelativeSource Mode=TemplatedParent},Converter={StaticResource VisibilityConverter},ConverterParameter=c}">
+
+                            </Grid>
+                            <Grid x:Name="UnKnownPanel"
+                                  Visibility="{Binding IsIndeterminate, RelativeSource={RelativeSource Mode=TemplatedParent},Converter={StaticResource VisibilityConverter}}">
+                               
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--#endregion-->
 
     <!--#region                                                         Dialog-->
