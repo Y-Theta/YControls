@@ -915,22 +915,221 @@
 
     <!--YT_MenuItem-->
     <Style TargetType="flow:YT_MenuItem">
+        <Setter Property="IsCheckable"
+                Value="False" />
+        <Setter Property="FontFamily"
+                Value="{StaticResource Segoe}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="flow:YT_MenuItem">
-                    <Grid x:Name="RootGrid"
-                          Height="{TemplateBinding Height}"
-                          Background="{TemplateBinding Background}"
-                          MinWidth="{TemplateBinding MinWidth}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="Icon"
-                                   FontFamily="{DynamicResource Segoe}" />
-                        <TextBlock x:Name="Content"
-                                   Grid.Column="1" />
-                    </Grid>
+                    <Border x:Name="rborder"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Margin="{TemplateBinding Margin}"
+                            SnapsToDevicePixels="True">
+                        <Grid x:Name="rgrid"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Margin="{TemplateBinding Padding}"
+                              SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid x:Name="B_Icon_layer"
+                                  Grid.Column="0"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Visibility="{TemplateBinding IconVisibility}"
+                                  Background="{TemplateBinding IconBgNormal}">
+                                <TextBlock x:Name="B_Icon"
+                                           Text="{TemplateBinding Icon}"
+                                           FontFamily="{TemplateBinding FontFamily}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           FontWeight="{TemplateBinding FontWeight}"
+                                           Margin="{TemplateBinding IconMargin}"
+                                           TextAlignment="{TemplateBinding IconTextAlignment}"
+                                           HorizontalAlignment="{TemplateBinding IconHorizontalAlignment}"
+                                           VerticalAlignment="{TemplateBinding IconVerticalAlignment}"
+                                           Foreground="{TemplateBinding IconFgNormal}" />
+                            </Grid>
+                            <Grid x:Name="B_Label_layer"
+                                  Grid.Column="1"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Visibility="{TemplateBinding LabelVisibility}"
+                                  Background="{TemplateBinding LabelBgNormal}">
+                                <TextBlock x:Name="B_Label"
+                                           Text="{TemplateBinding LabelString}"
+                                           FontFamily="{TemplateBinding LabelFontFamily}"
+                                           FontSize="{TemplateBinding LabelFontSize}"
+                                           FontWeight="{TemplateBinding LabelFontWeight}"
+                                           Margin="{TemplateBinding LabelMargin}"
+                                           TextAlignment="{TemplateBinding LabelTextAlignment}"
+                                           HorizontalAlignment="{TemplateBinding LabelHorizontalAlignment}"
+                                           VerticalAlignment="{TemplateBinding LabelVerticalAlignment}"
+                                           Foreground="{TemplateBinding LabelFgNormal}" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked"
+                                 Value="True">
+                            <Setter TargetName="B_Icon"
+                                    Property="Foreground"
+                                    Value="{Binding IconSelectFgNormal,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Background"
+                                    Value="{Binding IconSelectBgNormal,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label"
+                                    Property="Foreground"
+                                    Value="{Binding LabelSelectFgNormal,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Background"
+                                    Value="{Binding LabelSelectBgNormal,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Icon"
+                                    Property="Text"
+                                    Value="{Binding IconSelect, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label"
+                                    Property="Text"
+                                    Value="{Binding LabelSelect, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <MultiTrigger x:Name="UnCheck_Over">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconFgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconBgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelFgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelBgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Check_Over">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconSelectFgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconSelectBgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelSelectFgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelSelectBgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="UnCheck_Press">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPressed"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconFgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconBgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelFgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelBgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Check_Press">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPressed"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconSelectFgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconSelectBgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelSelectFgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelSelectBgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="UnCheck_Disable">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled"
+                                           Value="False" />
+                                <Condition Property="IsChecked"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconFgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconBgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelFgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelBgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Check_Disable">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled"
+                                           Value="False" />
+                                <Condition Property="IsChecked"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconSelectFgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconSelectBgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelSelectFgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelSelectBgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -1522,49 +1721,6 @@
                 </Setter>
             </Trigger>
         </Style.Triggers>
-    </Style>
-
-    <!--YT_WinXProgressBar-->
-
-    <Style TargetType="slide:YT_WinXProgressBar">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="slide:YT_WinXProgressBar">
-                    <Border x:Name="rborder">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="PB_IndeterminateState">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition From="Fixed"
-                                                      To="UnKnown">
-
-                                    </VisualTransition>
-                                    <VisualTransition From="UnKnown"
-                                                      To="Fixed">
-
-                                    </VisualTransition>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Fixed">
-
-                                </VisualState>
-                                <VisualState x:Name="UnKnown">
-                                    
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Grid x:Name="rgrid">
-                            <Grid x:Name="FixedPanel"
-                                  Visibility="{Binding IsIndeterminate, RelativeSource={RelativeSource Mode=TemplatedParent},Converter={StaticResource VisibilityConverter},ConverterParameter=c}">
-
-                            </Grid>
-                            <Grid x:Name="UnKnownPanel"
-                                  Visibility="{Binding IsIndeterminate, RelativeSource={RelativeSource Mode=TemplatedParent},Converter={StaticResource VisibilityConverter}}">
-                               
-                            </Grid>
-                        </Grid>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <!--#endregion-->

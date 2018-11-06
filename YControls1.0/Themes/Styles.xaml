@@ -317,10 +317,9 @@
                                         Width="{Binding ViewPortSize.Width, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                         Background="{x:Null}">
                                     <Path x:Name="BackPanel"
-                                          StrokeThickness="{Binding DotSize,RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource NumberConverter},ConverterParameter=-1}"
+                                          StrokeThickness="{TemplateBinding DotSize}"
                                           Stroke="{TemplateBinding Background}" />
                                     <Path x:Name="ValuePanel"
-                                          StrokeThickness="{TemplateBinding DotSize}"
                                           Stroke="{TemplateBinding Foreground}" />
                                 </Canvas>
                             </Grid>

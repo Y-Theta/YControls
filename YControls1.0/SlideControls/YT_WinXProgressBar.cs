@@ -136,7 +136,7 @@ namespace YControls.SlideControls {
         private void DrawValue() {
             if (_valuePanel is Path)
                 DrawRing();
-            else
+            else if (_valuePanel is Rectangle)
                 DrawRect();
         }
 
@@ -144,11 +144,9 @@ namespace YControls.SlideControls {
         /// 绘制方形进度条进度
         /// </summary>
         private void DrawRect() {
-            if (!(_valuePanel is Rectangle))
-                return;
-            ((Rectangle)_valuePanel).Width = ActualWidth * ValuePercent;
-            ((Rectangle)_valuePanel).Height = ActualHeight;
-            ((Rectangle)_valuePanel).Margin = new Thickness(ValuePadding);
+            ((Rectangle)_valuePanel).Width = ActualWidth * ValuePercent - 2 * ValuePadding > 0 ? ActualWidth * ValuePercent - 2 * ValuePadding : 0;
+            ((Rectangle)_valuePanel).Height = ActualHeight - 2 * ValuePadding > 0 ? ActualHeight - 2 * ValuePadding : 0;
+            ((Rectangle)_valuePanel).Margin = new Thickness(ValuePadding, ValuePadding, 0, 0);
             ((Rectangle)_valuePanel).RadiusX = RoundCap;
             ((Rectangle)_valuePanel).RadiusY = RoundCap;
             ((Rectangle)_backPanel).Width = ActualWidth;
@@ -161,8 +159,6 @@ namespace YControls.SlideControls {
         /// 绘制环形进度条进度
         /// </summary>
         private void DrawRing() {
-            if (!(_valuePanel is Path))
-                return;
             int vs = (int)(ViewPortSize.Width > ViewPortSize.Height ? ViewPortSize.Height : ViewPortSize.Width);
             int r = (int)((vs - DotSize) / 1.414);
             ((Path)_valuePanel).StrokeThickness = ((Path)_backPanel).StrokeThickness - ValuePadding;
@@ -212,13 +208,16 @@ namespace YControls.SlideControls {
         private void YT_ProgressBarBase_SizeChanged(object sender, SizeChangedEventArgs e) {
             _wellPosition = e.NewSize.Width / 3;
             _endPosition = 2 * _wellPosition;
-            SetRectIndeterminAnimate();
+            DrawValue();
+            if (IsIndeterminate && _valuePanel is Rectangle)
+                SetRectIndeterminAnimate();
         }
 
         /// <summary>
         /// 具体设置条形进度条的动画属性
         /// </summary>
         private void SetRectIndeterminAnimate() {
+
             VisualStateManager.GoToState(this, "Stop", true);
 
             _e1frame1.Value = _wellPosition;
