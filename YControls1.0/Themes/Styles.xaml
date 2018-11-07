@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:slide="clr-namespace:YControls.SlideControls"
+                    xmlns:flow="clr-namespace:YControls.FlowControls"
                     xmlns:conv="clr-namespace:YControls.Converters">
 
     <FontFamily x:Key="Segoe">
@@ -35,6 +36,75 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    <!--#endregion-->
+
+
+    <!--#region                                                         ContextMenu-->
+    <Style x:Key="WinXTaskBarContextMenuStyle"
+           TargetType="flow:YT_ContextMenu">
+        <Setter Property="Padding"
+                Value="1,4" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="BorderBrush"
+                Value="#A0A0A0" />
+        <Setter Property="Background"
+                Value="#2B2B2B" />
+    </Style>
+
+    <Style x:Key="WinXTaskBarContextMenuItemStyle"
+           TargetType="flow:YT_MenuItem">
+        <Setter Property="IsCheckable"
+                Value="False" />
+        <Setter Property="FontFamily"
+                Value="{StaticResource Segoe}" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalAlignment"
+                Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="LabelFontSize"
+                Value="14" />
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="Height"
+                Value="36" />
+        <Setter Property="Margin"
+                Value="0,1" />
+        <Setter Property="LabelTextAlignment"
+                Value="Left" />
+        <Setter Property="LabelHorizontalAlignment"
+                Value="Left" />
+        <Setter Property="IconMargin"
+                Value="8,0,8,4" />
+        <Setter Property="LabelFgNormal"
+                Value="White" />
+        <Setter Property="LabelFgOver"
+                Value="White" />
+        <Setter Property="LabelFgPressed"
+                Value="White" />
+        <Setter Property="LabelBgNormal"
+                Value="Transparent" />
+        <Setter Property="LabelBgOver"
+                Value="#22FFFFFF" />
+        <Setter Property="LabelBgPressed"
+                Value="#22FFFFFF" />
+        <Setter Property="IconFgNormal"
+                Value="White" />
+        <Setter Property="IconFgOver"
+                Value="White" />
+        <Setter Property="IconFgPressed"
+                Value="White" />
+        <Setter Property="IconBgNormal"
+                Value="Transparent" />
+        <Setter Property="IconBgOver"
+                Value="#22FFFFFF" />
+        <Setter Property="IconBgPressed"
+                Value="#22FFFFFF" />
     </Style>
     <!--#endregion-->
 
