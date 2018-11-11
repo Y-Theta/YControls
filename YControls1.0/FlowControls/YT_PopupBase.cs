@@ -7,7 +7,9 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using YControls.AreaIconWindow;
 using YControls.Command;
+using YControls.InterAction;
 using YControls.WinAPI;
 
 namespace YControls.FlowControls {
@@ -27,7 +29,7 @@ namespace YControls.FlowControls {
         /// <summary>
         /// 指示popup是否获取默认的弹出方式
         /// </summary>
-        private bool _Inited { get; set; }
+        private bool _update { get; set; }
 
         /// <summary>
         /// 关闭popup
@@ -111,7 +113,7 @@ namespace YControls.FlowControls {
             set { SetValue(TopMostProperty, value); }
         }
         public static readonly DependencyProperty TopMostProperty =
-            DependencyProperty.Register("TopMost", typeof(bool), 
+            DependencyProperty.Register("TopMost", typeof(bool),
                 typeof(YT_PopupBase), new FrameworkPropertyMetadata(false,
                     FrameworkPropertyMetadataOptions.Inherits,
                     OnTopMostChanged));
@@ -155,7 +157,7 @@ namespace YControls.FlowControls {
             //若此弹出框还存在，则不再弹出
             if (base.IsOpen)
                 return;
-            if (!_Inited)
+            if (_update)
                 OnPlacementTargetChanged();
             if (AutoHide)
                 _autohide.Enabled = true;
@@ -164,7 +166,9 @@ namespace YControls.FlowControls {
 
         protected override void OnOpened(EventArgs e) {
             base.OnOpened(e);
+            //  var hwnd = HandleHelper.GetVisualHandle(Child);
             UpdateZlayer();
+            //  WindowBlur.EnableBlur(hwnd);
         }
 
         protected override void OnMouseMove(MouseEventArgs e) {
@@ -183,21 +187,21 @@ namespace YControls.FlowControls {
         /// 无闪烁跟随窗口移动
         /// </summary>
         private void UpdateLocation() {
-            if (IsOpen)
+            if (IsOpen) {
                 typeof(Popup).GetMethod("UpdatePosition",
                   System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(this, null);
+            }
         }
 
         /// <summary>
         /// 刷新叠放次序
         /// </summary>
         private void UpdateZlayer() {
-            var hwnd = ((HwndSource)PresentationSource.FromVisual(Child)).Handle;
-            DllImportMethods.RECT rect;
-            if (DllImportMethods.GetWindowRect(hwnd, out rect)) {
-                DllImportMethods.SetWindowPos(hwnd, TopMost ? -1 : -2, rect.Left, rect.Top, (int)this.Width, (int)this.Height, 0);
+            var hwnd = HandleHelper.GetVisualHandle(Child);
+            if (DllImportMethods.GetWindowRect(hwnd, out DllImportMethods.RECT rect)) {
+                DllImportMethods.SetWindowPos(hwnd, TopMost ? -1 : -2, rect.Left, rect.Top, (int)Width, (int)Height, 0);
             }
-        }  
+        }
 
         /// <summary>
         /// 获取popup所属窗口
@@ -228,7 +232,7 @@ namespace YControls.FlowControls {
                 _holder.SizeChanged += (s, e) => UpdateLocation();
                 _holder.IsVisibleChanged += _holder_IsVisibleChanged;
             }
-            _Inited = true;
+            _update = false;
         }
 
         /// <summary>
@@ -243,9 +247,9 @@ namespace YControls.FlowControls {
         /// 
         /// </summary>
         private void _holder_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
-            if ((bool)e.NewValue) 
+            if ((bool)e.NewValue)
                 Placement = PlacementMode.RelativePoint;
-            else 
+            else
                 Placement = PlacementMode.AbsolutePoint;
             ComputeOffset();
         }
@@ -254,36 +258,38 @@ namespace YControls.FlowControls {
         /// 计算popup的实际弹出位置
         /// </summary>
         private void ComputeOffset() {
-            if (Child != null && !Child.IsMeasureValid)
-                Child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            //计算popup内容的尺寸
-            if (Placement == PlacementMode.AbsolutePoint) {
-                HorizontalOffset = 0;
-                VerticalOffset = 0;
-                PlacementRectangle = new Rect(SystemParameters.WorkArea.Width - Child.DesiredSize.Width - RelativeRect.X,
-                    SystemParameters.WorkArea.Height - Child.DesiredSize.Height - RelativeRect.Y, 0, 0);
+            if (Child != null) {
+                if (!Child.IsMeasureValid)
+                    Child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                //计算popup内容的尺寸
+                if (Placement == PlacementMode.AbsolutePoint) {
+                    HorizontalOffset = 0;
+                    VerticalOffset = 0;
+                    PlacementRectangle = new Rect(SystemParameters.WorkArea.Width - Child.DesiredSize.Width - RelativeRect.X,
+                        SystemParameters.WorkArea.Height - Child.DesiredSize.Height - RelativeRect.Y, 0, 0);
+                }
+                else if (Placement == PlacementMode.RelativePoint) {
+                    if (PlacementTarget != null)
+                        switch (RelativeMode) {
+                            case PopupRelativeMode.LeftTop:
+                                PlacementRectangle = new Rect(RelativeRect.X, RelativeRect.Y, 0, 0);
+                                break;
+                            case PopupRelativeMode.LeftBottom:
+                                PlacementRectangle = new Rect(RelativeRect.X, PlacementTarget.RenderSize.Height - Child.DesiredSize.Height - RelativeRect.Y, 0, 0);
+                                break;
+                            case PopupRelativeMode.RightTop:
+                                PlacementRectangle = new Rect(PlacementTarget.RenderSize.Width - Child.DesiredSize.Width - RelativeRect.X, RelativeRect.Y, 0, 0);
+                                break;
+                            case PopupRelativeMode.RightBottom:
+                                PlacementRectangle = new Rect(PlacementTarget.RenderSize.Width - Child.DesiredSize.Width - RelativeRect.X,
+                                    PlacementTarget.RenderSize.Height - Child.DesiredSize.Height - RelativeRect.Y, 0, 0);
+                                break;
+                        }
+                }
+                //若popup正在呈现，则更新其位置
+                if (IsOpen)
+                    UpdateLocation();
             }
-            else if (Placement == PlacementMode.RelativePoint) {
-                if (PlacementTarget != null)
-                    switch (RelativeMode) {
-                        case PopupRelativeMode.LeftTop:
-                            PlacementRectangle = new Rect(RelativeRect.X, RelativeRect.Y, 0, 0);
-                            break;
-                        case PopupRelativeMode.LeftBottom:
-                            PlacementRectangle = new Rect(RelativeRect.X, PlacementTarget.RenderSize.Height - Child.DesiredSize.Height - RelativeRect.Y, 0, 0);
-                            break;
-                        case PopupRelativeMode.RightTop:
-                            PlacementRectangle = new Rect(PlacementTarget.RenderSize.Width - Child.DesiredSize.Width - RelativeRect.X, RelativeRect.Y, 0, 0);
-                            break;
-                        case PopupRelativeMode.RightBottom:
-                            PlacementRectangle = new Rect(PlacementTarget.RenderSize.Width - Child.DesiredSize.Width - RelativeRect.X,
-                                PlacementTarget.RenderSize.Height - Child.DesiredSize.Height - RelativeRect.Y, 0, 0);
-                            break;
-                    }
-            }
-            //若popup正在呈现，则更新其位置
-            if (IsOpen)
-                UpdateLocation();
         }
 
         /// <summary>
@@ -319,7 +325,7 @@ namespace YControls.FlowControls {
         }
 
         private void InitRes() {
-            _Inited = false;
+            _update = true;
             CustomPopupPlacementCallback += Location;
             CloseCommand = new CommandBase(obj => { IsOpen = false; });
             if (AutoHide)
@@ -330,6 +336,11 @@ namespace YControls.FlowControls {
         #region Constructors
         public YT_PopupBase() {
             InitRes();
+        }
+
+        static YT_PopupBase() {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(YT_PopupBase), new FrameworkPropertyMetadata(typeof(YT_PopupBase),
+                FrameworkPropertyMetadataOptions.Inherits));
         }
         #endregion
     }

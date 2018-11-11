@@ -24,7 +24,7 @@ namespace YControls.AreaIconWindow {
 
         private string _tname;
 
-        private RectangleGeometry _clipMask;
+        private double _areaheight;
 
         private TranslateTransform _cliptransform;
 
@@ -66,7 +66,7 @@ namespace YControls.AreaIconWindow {
 
         #region Methods Overrides
         private void YT_TitleBar_SizeChanged(object sender, SizeChangedEventArgs e) {
-            _clipMask.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);                
+            _areaheight = e.NewSize.Height;
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
@@ -99,7 +99,6 @@ namespace YControls.AreaIconWindow {
         /// </summary>
         public void ShowTitleBar() {
             //_cliptransform.BeginAnimation(TranslateTransform.YProperty, _fadeoutanimation);
-
             if (!TitleBarVisible)
                 _fadeout.Begin(this);
 
@@ -111,8 +110,8 @@ namespace YControls.AreaIconWindow {
         /// </summary>
         public void HideTitleBar() {
             //_cliptransform.BeginAnimation(TranslateTransform.YProperty, _fadeinanimation);
-            if (TitleBarVisible || _clipMask.Rect.Height != -_keyin1.Value) {
-                _keyin1.Value = -_clipMask.Rect.Height;
+            if (TitleBarVisible || _areaheight != -_keyin1.Value) {
+                _keyin1.Value = -_areaheight;
                 _fadein.Begin(this);
             }
 
@@ -132,7 +131,6 @@ namespace YControls.AreaIconWindow {
                 holder.MouseEnter += Holder_MouseEnter;
                 holder.MouseLeave += Holder_MouseLeave;
 
-                _clipMask = GetTemplateChild("Mask") as RectangleGeometry;
                 _cliptransform = GetTemplateChild("MaskTanslate") as TranslateTransform;
                 _tname = "MaskTanslate";
                 RegisterName(_tname, _cliptransform);
@@ -142,7 +140,7 @@ namespace YControls.AreaIconWindow {
                 _keyin1 = new SplineDoubleKeyFrame {
                     KeySpline = new KeySpline(0, 0.4, 0.6, 1),
                     KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(320)),
-                    Value = -_clipMask.Rect.Height,
+                    Value = -_areaheight,
                 };
                 _fadeinanimation.KeyFrames.Add(_keyin1);
                 Storyboard.SetTargetName(_fadeinanimation, _tname);

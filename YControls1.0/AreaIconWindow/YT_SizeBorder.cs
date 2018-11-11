@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using YControls.WinAPI;
 
 namespace YControls.AreaIconWindow {
     public class YT_SizeBorder : Border {
@@ -36,9 +37,6 @@ namespace YControls.AreaIconWindow {
             DependencyProperty.Register("AttachedWindow", typeof(Window),
                 typeof(YT_SizeBorder), new FrameworkPropertyMetadata(null));
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
-
         protected override void OnMouseMove(MouseEventArgs e) {
             if (AttachedWindow.ResizeMode.Equals(ResizeMode.CanResize)) {
                 base.OnMouseMove(e);
@@ -65,7 +63,7 @@ namespace YControls.AreaIconWindow {
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
             if (AttachedWindow.ResizeMode.Equals(ResizeMode.CanResize))
-                SendMessage(new WindowInteropHelper(AttachedWindow as Window).Handle, 0x112, (IntPtr)(61440 + resDirection), IntPtr.Zero);
+                DllImportMethods.SendMessage(new WindowInteropHelper(AttachedWindow as Window).Handle, 0x112, (IntPtr)(61440 + resDirection), IntPtr.Zero);
         }
 
         static YT_SizeBorder() {

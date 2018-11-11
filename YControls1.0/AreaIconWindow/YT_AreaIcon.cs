@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
+using YControls.FlowControls;
 using ContextMenu = System.Windows.Controls.ContextMenu;
 using Control = System.Windows.Controls.Control;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
@@ -74,12 +75,12 @@ namespace YControls.AreaIconWindow {
         /// <summary>
         /// 与图标左键关联的弹出浮窗
         /// </summary>
-        public Popup CheckPop {
-            get { return (Popup)GetValue(CheckPopProperty); }
+        public YT_PopupBase CheckPop {
+            get { return (YT_PopupBase)GetValue(CheckPopProperty); }
             set { SetValue(CheckPopProperty, value); }
         }
         public static readonly DependencyProperty CheckPopProperty =
-            DependencyProperty.Register("CheckPop", typeof(Popup),
+            DependencyProperty.Register("CheckPop", typeof(YT_PopupBase),
                 typeof(YT_AreaIcon), new PropertyMetadata(null));
         #endregion
 

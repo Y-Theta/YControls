@@ -32,6 +32,14 @@ namespace YControls.FlowControls {
             DependencyProperty.Register("IconSelect", typeof(string),
                 typeof(YT_MenuItem), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
+        public double IconWidth {
+            get { return (double)GetValue(IconWidthProperty); }
+            set { SetValue(IconWidthProperty, value); }
+        }
+        public static readonly DependencyProperty IconWidthProperty =
+            DependencyProperty.Register("IconWidth", typeof(double), 
+                typeof(YT_MenuItem), new FrameworkPropertyMetadata(Double.NaN, FrameworkPropertyMetadataOptions.Inherits));
+
         #region Alignment
         public Thickness IconMargin {
             get { return (Thickness)GetValue(IconMarginProperty); }
@@ -456,11 +464,6 @@ namespace YControls.FlowControls {
         #endregion
 
         #endregion
-
-        #endregion
-
-        #region Methods
-
 
         #endregion
 

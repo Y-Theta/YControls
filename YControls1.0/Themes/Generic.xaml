@@ -42,13 +42,9 @@
                                           ContentSource="{TemplateBinding Content}"
                                           HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalAlignment}">
-                            <ContentPresenter.Clip>
-                                <RectangleGeometry x:Name="Mask">
-                                    <RectangleGeometry.Transform>
-                                        <TranslateTransform x:Name="MaskTanslate" />
-                                    </RectangleGeometry.Transform>
-                                </RectangleGeometry>
-                            </ContentPresenter.Clip>
+                            <ContentPresenter.RenderTransform>
+                                <TranslateTransform x:Name="MaskTanslate" />
+                            </ContentPresenter.RenderTransform>
                         </ContentPresenter>
                     </Grid>
                 </ControlTemplate>
@@ -69,15 +65,16 @@
         <Setter Property="Background"
                 Value="White" />
         <Setter Property="BorderThickness"
-                Value="2" />
+                Value="1" />
         <Setter Property="BorderBrush"
-                Value="Transparent" />
+                Value="Black" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="windowbase:YT_Window">
-                    <Border Padding="{TemplateBinding Padding}"
-                            Margin="{TemplateBinding Margin}">
-                        <Grid Background="{TemplateBinding Background}">
+                    <Border Margin="{TemplateBinding Margin}">
+                        <Grid Background="{TemplateBinding Background}"
+                              Margin="{TemplateBinding Padding}"
+                              ClipToBounds="True">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="*" />
@@ -223,6 +220,7 @@
                                   Visibility="{TemplateBinding IconVisibility}"
                                   Background="{TemplateBinding IconBgNormal}">
                                 <TextBlock x:Name="B_Icon"
+                                           SnapsToDevicePixels="True"
                                            Text="{TemplateBinding Content}"
                                            FontFamily="{TemplateBinding FontFamily}"
                                            FontSize="{TemplateBinding FontSize}"
@@ -243,6 +241,7 @@
                                   Visibility="{TemplateBinding LabelVisibility}"
                                   Background="{TemplateBinding LabelBgNormal}">
                                 <TextBlock x:Name="B_Label"
+                                           SnapsToDevicePixels="True"
                                            Text="{TemplateBinding LabelString}"
                                            FontFamily="{TemplateBinding LabelFontFamily}"
                                            FontSize="{TemplateBinding LabelFontSize}"
@@ -884,6 +883,12 @@
 
     <!--#region                                                         FlowControls-->
 
+    <!--YT_PopupBase-->
+    <Style TargetType="flow:YT_PopupBase">
+        <Setter Property="AllowsTransparency"
+                Value="True" />
+    </Style>
+
     <!--YT_ContextMenu-->
     <Style TargetType="flow:YT_ContextMenu">
         <Setter Property="Padding"
@@ -894,6 +899,13 @@
                 Value="Black" />
         <Setter Property="Background"
                 Value="White" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="flow:YT_ContextMenu">
@@ -957,8 +969,7 @@
                             </Grid.ColumnDefinitions>
                             <Grid x:Name="B_Icon_layer"
                                   Grid.Column="0"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch"
+                                  Width="{TemplateBinding IconWidth}"
                                   Visibility="{TemplateBinding IconVisibility}"
                                   Background="{TemplateBinding IconBgNormal}">
                                 <TextBlock x:Name="B_Icon"
@@ -974,8 +985,6 @@
                             </Grid>
                             <Grid x:Name="B_Label_layer"
                                   Grid.Column="1"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch"
                                   Visibility="{TemplateBinding LabelVisibility}"
                                   Background="{TemplateBinding LabelBgNormal}">
                                 <TextBlock x:Name="B_Label"

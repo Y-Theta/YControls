@@ -14,6 +14,8 @@
               Member="conv:StringConverter.Singleton" />
     <x:Static x:Key="NumberConverter"
               Member="conv:NumberConverter.Singleton" />
+    <x:Static x:Key="ColorConverter"
+              Member="conv:ColorConverter.Singleton" />
 
     <!--#region                                                         Frame-->
     <Style x:Key="DefaultFrame"
@@ -41,20 +43,29 @@
 
 
     <!--#region                                                         ContextMenu-->
+
+    <!--WinXTaskBarContextMenuStyle-->
     <Style x:Key="WinXTaskBarContextMenuStyle"
            TargetType="flow:YT_ContextMenu">
         <Setter Property="Padding"
-                Value="1,4" />
+                Value="2,5" />
+        <Setter Property="Width"
+                Value="180" />
         <Setter Property="BorderThickness"
                 Value="1" />
+        <Setter Property="Placement"
+                Value="MousePoint" />
         <Setter Property="BorderBrush"
                 Value="#A0A0A0" />
         <Setter Property="Background"
                 Value="#2B2B2B" />
     </Style>
 
+    <!--WinXTaskBarContextMenuItemStyle-->
     <Style x:Key="WinXTaskBarContextMenuItemStyle"
            TargetType="flow:YT_MenuItem">
+        <Setter Property="Width"
+                Value="NaN" />
         <Setter Property="IsCheckable"
                 Value="False" />
         <Setter Property="FontFamily"
@@ -68,19 +79,23 @@
         <Setter Property="VerticalContentAlignment"
                 Value="Stretch" />
         <Setter Property="LabelFontSize"
-                Value="14" />
+                Value="12" />
         <Setter Property="FontSize"
-                Value="16" />
+                Value="14" />
         <Setter Property="Height"
-                Value="36" />
+                Value="32" />
         <Setter Property="Margin"
                 Value="0,1" />
+        <Setter Property="IconWidth"
+                Value="24" />
         <Setter Property="LabelTextAlignment"
                 Value="Left" />
         <Setter Property="LabelHorizontalAlignment"
-                Value="Left" />
+                Value="Stretch" />
+        <Setter Property="LabelFontWeight"
+                Value="Light" />
         <Setter Property="IconMargin"
-                Value="8,0,8,4" />
+                Value="8,0" />
         <Setter Property="LabelFgNormal"
                 Value="White" />
         <Setter Property="LabelFgOver"
@@ -106,6 +121,7 @@
         <Setter Property="IconBgPressed"
                 Value="#22FFFFFF" />
     </Style>
+    
     <!--#endregion-->
 
     <!--#region                                                         ProgressStyles-->

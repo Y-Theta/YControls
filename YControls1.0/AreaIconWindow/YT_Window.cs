@@ -101,9 +101,18 @@ namespace YControls.AreaIconWindow {
         #endregion
 
         #region override
+        protected override void OnLocationChanged(EventArgs e) {
+
+        }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo) {
+
+        }
 
         protected override void OnInitialized(EventArgs e) {
-            SourceInitialized += WSInitialized;
+            SourceInitialized += (sender, args) => {
+                (PresentationSource.FromVisual((Visual)sender) as HwndSource).AddHook(new HwndSourceHook(WndProc));
+            };
             base.OnInitialized(e);
         }
 
@@ -113,8 +122,10 @@ namespace YControls.AreaIconWindow {
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
-            if (e.LeftButton.Equals(MouseButtonState.Pressed) && DragingMode.Equals(DragMode.FullWindow))
+            if (e.LeftButton.Equals(MouseButtonState.Pressed) && DragingMode.Equals(DragMode.FullWindow)) {
                 DragMove();
+            }
+
             base.OnMouseLeftButtonDown(e);
         }
 
@@ -153,10 +164,6 @@ namespace YControls.AreaIconWindow {
                 throw new ArgumentException("No Such Icon");
         }
 
-        private void WSInitialized(object sender, EventArgs e) {
-            (PresentationSource.FromVisual((Visual)sender) as HwndSource).AddHook(new HwndSourceHook(WndProc));
-        }
-
         /// <summary>
         /// windows消息循环
         /// </summary>
@@ -166,7 +173,7 @@ namespace YControls.AreaIconWindow {
         #endregion
 
         #region Constructor
-        public YT_Window() : base () {
+        public YT_Window() : base() {
             Loaded += YT_Window_Loaded;
         }
 

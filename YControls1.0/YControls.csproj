@@ -75,8 +75,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreaIconWindow\WindowBlur.cs" />
     <Compile Include="Command\CommandBase.cs" />
     <Compile Include="Command\CommandHandleAndArgs.cs" />
+    <Compile Include="Converters\ColorConverter.cs" />
     <Compile Include="Converters\NumberConverter.cs" />
     <Compile Include="Converters\StringConverter.cs" />
     <Compile Include="Converters\VisibilityConverter.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="FlowControls\YT_PopupBase.cs" />
     <Compile Include="FontIconButtons\IFontIconButton.cs" />
     <Compile Include="IFontIcon\IFontLabelExtension.cs" />
+    <Compile Include="InterAction\HandleHelper.cs" />
     <Compile Include="SlideControls\ScrollbarLayout.cs" />
     <Compile Include="SlideControls\ThumbIcon.cs" />
     <Compile Include="SlideControls\YT_ProgressBarBase.cs" />
