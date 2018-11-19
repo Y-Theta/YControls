@@ -8,6 +8,9 @@ using System.Windows.Interop;
 using System.Windows.Media;
 
 namespace YControls.InterAction {
+    /// <summary>
+    /// 获得控件句柄以支持互操作
+    /// </summary>
     public class HandleHelper {
       /// <summary>
       /// 获得控件句柄

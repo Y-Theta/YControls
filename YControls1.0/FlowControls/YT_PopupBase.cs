@@ -120,6 +120,19 @@ namespace YControls.FlowControls {
         private static void OnTopMostChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((YT_PopupBase)d).UpdateZlayer();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool EnableBlur {
+            get { return (bool)GetValue(EnableBlurProperty); }
+            set { SetValue(EnableBlurProperty, value); }
+        }
+        public static readonly DependencyProperty EnableBlurProperty =
+            DependencyProperty.Register("EnableBlur", typeof(bool),
+                typeof(YT_PopupBase), new FrameworkPropertyMetadata(false,
+                    FrameworkPropertyMetadataOptions.Inherits));
+
         /// <summary>
         /// 依赖对象改变事件
         /// </summary>
@@ -146,7 +159,6 @@ namespace YControls.FlowControls {
         #endregion
 
         #region Methods
-
         protected virtual void OnClosed() {
             if (AutoHide)
                 _autohide.Enabled = false;
@@ -166,9 +178,7 @@ namespace YControls.FlowControls {
 
         protected override void OnOpened(EventArgs e) {
             base.OnOpened(e);
-            //  var hwnd = HandleHelper.GetVisualHandle(Child);
             UpdateZlayer();
-            //  WindowBlur.EnableBlur(hwnd);
         }
 
         protected override void OnMouseMove(MouseEventArgs e) {
@@ -197,6 +207,10 @@ namespace YControls.FlowControls {
         /// 刷新叠放次序
         /// </summary>
         private void UpdateZlayer() {
+            if (EnableBlur)
+                BlurEffect.SetBlur(HandleHelper.GetVisualHandle(Child), DllImportMethods.AccentState.ACCENT_ENABLE_BLURBEHIND);
+            else
+                BlurEffect.SetBlur(HandleHelper.GetVisualHandle(Child), DllImportMethods.AccentState.ACCENT_DISABLED);
             var hwnd = HandleHelper.GetVisualHandle(Child);
             if (DllImportMethods.GetWindowRect(hwnd, out DllImportMethods.RECT rect)) {
                 DllImportMethods.SetWindowPos(hwnd, TopMost ? -1 : -2, rect.Left, rect.Top, (int)Width, (int)Height, 0);

@@ -6,6 +6,7 @@
                     xmlns:dialog="clr-namespace:YControls.Dialogs"
                     xmlns:text="clr-namespace:YControls.TextControls"
                     xmlns:flow="clr-namespace:YControls.FlowControls"
+                    xmlns:winx="clr-namespace:YControls.WinXStyleControls"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/YControls;component/Themes/Styles.xaml" />
@@ -83,7 +84,7 @@
                                               Grid.Row="1">
                                 <ContentPresenter Content="{TemplateBinding Content}" />
                             </AdornerDecorator>
-                            <windowbase:YT_TitleBar x:Name="TitleBar"
+                            <windowbase:YT_TitleBar x:Name="YT_TitleBar"
                                                     Background="Transparent"
                                                     AutoHide="{TemplateBinding AutoHideTitleBar}"
                                                     MaxHeight="{TemplateBinding TitleHeight}"
@@ -91,8 +92,7 @@
                             <windowbase:YT_SizeBorder Grid.Row="0"
                                                       Grid.RowSpan="2"
                                                       BorderBrush="{TemplateBinding BorderBrush}"
-                                                      BorderThickness="{TemplateBinding BorderThickness}"
-                                                      AttachedWindow="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=windowbase:YT_Window}}" />
+                                                      BorderThickness="{TemplateBinding BorderThickness}" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -827,6 +827,127 @@
         </Setter>
     </Style>
 
+    <!--FIconToggleButton-->
+    <Style TargetType="winx:YT_WinXToggelSwitch">
+        <Setter Property="Foreground"
+                Value="Black" />
+        <Setter Property="ForegroundPressed"
+                Value="#1E1E1E" />
+        <Setter Property="Background"
+                Value="#0060a0" />
+        <Setter Property="BackgroundPressed"
+                Value="#00a0ef" />
+        <Setter Property="ThumbPadding"
+                Value="2" />
+        <Setter Property="OnString"
+                Value="on" />
+        <Setter Property="OffString"
+                Value="off" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="winx:YT_WinXToggelSwitch">
+                    <Grid x:Name="rgrid"
+                          Margin="{TemplateBinding Padding}"
+                          SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid x:Name="ToggelPanel"
+                              Grid.Column="1">
+                            <Rectangle x:Name="ToggelBack"
+                                       StrokeThickness="{TemplateBinding ToggelThickness}"
+                                       Stroke="{TemplateBinding Foreground}"
+                                       Fill="Transparent"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center" />
+                            <Ellipse x:Name="ToggelThumb"
+                                     Fill="{TemplateBinding Foreground}"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center">
+                                <Ellipse.RenderTransform>
+                                    <TranslateTransform x:Name="ToggelThumbTranslate" />
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                        </Grid>
+                        <TextBlock x:Name="LabelPanel"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   TextAlignment="Left"
+                                   Width="{TemplateBinding LabelWidth}"
+                                   Margin="{TemplateBinding LabelMargin}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   Text="{TemplateBinding OffString}"
+                                   Grid.Column="2" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked"
+                                 Value="True">
+                            <Setter TargetName="LabelPanel"
+                                    Property="Text"
+                                    Value="{Binding OnString,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="ToggelBack"
+                                    Property="Stroke"
+                                    Value="{Binding  Background,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="ToggelBack"
+                                    Property="Fill"
+                                    Value="{Binding  Background,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <MultiTrigger x:Name="UnCheck_Over">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ToggelBack"
+                                        Property="Stroke"
+                                        Value="{Binding  ForegroundPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="ToggelThumb"
+                                        Property="Fill"
+                                        Value="{Binding  ForegroundPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Check_Over">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ToggelThumb"
+                                        Property="Fill"
+                                        Value="{Binding  ForegroundPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="ToggelBack"
+                                    Property="Stroke"
+                                    Value="{Binding  BackgroundPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="ToggelBack"
+                                    Property="Fill"
+                                    Value="{Binding  BackgroundPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="ToggelThumb"
+                                    Property="Fill"
+                                    Value="{Binding  ForegroundPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <Trigger Property="LabelRight"
+                                 Value="False">
+                            <Setter TargetName="LabelPanel"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!--#endregion-->
 
     <!--#region                                                         TextControls-->

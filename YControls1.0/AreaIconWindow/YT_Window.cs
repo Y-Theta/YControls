@@ -4,12 +4,15 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using YControls.InterAction;
+using AccentState = YControls.WinAPI.DllImportMethods.AccentState;
 
 namespace YControls.AreaIconWindow {
 
     /// <summary>
     /// 带托盘图标与窗体消息循环的窗体
     /// </summary>
+    [TemplatePart(Name = "YT_TitleBar")]
     public class YT_Window : Window {
         /// <summary>
         /// 与窗体关联的标题栏
@@ -20,6 +23,20 @@ namespace YControls.AreaIconWindow {
         /// 窗口所拥有的托盘图标
         /// </summary>
         public Dictionary<string, YT_AreaIcon> AreaIcons { get; private set; }
+
+        /// <summary>
+        /// 开启毛玻璃
+        /// </summary>
+        public bool EnableAeroGlass {
+            get { return (bool)GetValue(EnableAeroGlassProperty); }
+            set { SetValue(EnableAeroGlassProperty, value); }
+        }
+        public static readonly DependencyProperty EnableAeroGlassProperty =
+            DependencyProperty.Register("EnableAeroGlass", typeof(bool),
+                typeof(YT_Window), new PropertyMetadata(false, OnEnableAeroGlassChanged));
+        private static void OnEnableAeroGlassChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((YT_Window)d).ActiveBlur((bool)e.NewValue);
+        }
 
         #region ExtendToTitleBar
         /// <summary>
@@ -114,10 +131,12 @@ namespace YControls.AreaIconWindow {
                 (PresentationSource.FromVisual((Visual)sender) as HwndSource).AddHook(new HwndSourceHook(WndProc));
             };
             base.OnInitialized(e);
+            //if (EnableAeroGlass)
+            //    BlurEffect.EnableBlur(HandleHelper.GetVisualHandle(this), AccentState.ACCENT_ENABLE_BLURBEHIND);
         }
 
         public override void OnApplyTemplate() {
-            _titlebar = GetTemplateChild("TitleBar") as YT_TitleBar;
+            _titlebar = GetTemplateChild("YT_TitleBar") as YT_TitleBar;
             base.OnApplyTemplate();
         }
 
@@ -162,6 +181,24 @@ namespace YControls.AreaIconWindow {
             }
             else
                 throw new ArgumentException("No Such Icon");
+        }
+
+        /// <summary>
+        /// 启用毛玻璃
+        /// </summary>
+        protected void ActiveBlur(bool flag) {
+            if (flag) {
+                if (!IsInitialized)
+                    SourceInitialized += YT_Window_SourceInitialized;
+                else
+                    YT_Window_SourceInitialized(null, null);
+            }
+            else
+                BlurEffect.EnableBlur(HandleHelper.GetVisualHandle(this), AccentState.ACCENT_DISABLED);
+        }
+
+        private void YT_Window_SourceInitialized(object sender, EventArgs e) {
+            BlurEffect.EnableBlur(HandleHelper.GetVisualHandle(this), AccentState.ACCENT_ENABLE_BLURBEHIND);
         }
 
         /// <summary>

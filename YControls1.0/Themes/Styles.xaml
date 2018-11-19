@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:slide="clr-namespace:YControls.SlideControls"
+                    xmlns:button="clr-namespace:YControls.FontIconButtons"
+                    xmlns:winx="clr-namespace:YControls.WinXStyleControls"
                     xmlns:flow="clr-namespace:YControls.FlowControls"
                     xmlns:conv="clr-namespace:YControls.Converters">
 
@@ -41,6 +43,9 @@
     </Style>
     <!--#endregion-->
 
+    <!--#region                                                         ButtonAbout-->
+
+    <!--#endregion-->
 
     <!--#region                                                         ContextMenu-->
 
@@ -121,7 +126,7 @@
         <Setter Property="IconBgPressed"
                 Value="#22FFFFFF" />
     </Style>
-    
+
     <!--#endregion-->
 
     <!--#region                                                         ProgressStyles-->
@@ -137,10 +142,10 @@
                 Value="Top" />
     </Style>
     <Style x:Key="YT_WinXProgressBar_Ring"
-           TargetType="slide:YT_WinXProgressBar">
+           TargetType="winx:YT_WinXProgressBar">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="slide:YT_WinXProgressBar">
+                <ControlTemplate TargetType="winx:YT_WinXProgressBar">
                     <Border x:Name="rborder">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="PB_IndeterminateState">
@@ -493,10 +498,10 @@
 
     <!--YT_WinXProgressBar_Rect-->
     <Style x:Key="YT_WinXProgressBar_Rect"
-           TargetType="slide:YT_WinXProgressBar">
+           TargetType="winx:YT_WinXProgressBar">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="slide:YT_WinXProgressBar">
+                <ControlTemplate TargetType="winx:YT_WinXProgressBar">
                     <Border x:Name="rborder">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="PB_IndeterminateState">

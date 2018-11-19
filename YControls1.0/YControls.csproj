@@ -37,7 +37,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\AreaIconCore\AreaIconCore\bin\Debug\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -75,7 +75,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AreaIconWindow\WindowBlur.cs" />
+    <Compile Include="AreaIconWindow\BlurEffect.cs" />
     <Compile Include="Command\CommandBase.cs" />
     <Compile Include="Command\CommandHandleAndArgs.cs" />
     <Compile Include="Converters\ColorConverter.cs" />
@@ -88,6 +88,7 @@
     <Compile Include="FlowControls\YT_MenuItem.cs" />
     <Compile Include="FlowControls\YT_PopupBase.cs" />
     <Compile Include="FontIconButtons\IFontIconButton.cs" />
+    <Compile Include="WinXStyleControls\YT_WinXToggelSwitch.cs" />
     <Compile Include="IFontIcon\IFontLabelExtension.cs" />
     <Compile Include="InterAction\HandleHelper.cs" />
     <Compile Include="SlideControls\ScrollbarLayout.cs" />
@@ -97,7 +98,7 @@
     <Compile Include="SlideControls\YT_Slider.cs" />
     <Compile Include="SlideControls\YT_Thumb.cs" />
     <Compile Include="SlideControls\YT_ScrollViewer.cs" />
-    <Compile Include="SlideControls\YT_WinXProgressBar.cs" />
+    <Compile Include="WinXStyleControls\YT_WinXProgressBar.cs" />
     <Compile Include="TextControls\SubmitMode.cs" />
     <Compile Include="TextControls\TextBinding.cs" />
     <Compile Include="TextControls\YT_TextBox.cs" />
@@ -136,6 +137,7 @@
     <ProjectReference Include="..\..\..\YMvvmBase\YMvvmBase\YFrameworkBase.csproj">
       <Project>{DC63E2D7-36B8-455E-9644-1FFF2C95FA24}</Project>
       <Name>YFrameworkBase</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

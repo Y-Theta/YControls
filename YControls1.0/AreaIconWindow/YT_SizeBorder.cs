@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using YControls.WinAPI;
 
 namespace YControls.AreaIconWindow {
@@ -37,7 +38,20 @@ namespace YControls.AreaIconWindow {
             DependencyProperty.Register("AttachedWindow", typeof(Window),
                 typeof(YT_SizeBorder), new FrameworkPropertyMetadata(null));
 
+        private void GetRootWindow() {
+            if (AttachedWindow is null) {
+                DependencyObject root = this;
+                while (!(root is Window)) {
+                    if (root is null)
+                        break;
+                    root = VisualTreeHelper.GetParent(root);
+                }
+                AttachedWindow = root as Window;
+            }
+        }
+
         protected override void OnMouseMove(MouseEventArgs e) {
+            GetRootWindow();
             if (AttachedWindow.ResizeMode.Equals(ResizeMode.CanResize)) {
                 base.OnMouseMove(e);
                 Cursor = Cursors.Arrow;
@@ -62,8 +76,13 @@ namespace YControls.AreaIconWindow {
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
+            GetRootWindow();
             if (AttachedWindow.ResizeMode.Equals(ResizeMode.CanResize))
                 DllImportMethods.SendMessage(new WindowInteropHelper(AttachedWindow as Window).Handle, 0x112, (IntPtr)(61440 + resDirection), IntPtr.Zero);
+        }
+
+        public YT_SizeBorder() {
+
         }
 
         static YT_SizeBorder() {

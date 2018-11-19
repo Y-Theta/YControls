@@ -9,8 +9,9 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using YControls.SlideControls;
 
-namespace YControls.SlideControls {
+namespace YControls.WinXStyleControls {
 
     /// <summary>
     /// Win10 风格进度条

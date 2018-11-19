@@ -15,10 +15,22 @@ namespace YControls.WinAPI {
             public int Bottom;
         }
 
-        internal enum AccentState {
+        /// <summary>
+        /// 控件特效
+        /// </summary>
+        public enum AccentState {
+            /// <summary>
+            /// 不启用
+            /// </summary>
             ACCENT_DISABLED,
+            /// <summary>
+            /// 不明
+            /// </summary>
             ACCENT_ENABLE_GRADIENT,
             ACCENT_ENABLE_TRANSPARENTGRADIENT,
+            /// <summary>
+            /// 毛玻璃
+            /// </summary>
             ACCENT_ENABLE_BLURBEHIND,
             ACCENT_INVALID_STATE,
         }
