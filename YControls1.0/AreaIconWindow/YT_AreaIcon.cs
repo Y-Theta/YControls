@@ -75,12 +75,12 @@ namespace YControls.AreaIconWindow {
         /// <summary>
         /// 与图标左键关联的弹出浮窗
         /// </summary>
-        public YT_PopupBase CheckPop {
-            get { return (YT_PopupBase)GetValue(CheckPopProperty); }
+        public Popup CheckPop {
+            get { return (Popup)GetValue(CheckPopProperty); }
             set { SetValue(CheckPopProperty, value); }
         }
         public static readonly DependencyProperty CheckPopProperty =
-            DependencyProperty.Register("CheckPop", typeof(YT_PopupBase),
+            DependencyProperty.Register("CheckPop", typeof(Popup),
                 typeof(YT_AreaIcon), new PropertyMetadata(null));
         #endregion
 

@@ -122,7 +122,19 @@ namespace YControls.FlowControls {
         }
 
         /// <summary>
-        /// 
+        /// 指示这个Popup是否需要在主界面隐藏时继续显示
+        /// </summary>
+        public bool Message {
+            get { return (bool)GetValue(MessageProperty); }
+            set { SetValue(MessageProperty, value); }
+        }
+        public static readonly DependencyProperty MessageProperty =
+            DependencyProperty.Register("Message", typeof(bool),
+                typeof(YT_PopupBase), new FrameworkPropertyMetadata(false,
+                    FrameworkPropertyMetadataOptions.Inherits));
+
+        /// <summary>
+        /// 启用毛玻璃效果
         /// </summary>
         public bool EnableBlur {
             get { return (bool)GetValue(EnableBlurProperty); }
@@ -130,6 +142,18 @@ namespace YControls.FlowControls {
         }
         public static readonly DependencyProperty EnableBlurProperty =
             DependencyProperty.Register("EnableBlur", typeof(bool),
+                typeof(YT_PopupBase), new FrameworkPropertyMetadata(false,
+                    FrameworkPropertyMetadataOptions.Inherits));
+
+        /// <summary>
+        /// 在发生点击时关闭,可当作自定义的Contextmenu
+        /// </summary>
+        public bool OnClickClose {
+            get { return (bool)GetValue(OnClickCloseProperty); }
+            set { SetValue(OnClickCloseProperty, value); }
+        }
+        public static readonly DependencyProperty OnClickCloseProperty =
+            DependencyProperty.Register("OnClickClose", typeof(bool), 
                 typeof(YT_PopupBase), new FrameworkPropertyMetadata(false,
                     FrameworkPropertyMetadataOptions.Inherits));
 
@@ -144,39 +168,20 @@ namespace YControls.FlowControls {
             }
         }
 
-        /// <summary>
-        /// 重写属性加入事件触发
-        /// </summary>
-        public new bool IsOpen {
-            get => base.IsOpen;
-            set {
-                if (value)
-                    OnOpen();
-                else
-                    OnClosed();
-            }
-        }
         #endregion
 
         #region Methods
-        protected virtual void OnClosed() {
+        protected override void OnClosed(EventArgs e) {
             if (AutoHide)
                 _autohide.Enabled = false;
-            base.IsOpen = false;
+            base.OnClosed(e);
         }
 
-        protected virtual void OnOpen() {
-            //若此弹出框还存在，则不再弹出
-            if (base.IsOpen)
-                return;
+        protected override void OnOpened(EventArgs e) {
             if (_update)
                 OnPlacementTargetChanged();
             if (AutoHide)
                 _autohide.Enabled = true;
-            base.IsOpen = true;
-        }
-
-        protected override void OnOpened(EventArgs e) {
             base.OnOpened(e);
             UpdateZlayer();
         }
@@ -261,6 +266,8 @@ namespace YControls.FlowControls {
         /// 
         /// </summary>
         private void _holder_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
+            if (!Message) 
+                return;
             if ((bool)e.NewValue)
                 Placement = PlacementMode.RelativePoint;
             else
@@ -320,7 +327,7 @@ namespace YControls.FlowControls {
         }
 
         /// <summary>
-        /// 
+        /// 自动隐藏
         /// </summary>
         private void _autohide_Elapsed(object sender, ElapsedEventArgs e) {
             Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() => {

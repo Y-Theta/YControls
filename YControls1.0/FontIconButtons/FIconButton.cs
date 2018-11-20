@@ -11,6 +11,8 @@ namespace YControls.FontIconButtons {
     public class FIconButton : Button, IFontIconButton {
 
         #region Properties
+        protected virtual bool _initpopupmenu { get; set; }
+
         public LocateMode IconLayout {
             get { return (LocateMode)GetValue(IconLayoutProperty); }
             set { SetValue(IconLayoutProperty, value); }
@@ -27,7 +29,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty IconVisibilityProperty =
             DependencyProperty.Register("IconVisibility", typeof(Visibility),
-                typeof(FIconButton), new FrameworkPropertyMetadata(Visibility.Visible, 
+                typeof(FIconButton), new FrameworkPropertyMetadata(Visibility.Visible,
                     FrameworkPropertyMetadataOptions.Inherits));
 
         #region Alignment
@@ -82,7 +84,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty IconFgOverProperty =
             DependencyProperty.Register("IconFgOver", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush IconFgPressed {
@@ -109,7 +111,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty IconBgNormalProperty =
             DependencyProperty.Register("IconBgNormal", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 120, 120, 120)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 120, 120, 120)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush IconBgOver {
@@ -118,7 +120,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty IconBgOverProperty =
             DependencyProperty.Register("IconBgOver", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 180, 180,180)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 180, 180, 180)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush IconBgPressed {
@@ -127,7 +129,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty IconBgPressedProperty =
             DependencyProperty.Register("IconBgPressed", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 80, 80, 80)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 80, 80, 80)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush IconBgDisabled {
@@ -136,7 +138,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty IconBgDisabledProperty =
             DependencyProperty.Register("IconBgDisabled", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 80, 80, 80)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 80, 80, 80)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         #endregion
@@ -151,7 +153,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelVisibilityProperty =
             DependencyProperty.Register("LabelVisibility", typeof(Visibility),
-                typeof(FIconButton), new FrameworkPropertyMetadata(Visibility.Visible, 
+                typeof(FIconButton), new FrameworkPropertyMetadata(Visibility.Visible,
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public string LabelString {
@@ -160,7 +162,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelStringProperty =
             DependencyProperty.Register("LabelString", typeof(string),
-                typeof(FIconButton), new FrameworkPropertyMetadata("This is a label", 
+                typeof(FIconButton), new FrameworkPropertyMetadata("This is a label",
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public double LabelFontSize {
@@ -169,7 +171,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelFontSizeProperty =
             DependencyProperty.Register("LabelFontSize", typeof(double),
-                typeof(FIconButton), new FrameworkPropertyMetadata(0.0, 
+                typeof(FIconButton), new FrameworkPropertyMetadata(0.0,
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public FontWeight LabelFontWeight {
@@ -178,7 +180,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelFontWeightProperty =
             DependencyProperty.Register("LabelFontWeight", typeof(FontWeight),
-                typeof(FIconButton), new FrameworkPropertyMetadata(FontWeight.FromOpenTypeWeight(400), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(FontWeight.FromOpenTypeWeight(400),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public FontFamily LabelFontFamily {
@@ -187,7 +189,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelFontFamilyProperty =
             DependencyProperty.Register("LabelFontFamily", typeof(FontFamily),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new FontFamily(), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new FontFamily(),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         #region Alignment
@@ -233,7 +235,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelFgNormalProperty =
             DependencyProperty.Register("LabelFgNormal", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush LabelFgOver {
@@ -242,7 +244,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelFgOverProperty =
             DependencyProperty.Register("LabelFgOver", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush LabelFgPressed {
@@ -251,7 +253,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelFgPressedProperty =
             DependencyProperty.Register("LabelFgPressed", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush LabelFgDisabled {
@@ -269,7 +271,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelBgNormalProperty =
             DependencyProperty.Register("LabelBgNormal", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 120, 120, 120)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 120, 120, 120)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush LabelBgOver {
@@ -278,7 +280,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelBgOverProperty =
             DependencyProperty.Register("LabelBgOver", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 180, 180, 180)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 180, 180, 180)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush LabelBgPressed {
@@ -287,7 +289,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelBgPressedProperty =
             DependencyProperty.Register("LabelBgPressed", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255,80,80,80)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 80, 80, 80)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush LabelBgDisabled {
@@ -296,7 +298,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelBgDisabledProperty =
             DependencyProperty.Register("LabelBgDisabled", typeof(Brush),
-                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 80, 80, 80)), 
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 80, 80, 80)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         #endregion
@@ -326,9 +328,65 @@ namespace YControls.FontIconButtons {
         public static readonly DependencyProperty ToolTipStringProperty =
             DependencyProperty.Register("ToolTipString", typeof(string),
                 typeof(FIconButton), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+
+        /// <summary>
+        /// 左键弹出菜单
+        /// </summary>
+        public ContextMenu PopupMenu {
+            get { return (ContextMenu)GetValue(PopupMenuProperty); }
+            set { SetValue(PopupMenuProperty, value); }
+        }
+        public static readonly DependencyProperty PopupMenuProperty =
+            DependencyProperty.Register("PopupMenu", typeof(ContextMenu),
+                typeof(FIconButton), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, OnPopupMenuChnaged));
+        private static void OnPopupMenuChnaged(DependencyObject sender, DependencyPropertyChangedEventArgs args) {
+            if (args.NewValue != null)
+                ((FIconButton)sender).InitPopupMenu();
+        }
         #endregion
 
-        #region Constructors
+        #region Method
+        /// <summary>
+        /// 初始化PopupMenu
+        /// </summary>
+        protected virtual void InitPopupMenu() {
+            if (IsInitialized)
+                PopupMenuBinding();
+            else
+                _initpopupmenu = true;
+        }
+
+        public override void EndInit() {
+            base.EndInit();
+            if (_initpopupmenu)
+                PopupMenuBinding();
+        }
+
+        /// <summary>
+        /// 将PopupMenu的属性与按钮关联
+        /// </summary>
+        protected virtual void PopupMenuBinding() {
+            PopupMenu.PlacementTarget = this;
+        }
+
+        /// <summary>
+        /// 打开与之关联的ContextMenu
+        /// </summary>
+        protected virtual void ShowPopupMenu() {
+            if (PopupMenu != null) {
+                if (PopupMenu.IsOpen)
+                    return;
+                PopupMenu.IsOpen = true;
+            }
+        }
+
+        protected override void OnClick() {
+            ShowPopupMenu();
+            base.OnClick();
+        }
+        #endregion
+
+        #region Constructor
         static FIconButton() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(FIconButton), new FrameworkPropertyMetadata(typeof(FIconButton), FrameworkPropertyMetadataOptions.Inherits));
         }

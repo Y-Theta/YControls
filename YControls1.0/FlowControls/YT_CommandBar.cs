@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 namespace YControls.FlowControls {
-    public class YT_ContextMenu : ContextMenu {
+    public class YT_CommandBar : ContentControl {
         #region Properties
         #endregion
 
@@ -15,8 +15,8 @@ namespace YControls.FlowControls {
         #endregion
 
         #region Constructors
-        static YT_ContextMenu() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(YT_ContextMenu), new FrameworkPropertyMetadata(typeof(YT_ContextMenu), FrameworkPropertyMetadataOptions.Inherits));
+        static YT_CommandBar() {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(YT_CommandBar), new FrameworkPropertyMetadata(typeof(YT_CommandBar), FrameworkPropertyMetadataOptions.Inherits));
         }
         #endregion
     }

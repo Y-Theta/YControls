@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using YControls.Command;
 using YControls.InterAction;
 using AccentState = YControls.WinAPI.DllImportMethods.AccentState;
 
@@ -17,7 +18,7 @@ namespace YControls.AreaIconWindow {
         /// <summary>
         /// 与窗体关联的标题栏
         /// </summary>
-        private YT_TitleBar _titlebar { get; set; }
+        protected YT_TitleBar _titlebar { get; set; }
 
         /// <summary>
         /// 窗口所拥有的托盘图标
@@ -64,20 +65,20 @@ namespace YControls.AreaIconWindow {
                 typeof(YT_Window), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
         #endregion
 
-        #region AutoHideTitleBar
+        #region TitleBarMode
         /// <summary>
         /// 标题栏是否自动隐藏
         /// </summary>
-        public bool AutoHideTitleBar {
-            get { return (bool)GetValue(AutoHideTitleBarProperty); }
-            set { SetValue(AutoHideTitleBarProperty, value); }
+        public TitleBarMode TitleBarMode {
+            get { return (TitleBarMode)GetValue(TitleBarModeProperty); }
+            set { SetValue(TitleBarModeProperty, value); }
         }
-        public static readonly DependencyProperty AutoHideTitleBarProperty =
-            DependencyProperty.Register("AutoHideTitleBar", typeof(bool),
-                typeof(YT_Window), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
+        public static readonly DependencyProperty TitleBarModeProperty =
+            DependencyProperty.Register("TitleBarMode", typeof(TitleBarMode),
+                typeof(YT_Window), new FrameworkPropertyMetadata(TitleBarMode.Normal, FrameworkPropertyMetadataOptions.Inherits));
         #endregion
 
-        #region TitleArea
+        #region TitleHeight
         public double TitleHeight {
             get { return (double)GetValue(TitleHeightProperty); }
             set { SetValue(TitleHeightProperty, value); }
@@ -117,22 +118,23 @@ namespace YControls.AreaIconWindow {
         }
         #endregion
 
+
+        /// <summary>
+        /// 收缩命令，用于绑定按钮
+        /// </summary>
+        public CommandBase MiniCommand { get; set; }
+
+        /// <summary>
+        /// 展开命令
+        /// </summary>
+        public CommandBase NormalCommand { get; set; }
+
         #region override
-        protected override void OnLocationChanged(EventArgs e) {
-
-        }
-
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo) {
-
-        }
-
         protected override void OnInitialized(EventArgs e) {
             SourceInitialized += (sender, args) => {
                 (PresentationSource.FromVisual((Visual)sender) as HwndSource).AddHook(new HwndSourceHook(WndProc));
             };
             base.OnInitialized(e);
-            //if (EnableAeroGlass)
-            //    BlurEffect.EnableBlur(HandleHelper.GetVisualHandle(this), AccentState.ACCENT_ENABLE_BLURBEHIND);
         }
 
         public override void OnApplyTemplate() {
@@ -149,7 +151,7 @@ namespace YControls.AreaIconWindow {
         }
 
         private void YT_Window_Loaded(object sender, RoutedEventArgs e) {
-            if (AutoHideTitleBar)
+            if (TitleBarMode == TitleBarMode.AutoHide)
                 _titlebar.HideTitleBar();
         }
         #endregion
@@ -212,6 +214,8 @@ namespace YControls.AreaIconWindow {
         #region Constructor
         public YT_Window() : base() {
             Loaded += YT_Window_Loaded;
+            MiniCommand = new CommandBase(obj => { _titlebar.MiniSize(); });
+            NormalCommand = new CommandBase(obj => { _titlebar.NormalSize(); });
         }
 
         static YT_Window() {

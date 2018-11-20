@@ -201,14 +201,14 @@ namespace YControls.WinXStyleControls {
             _thumbon = new DoubleAnimationUsingKeyFrames();
             _onkey1 = new SplineDoubleKeyFrame {
                 KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(200)),
-                KeySpline = new KeySpline(0.5, 0, 1, 0.5),
+                KeySpline = new KeySpline(0.2, 0, 1, 0.2),
             };
             _thumbon.KeyFrames.Add(_onkey1);
             _thumbon.Completed += _thumbon_Completed;
             _thumboff = new DoubleAnimationUsingKeyFrames();
             _offkey1 = new SplineDoubleKeyFrame {
                 KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(200)),
-                KeySpline = new KeySpline(0.5, 0, 1, 0.5),
+                KeySpline = new KeySpline(0.2, 0, 1, 0.2),
             };
             _thumboff.KeyFrames.Add(_offkey1);
             _thumboff.Completed += _thumboff_Completed;

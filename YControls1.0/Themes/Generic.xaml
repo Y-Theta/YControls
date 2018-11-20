@@ -15,104 +15,6 @@
     <!--YT_Controls Default Styles-->
     <!--#endregion-->
 
-    <!--#region                                                         WindowAbout-->
-
-    <!--YT_SizeBorder-->
-    <Style TargetType="windowbase:YT_SizeBorder">
-        <Setter Property="BorderThickness"
-                Value="2" />
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-    </Style>
-
-    <!--YT_TitleBar-->
-    <Style TargetType="windowbase:YT_TitleBar">
-        <Setter Property="HorizontalAlignment"
-                Value="Stretch" />
-        <Setter Property="VerticalAlignment"
-                Value="Stretch" />
-        <Setter Property="MaxHeight"
-                Value="32" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="windowbase:YT_TitleBar">
-                    <Grid x:Name="TitleHolder"
-                          Height="{TemplateBinding MaxHeight}"
-                          Background="{TemplateBinding Background}">
-                        <ContentPresenter x:Name="ContentPresenter"
-                                          ContentSource="{TemplateBinding Content}"
-                                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalAlignment}">
-                            <ContentPresenter.RenderTransform>
-                                <TranslateTransform x:Name="MaskTanslate" />
-                            </ContentPresenter.RenderTransform>
-                        </ContentPresenter>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!--YT_Window-->
-    <Style TargetType="windowbase:YT_Window">
-        <Setter Property="WindowStyle"
-                Value="None" />
-        <Setter Property="AllowsTransparency"
-                Value="True" />
-        <Setter Property="Width"
-                Value="720" />
-        <Setter Property="Height"
-                Value="480" />
-        <Setter Property="Background"
-                Value="White" />
-        <Setter Property="BorderThickness"
-                Value="1" />
-        <Setter Property="BorderBrush"
-                Value="Black" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="windowbase:YT_Window">
-                    <Border Margin="{TemplateBinding Margin}">
-                        <Grid Background="{TemplateBinding Background}"
-                              Margin="{TemplateBinding Padding}"
-                              ClipToBounds="True">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <AdornerDecorator x:Name="Content"
-                                              Grid.Row="1">
-                                <ContentPresenter Content="{TemplateBinding Content}" />
-                            </AdornerDecorator>
-                            <windowbase:YT_TitleBar x:Name="YT_TitleBar"
-                                                    Background="Transparent"
-                                                    AutoHide="{TemplateBinding AutoHideTitleBar}"
-                                                    MaxHeight="{TemplateBinding TitleHeight}"
-                                                    Content="{TemplateBinding TitleArea}" />
-                            <windowbase:YT_SizeBorder Grid.Row="0"
-                                                      Grid.RowSpan="2"
-                                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                                      BorderThickness="{TemplateBinding BorderThickness}" />
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="ExtendToTitleBar"
-                                 Value="true">
-                            <Setter TargetName="Content"
-                                    Property="Grid.Row"
-                                    Value="0" />
-                            <Setter TargetName="Content"
-                                    Property="Grid.RowSpan"
-                                    Value="2" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!--#endregion-->
-
     <!--#region                                                         ButtonAbout-->
 
     <!--FontIconButton-->
@@ -848,7 +750,7 @@
                 <ControlTemplate TargetType="winx:YT_WinXToggelSwitch">
                     <Grid x:Name="rgrid"
                           Margin="{TemplateBinding Padding}"
-                          SnapsToDevicePixels="True">
+                          UseLayoutRounding="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
@@ -949,6 +851,107 @@
         </Setter>
     </Style>
     <!--#endregion-->
+
+    <!--#region                                                         WindowAbout-->
+
+    <!--YT_SizeBorder-->
+    <Style TargetType="windowbase:YT_SizeBorder">
+        <Setter Property="BorderThickness"
+                Value="2" />
+        <Setter Property="BorderBrush"
+                Value="Transparent" />
+    </Style>
+
+    <!--YT_TitleBar-->
+    <Style TargetType="windowbase:YT_TitleBar">
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalAlignment"
+                Value="Stretch" />
+        <Setter Property="MinHeight"
+                Value="24" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="windowbase:YT_TitleBar">
+                    <Grid x:Name="TitleHolder"
+                          MinHeight="{TemplateBinding MinHeight}"
+                          Background="{TemplateBinding Background}">
+                        <ContentPresenter x:Name="ContentPresenter"
+                                          ContentSource="{TemplateBinding Content}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                            <ContentPresenter.RenderTransform>
+                                <TranslateTransform x:Name="MaskTanslate" />
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--YT_Window-->
+    <Style TargetType="windowbase:YT_Window">
+        <Setter Property="WindowStyle"
+                Value="None" />
+        <Setter Property="AllowsTransparency"
+                Value="True" />
+        <Setter Property="Width"
+                Value="720" />
+        <Setter Property="Height"
+                Value="480" />
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="Foreground"
+                Value="Black" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="BorderBrush"
+                Value="Black" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="windowbase:YT_Window">
+                    <Border Margin="{TemplateBinding Margin}">
+                        <Grid Background="{TemplateBinding Background}"
+                              Margin="{TemplateBinding Padding}"
+                              ClipToBounds="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <AdornerDecorator x:Name="Content"
+                                              Grid.Row="1">
+                                <ContentPresenter Content="{TemplateBinding Content}" />
+                            </AdornerDecorator>
+                            <windowbase:YT_TitleBar x:Name="YT_TitleBar"
+                                                    Background="Transparent"
+                                                    TitleBarMode="{TemplateBinding TitleBarMode}"
+                                                    MinHeight="{TemplateBinding TitleHeight}"
+                                                    Content="{TemplateBinding TitleArea}" />
+                            <windowbase:YT_SizeBorder Grid.Row="0"
+                                                      Grid.RowSpan="2"
+                                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                                      BorderThickness="{TemplateBinding BorderThickness}" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ExtendToTitleBar"
+                                 Value="true">
+                            <Setter TargetName="Content"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="Content"
+                                    Property="Grid.RowSpan"
+                                    Value="2" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
 
     <!--#region                                                         TextControls-->
 
@@ -1276,6 +1279,36 @@
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--YT_Commandbar-->
+
+    <!--YT_InlineMenuPanel-->
+    <Style TargetType="flow:YT_InlineMenuPanel">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="flow:YT_InlineMenuPanel">
+                    <Border x:Name="rborder">
+                        <Grid x:Name="rgrid"
+                              Height="{TemplateBinding Height}"
+                              ClipToBounds="True">
+                            <ContentPresenter x:Name="Holder"
+                                              ContentSource="{TemplateBinding Content}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <ContentPresenter.RenderTransform>
+                                    <TranslateTransform x:Name="PART_MaskTranslate" />
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
+                        </Grid>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using YControls.IFontIcon;
 
@@ -304,6 +305,16 @@ namespace YControls.FontIconButtons {
             update.Invoke(this, null);
         }
 
+        protected override void PopupMenuBinding() {
+            base.PopupMenuBinding();
+            Binding binding = new Binding {
+                Source = this,
+                Path = new PropertyPath(FIconToggleButton.IsCheckedProperty),
+                Mode = BindingMode.TwoWay,
+            };
+            PopupMenu.SetBinding(ContextMenu.IsOpenProperty, binding);
+        }
+
         /// <summary>
         /// 重写OnClick，定义新的表现形式
         /// </summary>
@@ -311,6 +322,11 @@ namespace YControls.FontIconButtons {
             OnToggle();
             base.OnClick();
         }
+
+        /// <summary>
+        /// 将button的操作置空，将判断移至toggel处
+        /// </summary>
+        protected override void ShowPopupMenu() { }
 
         /// <summary>
         /// 设置ToggleButton的状态

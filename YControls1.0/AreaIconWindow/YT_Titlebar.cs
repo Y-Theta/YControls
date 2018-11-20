@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using YControls.Command;
 
 namespace YControls.AreaIconWindow {
 
@@ -42,20 +43,20 @@ namespace YControls.AreaIconWindow {
 
         #endregion
 
-        #region AutoHide
+        #region TitleBarMode
         /// <summary>
         /// 标题栏是否自动隐藏
         /// </summary>
-        public bool AutoHide {
-            get { return (bool)GetValue(AutoHideProperty); }
-            set { SetValue(AutoHideProperty, value); }
+        public TitleBarMode TitleBarMode {
+            get { return (TitleBarMode)GetValue(TitleBarModeProperty); }
+            set { SetValue(TitleBarModeProperty, value); }
         }
-        public static readonly DependencyProperty AutoHideProperty =
-            DependencyProperty.Register("AutoHide", typeof(bool),
-                typeof(YT_TitleBar), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits,
-                    AutoHideTitleBarChanged));
-        private static void AutoHideTitleBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if ((bool)e.NewValue)
+        public static readonly DependencyProperty TitleBarModeProperty =
+            DependencyProperty.Register("TitleBarMode", typeof(TitleBarMode),
+                typeof(YT_TitleBar), new FrameworkPropertyMetadata(TitleBarMode.Normal, FrameworkPropertyMetadataOptions.Inherits,
+                    TitleBarModeTitleBarChanged));
+        private static void TitleBarModeTitleBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            if ((TitleBarMode)e.NewValue != TitleBarMode.Normal)
                 ((YT_TitleBar)d).InitStoryboard();
             else
                 ((YT_TitleBar)d).ClearRes();
@@ -65,19 +66,41 @@ namespace YControls.AreaIconWindow {
         #endregion
 
         #region Methods Overrides
+        /// <summary>
+        /// 将标题栏折叠
+        /// </summary>
+        public void MiniSize() {
+            if (TitleBarMode == TitleBarMode.Mini) {
+                HideTitleBar();
+            }
+        }
+
+        /// <summary>
+        /// 将标题栏展开
+        /// </summary>
+        public void NormalSize() {
+            if (TitleBarMode == TitleBarMode.Mini) {
+                ShowTitleBar();
+            }
+        }
+
         private void YT_TitleBar_SizeChanged(object sender, SizeChangedEventArgs e) {
             _areaheight = e.NewSize.Height;
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed) {
                 AttachedWindow.DragMove();
+            }
+
             base.OnMouseLeftButtonDown(e);
         }
 
         public override void OnApplyTemplate() {
-            if (AutoHide)
+            if (TitleBarMode == TitleBarMode.AutoHide) {
                 InitStoryboard();
+            }
+
             DependencyObject RootElement = this;
             while (!(RootElement is Window)) { RootElement = VisualTreeHelper.GetParent(RootElement); }
             AttachedWindow = RootElement as Window;
@@ -85,12 +108,14 @@ namespace YControls.AreaIconWindow {
         }
 
         private void Holder_MouseEnter(object sender, MouseEventArgs e) {
-            ShowTitleBar();
+            if (TitleBarMode == TitleBarMode.AutoHide)
+                ShowTitleBar();
             base.OnMouseEnter(e);
         }
 
         private void Holder_MouseLeave(object sender, MouseEventArgs e) {
-            HideTitleBar();
+            if (TitleBarMode == TitleBarMode.AutoHide)
+                HideTitleBar();
             base.OnMouseLeave(e);
         }
 
@@ -98,6 +123,8 @@ namespace YControls.AreaIconWindow {
         /// 显示标题栏动画
         /// </summary>
         public void ShowTitleBar() {
+            if (_cliptransform == null)
+                return;
             //_cliptransform.BeginAnimation(TranslateTransform.YProperty, _fadeoutanimation);
             if (!TitleBarVisible)
                 _fadeout.Begin(this);
@@ -109,6 +136,8 @@ namespace YControls.AreaIconWindow {
         /// 隐藏标题栏动画
         /// </summary>
         public void HideTitleBar() {
+            if (_cliptransform == null)
+                return;
             //_cliptransform.BeginAnimation(TranslateTransform.YProperty, _fadeinanimation);
             if (TitleBarVisible || _areaheight != -_keyin1.Value) {
                 _keyin1.Value = -_areaheight;
@@ -168,8 +197,9 @@ namespace YControls.AreaIconWindow {
         ///释放动画资源
         /// <summary>
         private void ClearRes() {
-            if (!TitleBarVisible)
+            if (!TitleBarVisible) {
                 ShowTitleBar();
+            }
 
             _cliptransform = null;
             _fadeinanimation = null;
@@ -178,6 +208,7 @@ namespace YControls.AreaIconWindow {
             _keyout1 = null;
             _fadein = null;
             _fadeout = null;
+
             var holder = GetTemplateChild("TitleHolder") as Grid;
             holder.MouseEnter -= Holder_MouseEnter;
             holder.MouseLeave -= Holder_MouseLeave;
