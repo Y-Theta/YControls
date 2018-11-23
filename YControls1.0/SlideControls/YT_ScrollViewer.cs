@@ -61,6 +61,17 @@ namespace YControls.SlideControls {
         #endregion
 
         #endregion
+
+        /// <summary>
+        /// 获得水平滚动条
+        /// </summary>
+        public YT_Scrollbar HorizontalScrollBar { get; set; }
+
+        /// <summary>
+        /// 获得竖直滚动条
+        /// </summary>
+        public YT_Scrollbar VerticalScrollBar { get; set; }
+
         /// <summary>
         /// 滚动条布局
         /// </summary>
@@ -304,6 +315,10 @@ namespace YControls.SlideControls {
                 if (Miniable)
                     InitMiniable();
             }
+
+            HorizontalScrollBar = GetTemplateChild("PART_HorizontalScrollBar") as YT_Scrollbar;
+            VerticalScrollBar = GetTemplateChild("PART_VerticalScrollBar") as YT_Scrollbar;
+
             base.OnApplyTemplate();
         }
         #endregion

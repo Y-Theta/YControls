@@ -26,8 +26,6 @@
                 Value="0" />
         <Setter Property="Padding"
                 Value="0" />
-        <Setter Property="Background"
-                Value="Black" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Frame">

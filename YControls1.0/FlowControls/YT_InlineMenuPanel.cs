@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -157,13 +158,6 @@ namespace YControls.FlowControls {
         }
 
         /// <summary>
-        /// 释放动画资源
-        /// </summary>
-        private void DisposeAnimation() {
-
-        }
-
-        /// <summary>
         /// 初始化动画
         /// </summary>
         private void InitAnimate() {
@@ -189,6 +183,7 @@ namespace YControls.FlowControls {
             _hidestory = new Storyboard();
             Storyboard.SetTargetName(_toHide, "PART_MaskTranslate");
             _hidestory.Children.Add(_toHide);
+            _hidestory.Completed += _toHide_Completed;
 
             SetDelay(AnimationDelay);
         }
@@ -200,23 +195,37 @@ namespace YControls.FlowControls {
             Visibility = Visibility.Collapsed;
         }
 
+  
+
         public override void OnApplyTemplate() {
             _part_MaskTranslate = GetTemplateChild("PART_MaskTranslate") as TranslateTransform;
             RegisterName("PART_MaskTranslate", _part_MaskTranslate);
             if (AnimationMode != MenuAnimateMode.None) {
                 InitAnimate();
             }
-
-            Loaded += YT_InlineMenuPanel_Loaded;
             base.OnApplyTemplate();
         }
 
+        /// <summary>
+        /// 接收继承自Button的左键单击事件
+        /// </summary>
+        private void LeftButtonUp(object sender, MouseButtonEventArgs e) {
+            IsOpen = false;
+        }
+
         private void YT_InlineMenuPanel_Loaded(object sender, RoutedEventArgs e) {
+            Visibility = Visibility.Collapsed;
             ChangeState(IsOpen);
         }
         #endregion
 
         #region Constructors
+
+        public YT_InlineMenuPanel() {
+            Loaded += YT_InlineMenuPanel_Loaded;
+            AddHandler(Button.MouseLeftButtonUpEvent, new MouseButtonEventHandler(LeftButtonUp), true);
+        }
+
         static YT_InlineMenuPanel() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(YT_InlineMenuPanel),
                 new FrameworkPropertyMetadata(typeof(YT_InlineMenuPanel), FrameworkPropertyMetadataOptions.Inherits));

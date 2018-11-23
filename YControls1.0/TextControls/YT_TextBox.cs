@@ -20,7 +20,7 @@ namespace YControls.TextControls {
             set { SetValue(SubmitKeyProperty, value); }
         }
         public static readonly DependencyProperty SubmitKeyProperty =
-            DependencyProperty.Register("SubmitKey", typeof(Key), 
+            DependencyProperty.Register("SubmitKey", typeof(Key),
                 typeof(YT_TextBox), new FrameworkPropertyMetadata(Key.Enter, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
@@ -62,7 +62,9 @@ namespace YControls.TextControls {
         #region Methods
         protected override void OnKeyDown(KeyEventArgs e) {
             if (e.Key == SubmitKey) {
-                GiveupFocus();
+                if (!GiveupFocus()) {
+                    Keyboard.ClearFocus();
+                }
             }
             base.OnKeyDown(e);
         }
@@ -70,7 +72,7 @@ namespace YControls.TextControls {
         /// <summary>
         /// 使焦点转移到父对象
         /// </summary>
-        private void GiveupFocus() {
+        private bool GiveupFocus() {
             FrameworkElement parent = (FrameworkElement)Parent;
             while (parent != null && parent is IInputElement && !((IInputElement)parent).Focusable) {
                 parent = (FrameworkElement)parent.Parent;
@@ -78,21 +80,16 @@ namespace YControls.TextControls {
 
             DependencyObject scope = FocusManager.GetFocusScope(this);
             FocusManager.SetFocusedElement(scope, parent as IInputElement);
+
+            return !(parent is null);
         }
 
         /// <summary>
         /// 在输入变化时决定是否显示占位文本
         /// </summary>
         protected override void OnTextChanged(TextChangedEventArgs e) {
-            if (string.IsNullOrEmpty(Text))
-                _placeHolder.Visibility = Visibility.Visible;
-            else
-                _placeHolder.Visibility = Visibility.Collapsed;
+            CalculatePlaceHolderVisibility();
             base.OnTextChanged(e);
-        }
-
-        protected override void OnGotFocus(RoutedEventArgs e) {
-            base.OnGotFocus(e);
         }
 
         /// <summary>
@@ -109,7 +106,18 @@ namespace YControls.TextControls {
         /// </summary>
         public override void OnApplyTemplate() {
             _placeHolder = GetTemplateChild("YT_PlaceHolder") as TextBlock;
+            CalculatePlaceHolderVisibility();
+
             base.OnApplyTemplate();
+        }
+
+        private void CalculatePlaceHolderVisibility() {
+            if (_placeHolder != null) {
+                if (string.IsNullOrEmpty(Text))
+                    _placeHolder.Visibility = Visibility.Visible;
+                else
+                    _placeHolder.Visibility = Visibility.Collapsed;
+            }
         }
 
         #endregion

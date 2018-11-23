@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -58,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AreaIconWindow\BlurEffect.cs" />
+    <Compile Include="CollectionControls\NavigateArgs.cs" />
+    <Compile Include="CollectionControls\YT_ComboBox.cs" />
+    <Compile Include="CollectionControls\YT_Frame.cs" />
     <Compile Include="Command\CommandBase.cs" />
     <Compile Include="Command\CommandHandleAndArgs.cs" />
     <Compile Include="Converters\ColorConverter.cs" />

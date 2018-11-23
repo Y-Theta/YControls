@@ -35,6 +35,8 @@ namespace YControls.WinXStyleControls {
         private SplineDoubleKeyFrame _offkey1;
         private SplineDoubleKeyFrame _onkey1;
 
+        private bool _passivecheck;
+
         /// <summary>
         /// 标签在右边
         /// </summary>
@@ -99,7 +101,7 @@ namespace YControls.WinXStyleControls {
         }
         public static readonly DependencyProperty ThumbPaddingProperty =
             DependencyProperty.Register("ThumbPadding", typeof(double),
-                typeof(YT_WinXToggelSwitch), new FrameworkPropertyMetadata(2.0));
+                typeof(YT_WinXToggelSwitch), new FrameworkPropertyMetadata(2.0, OnToggelSizeChanged));
 
         /// <summary>
         /// 文字间距
@@ -121,7 +123,7 @@ namespace YControls.WinXStyleControls {
         }
         public static readonly DependencyProperty LabelWidthProperty =
             DependencyProperty.Register("LabelWidth", typeof(double),
-                typeof(YT_WinXToggelSwitch), new FrameworkPropertyMetadata(Double.NaN));
+                typeof(YT_WinXToggelSwitch), new FrameworkPropertyMetadata(24.0));
 
         /// <summary>
         /// 按钮边框宽度
@@ -132,17 +134,62 @@ namespace YControls.WinXStyleControls {
         }
         public static readonly DependencyProperty ToggelThicknessProperty =
             DependencyProperty.Register("ToggelThickness", typeof(double),
-                typeof(YT_WinXToggelSwitch), new FrameworkPropertyMetadata(2.0));
+                typeof(YT_WinXToggelSwitch), new FrameworkPropertyMetadata(2.0, OnToggelSizeChanged));
+
+        /// <summary>
+        /// 滑动按钮的宽度
+        /// </summary>
+        public double ToggelWidth {
+            get { return (double)GetValue(ToggelWidthProperty); }
+            set { SetValue(ToggelWidthProperty, value); }
+        }
+        public static readonly DependencyProperty ToggelWidthProperty =
+            DependencyProperty.Register("ToggelWidth", typeof(double),
+                typeof(YT_WinXToggelSwitch), new FrameworkPropertyMetadata(32.0, OnToggelSizeChanged));
+
+        /// <summary>
+        /// 滑动按钮的高度
+        /// </summary>
+        public double ToggelHeight {
+            get { return (double)GetValue(ToggelHeightProperty); }
+            set { SetValue(ToggelHeightProperty, value); }
+        }
+        public static readonly DependencyProperty ToggelHeightProperty =
+            DependencyProperty.Register("ToggelHeight", typeof(double),
+                typeof(YT_WinXToggelSwitch), new FrameworkPropertyMetadata(16.0, OnToggelSizeChanged));
         #endregion
 
         #region Methods
+        private static void OnToggelSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((YT_WinXToggelSwitch)d).MeasurePartSize();
+        }
+
+        protected override void OnChecked(RoutedEventArgs e) {
+            base.OnChecked(e);
+            if (_passivecheck) {
+                _toggeltranslate.BeginAnimation(TranslateTransform.XProperty, _thumbon);
+            }
+        }
+
+        protected override void OnUnchecked(RoutedEventArgs e) {
+            base.OnUnchecked(e);
+            if (_passivecheck) {
+                _toggeltranslate.BeginAnimation(TranslateTransform.XProperty, _thumboff);
+            }
+        }
+
         protected override void OnToggle() {
             //空置,将判断移至鼠标抬起时
         }
 
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo) {
-            base.OnRenderSizeChanged(sizeInfo);
+        protected override void OnMouseLeave(MouseEventArgs e) {
+            base.OnMouseLeave(e);
+            _passivecheck = true;
+        }
 
+        protected override void OnMouseEnter(MouseEventArgs e) {
+            base.OnMouseEnter(e);
+            _passivecheck = false;
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
@@ -155,7 +202,7 @@ namespace YControls.WinXStyleControls {
             bool? isChecked = true;
 
             if (_oripoint != _mousepoint) {//若进行过滑动
-                if (_mousepoint > _toggelpanel.ActualWidth / 2) {
+                if (_toggeltranslate.X > (_toggelpanel.ActualWidth - _toggelthumb.ActualWidth) / 2) {
                     _toggeltranslate.BeginAnimation(TranslateTransform.XProperty, _thumbon);
                     isChecked = true;
                 }
@@ -212,21 +259,26 @@ namespace YControls.WinXStyleControls {
             };
             _thumboff.KeyFrames.Add(_offkey1);
             _thumboff.Completed += _thumboff_Completed;
+            _passivecheck = true;
             base.OnApplyTemplate();
         }
 
         private void _toggelpanel_SizeChanged(object sender, SizeChangedEventArgs e) {
-            if (Math.Abs(e.NewSize.Width - e.PreviousSize.Width) <= 2)
+            if (e.NewSize.Width == e.PreviousSize.Width)
                 return;
+            MeasurePartSize();
+        }
+
+        private void MeasurePartSize() {
             if (_toggelback != null) {
-                _toggelback.RadiusX = _toggelback.RadiusY = _toggelpanel.ActualHeight / 2;
-                _toggelback.Height = _toggelpanel.ActualHeight;
-                _toggelthumb.Height = _toggelthumb.Width = _toggelpanel.ActualHeight - 2 * _toggelback.StrokeThickness - 2 * ThumbPadding;
+                _toggelback.RadiusX = _toggelback.RadiusY = ToggelHeight / 2.0;
+                _toggelback.Height = ToggelHeight;
+                _toggelthumb.Height = _toggelthumb.Width = ToggelHeight - 2 * _toggelback.StrokeThickness - 2 * ThumbPadding;
                 _onkey1.Value = _toggelpanel.ActualWidth - _toggelback.StrokeThickness - ThumbPadding - _toggelthumb.Width;
                 _offkey1.Value = _toggelback.StrokeThickness + ThumbPadding;
                 _toggeltranslate.X = (bool)IsChecked
-                    ? _toggelpanel.ActualWidth - _toggelback.StrokeThickness - ThumbPadding - _toggelthumb.Width
-                    : _toggelback.StrokeThickness + ThumbPadding;
+                    ? _onkey1.Value
+                    : _offkey1.Value;
             }
         }
 

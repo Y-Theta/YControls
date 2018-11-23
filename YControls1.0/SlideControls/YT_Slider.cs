@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace YControls.SlideControls {
     public sealed class YT_Slider : Slider {
