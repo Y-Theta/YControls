@@ -3,6 +3,7 @@ using System.Runtime.Remoting.Metadata;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using YControls.FlowControls;
 
 namespace YControls.FontIconButtons {
     /// <summary>
@@ -332,12 +333,12 @@ namespace YControls.FontIconButtons {
         /// <summary>
         /// 左键弹出菜单
         /// </summary>
-        public ContextMenu PopupMenu {
-            get { return (ContextMenu)GetValue(PopupMenuProperty); }
+        public YT_PopupBase PopupMenu {
+            get { return (YT_PopupBase)GetValue(PopupMenuProperty); }
             set { SetValue(PopupMenuProperty, value); }
         }
         public static readonly DependencyProperty PopupMenuProperty =
-            DependencyProperty.Register("PopupMenu", typeof(ContextMenu),
+            DependencyProperty.Register("PopupMenu", typeof(YT_PopupBase),
                 typeof(FIconButton), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, OnPopupMenuChnaged));
         private static void OnPopupMenuChnaged(DependencyObject sender, DependencyPropertyChangedEventArgs args) {
             if (args.NewValue != null)

@@ -309,7 +309,7 @@ namespace YControls.FontIconButtons {
             base.PopupMenuBinding();
             Binding binding = new Binding {
                 Source = this,
-                Path = new PropertyPath(FIconToggleButton.IsCheckedProperty),
+                Path = new PropertyPath(IsCheckedProperty),
                 Mode = BindingMode.TwoWay,
             };
             PopupMenu.SetBinding(ContextMenu.IsOpenProperty, binding);

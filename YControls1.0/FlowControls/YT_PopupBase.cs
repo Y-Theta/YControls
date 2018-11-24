@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -24,7 +26,7 @@ namespace YControls.FlowControls {
         /// <summary>
         /// popup所在窗口，为了窗口移动时能够无闪烁移动此popup
         /// </summary>
-        private Window _holder { get; set; }
+        private object _holder { get; set; }
 
         /// <summary>
         /// 指示popup是否获取默认的弹出方式
@@ -32,9 +34,19 @@ namespace YControls.FlowControls {
         private bool _update { get; set; }
 
         /// <summary>
+        /// 尝试在控件加载后再次
+        /// </summary>
+        private bool _tryloaded { get; set; }
+
+        /// <summary>
         /// 关闭popup
         /// </summary>
         public CommandBase CloseCommand { get; set; }
+
+        /// <summary>
+        /// 所有的消息类YT_PopupBase实例
+        /// </summary>
+        private static List<YT_PopupBase> _msgPopups { get; set; }
 
         /// <summary>
         /// 自定义位置时的偏移矩形
@@ -131,7 +143,10 @@ namespace YControls.FlowControls {
         public static readonly DependencyProperty MessageProperty =
             DependencyProperty.Register("Message", typeof(bool),
                 typeof(YT_PopupBase), new FrameworkPropertyMetadata(false,
-                    FrameworkPropertyMetadataOptions.Inherits));
+                    FrameworkPropertyMetadataOptions.Inherits, OnMessageChanged));
+        private static void OnMessageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+
+        }
 
         /// <summary>
         /// 启用毛玻璃效果
@@ -153,7 +168,7 @@ namespace YControls.FlowControls {
             set { SetValue(OnClickCloseProperty, value); }
         }
         public static readonly DependencyProperty OnClickCloseProperty =
-            DependencyProperty.Register("OnClickClose", typeof(bool), 
+            DependencyProperty.Register("OnClickClose", typeof(bool),
                 typeof(YT_PopupBase), new FrameworkPropertyMetadata(false,
                     FrameworkPropertyMetadataOptions.Inherits));
 
@@ -212,6 +227,8 @@ namespace YControls.FlowControls {
         /// 刷新叠放次序
         /// </summary>
         private void UpdateZlayer() {
+            if (Child is null)
+                return;
             if (EnableBlur)
                 BlurEffect.SetBlur(HandleHelper.GetVisualHandle(Child), DllImportMethods.AccentState.ACCENT_ENABLE_BLURBEHIND);
             else
@@ -225,7 +242,7 @@ namespace YControls.FlowControls {
         /// <summary>
         /// 获取popup所属窗口
         /// </summary>
-        private Window GetRootWindow() {
+        private object GetRootWindow() {
             DependencyObject root = PlacementTarget;
             while (!(root is Window)) {
                 if (root is null)
@@ -239,19 +256,28 @@ namespace YControls.FlowControls {
         /// 在父控件改变时重新设置弹出控件的弹出方式
         /// </summary>
         private void OnPlacementTargetChanged() {
+            if (PlacementTarget != null && !PlacementTarget.IsVisible)
+                return;
             _holder = GetRootWindow();
-            if (_holder is null)
+            if (_holder is null) {
                 RootWorkArea();
-            else {
+            }
+            else if (_holder is Window) {
                 if (!(PlacementTarget is null)) {
                     Placement = PlacementMode.RelativePoint;
                     ComputeOffset();
                 }
-                _holder.LocationChanged += (s, e) => UpdateLocation();
-                _holder.SizeChanged += (s, e) => UpdateLocation();
-                _holder.IsVisibleChanged += _holder_IsVisibleChanged;
+                ((Window)_holder).LocationChanged += (s, e) => UpdateLocation();
+                ((Window)_holder).SizeChanged += (s, e) => UpdateLocation();
+                ((Window)_holder).IsVisibleChanged += _holder_IsVisibleChanged;
+                PlacementTarget.IsVisibleChanged += PlacementTarget_IsVisibleChanged;
             }
             _update = false;
+        }
+
+        private void PlacementTarget_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
+            if (!(bool)e.NewValue)
+                IsOpen = false;
         }
 
         /// <summary>
@@ -266,7 +292,7 @@ namespace YControls.FlowControls {
         /// 
         /// </summary>
         private void _holder_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
-            if (!Message) 
+            if (!Message)
                 return;
             if ((bool)e.NewValue)
                 Placement = PlacementMode.RelativePoint;

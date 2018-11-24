@@ -8,6 +8,7 @@
                     xmlns:text="clr-namespace:YControls.TextControls"
                     xmlns:flow="clr-namespace:YControls.FlowControls"
                     xmlns:winx="clr-namespace:YControls.WinXStyleControls"
+                    xmlns:conv="clr-namespace:YControls.Converters"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/YControls;component/Themes/Styles.xaml" />
@@ -758,6 +759,8 @@
                         </Grid.ColumnDefinitions>
                         <Grid x:Name="ToggelPanel"
                               UseLayoutRounding="True"
+                              Width="{TemplateBinding ToggelWidth}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                               Grid.Column="1">
                             <Rectangle x:Name="ToggelBack"
                                        StrokeThickness="{TemplateBinding ToggelThickness}"
@@ -1362,8 +1365,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="slide:YT_Thumb">
                     <Grid x:Name="rgrid"
-                          SnapsToDevicePixels="True"
-                          UseLayoutRounding="True"
                           Margin="{TemplateBinding Padding}">
                         <Grid x:Name="Thumb_Path"
                               Visibility="Collapsed">
@@ -1772,8 +1773,10 @@
     <!--YT_Slider-->
     <sys:Double x:Key="DefaultSliderThumbSize">8</sys:Double>
     <sys:Double x:Key="DefaultSliderTrackThickness">4</sys:Double>
-    <sys:String x:Key="DefaultValueFormat"
-                xml:space="preserve">Value : {0:F2}</sys:String>
+    <conv:StringConverterArgs x:Key="DefaultValueFormat"
+                              xml:space="preserve"
+                              Format="Value : {0:F2}"
+                              FindRes="False" />
     <Style x:Key="DefaultSliderDecreaseButtonB"
            TargetType="RepeatButton">
         <Setter Property="BorderBrush"
@@ -2000,14 +2003,6 @@
                 Value="#c000aaff" />
     </Style>
     <Style TargetType="dialog:YT_DialogBase">
-        <Setter Property="ResizeMode"
-                Value="NoResize" />
-        <Setter Property="ShowInTaskbar"
-                Value="False" />
-        <Setter Property="AllowsTransparency"
-                Value="True" />
-        <Setter Property="WindowStyle"
-                Value="None" />
         <Setter Property="Background"
                 Value="White" />
         <Setter Property="BorderBrush"
@@ -2079,6 +2074,15 @@
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="EnableBlur"
+                                 Value="True">
+                            <Setter TargetName="rborder"
+                                    Property="Background"
+                                    Value="{Binding AeroModeBackground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="rborder"
+                                    Property="BorderBrush"
+                                    Value="{Binding AeroModeBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
                         <Trigger Property="ControlLayout"
                                  Value="MessageStyle">
                             <Setter TargetName="ContentLayer"
@@ -2103,6 +2107,7 @@
                                     Property="Grid.Column"
                                     Value="1" />
                         </Trigger>
+
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
