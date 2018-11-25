@@ -274,17 +274,18 @@ namespace YControls.SlideControls {
         }
 
         private void DisposeMiniable() {
-            if (_vScrollPanel != null)
+            if (_vScrollPanel != null) {
                 ScrollBarNormal();
 
-            _vScrollPanel.MouseEnter -= _ScrollPanel_MouseEnter;
-            _vScrollPanel.MouseLeave -= _ScrollPanel_MouseLeave;
-            _hScrollPanel.MouseEnter -= _ScrollPanel_MouseEnter;
-            _hScrollPanel.MouseLeave -= _ScrollPanel_MouseLeave;
-            _vScrollPanel = null;
-            _hScrollPanel = null;
-            _verticalTranslate = null;
-            _horizontalTranslate = null;
+                _vScrollPanel.MouseEnter -= _ScrollPanel_MouseEnter;
+                _vScrollPanel.MouseLeave -= _ScrollPanel_MouseLeave;
+                _hScrollPanel.MouseEnter -= _ScrollPanel_MouseEnter;
+                _hScrollPanel.MouseLeave -= _ScrollPanel_MouseLeave;
+                _vScrollPanel = null;
+                _hScrollPanel = null;
+                _verticalTranslate = null;
+                _horizontalTranslate = null;
+            }
         }
         #endregion
 
