@@ -31,6 +31,14 @@ namespace YControls.AreaIconWindow {
             set => _flowicon.Icon = value;
         }
 
+        /// <summary>
+        /// 将显示在托盘区的鼠标提示
+        /// </summary>
+        public string AreaText {
+            get => _flowicon.Text;
+            set => _flowicon.Text = value;
+        }
+
         #region AttachedWindow
         /// <summary>
         /// 与图标关联的窗体

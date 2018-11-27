@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using YControls.AreaIconWindow;
 using YControls.Command;
@@ -34,7 +31,7 @@ namespace YControls.FlowControls {
         /// <summary>
         /// popup所在窗口，为了窗口移动时能够无闪烁移动此popup
         /// </summary>
-        private object _holder { get; set; }
+        private Window _holder { get; set; }
 
         /// <summary>
         /// 指示popup是需要刷新位置
@@ -52,7 +49,7 @@ namespace YControls.FlowControls {
         private static List<YT_PopupBase> _msgPopups { get; set; }
 
         /// <summary>
-        /// 自定义位置时的偏移矩形
+        /// 使用Popup相对于桌面时的偏移矩形
         /// </summary>
         [TypeConverter(typeof(PointConverter))]
         public Point RelativeRect {
@@ -64,10 +61,23 @@ namespace YControls.FlowControls {
                 typeof(YT_PopupBase), new FrameworkPropertyMetadata(new Point(0, 0),
                     FrameworkPropertyMetadataOptions.Inherits,
                     OnRelativeRectChanged));
+
+        /// <summary>
+        /// 使用Popup相对于控件时的偏移矩形
+        /// </summary>
+        [TypeConverter(typeof(PointConverter))]
+        public Point RelativeRectToTarget {
+            get { return (Point)GetValue(RelativeRectToTargetProperty); }
+            set { SetValue(RelativeRectToTargetProperty, value); }
+        }
+        public static readonly DependencyProperty RelativeRectToTargetProperty =
+            DependencyProperty.Register("RelativeRectToTarget", typeof(Point),
+                typeof(YT_PopupBase), new FrameworkPropertyMetadata(new Point(0, 0),
+                    FrameworkPropertyMetadataOptions.Inherits,
+                    OnRelativeRectChanged));
         private static void OnRelativeRectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((YT_PopupBase)d).ComputeOffset();
         }
-
         /// <summary>
         /// popup相对于父元素的弹出位置
         /// </summary>
@@ -184,8 +194,6 @@ namespace YControls.FlowControls {
         }
 
         protected override void OnOpened(EventArgs e) {
-            if (_holder != null && !((Window)_holder).IsVisible)
-                return;
             if (_update)
                 OnPlacementTargetChanged();
             if (AutoHide)
@@ -207,34 +215,28 @@ namespace YControls.FlowControls {
         }
 
         /// <summary>
-        /// 无闪烁跟随窗口移动
-        /// </summary>
-        private void UpdateLocation() {
-            if (IsOpen) {
-                typeof(Popup).GetMethod("UpdatePosition",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(this, null);
-            }
-        }
-
-        /// <summary>
         /// 刷新叠放次序
         /// </summary>
         private void UpdateZlayer() {
             if (Child is null)
                 return;
+            //是否启用Aero玻璃效果
             if (EnableBlur)
                 BlurEffect.SetBlur(HandleHelper.GetVisualHandle(Child), DllImportMethods.AccentState.ACCENT_ENABLE_BLURBEHIND);
             else
                 BlurEffect.SetBlur(HandleHelper.GetVisualHandle(Child), DllImportMethods.AccentState.ACCENT_DISABLED);
+            //刷新排放位置
             _childhwnd = HandleHelper.GetVisualHandle(Child);
             SetTopMostParent(true);
-            ((Window)_holder).Activate();
+            if (_holder != null && _holder.IsVisible) {
+                _holder.Activate();
+            }
         }
 
         /// <summary>
         /// 获取popup所属窗口
         /// </summary>
-        private object GetRootWindow() {
+        private Window GetRootWindow() {
             DependencyObject root = PlacementTarget;
             while (!(root is Window)) {
                 if (root is null)
@@ -248,25 +250,51 @@ namespace YControls.FlowControls {
         /// 在父控件改变时重新设置弹出控件的弹出方式
         /// </summary>
         private void OnPlacementTargetChanged() {
-            if (PlacementTarget != null && !PlacementTarget.IsVisible)
+            if (Child is null)
+                return;
+            //当popup的直接对象不是窗体时,则当对象可见时才会显示Popup
+            if (PlacementTarget != null && !(PlacementTarget is Window) && !PlacementTarget.IsVisible)
                 return;
             _holder = GetRootWindow();
             if (_holder is null) {
                 RootWorkArea();
             }
-            else if (_holder is Window) {
+            else {
                 if (!(PlacementTarget is null)) {
                     Placement = PlacementMode.RelativePoint;
+                    //当Popup的直接对象是窗口时，若窗口隐藏，则使用全局布局
+                    if (PlacementTarget is Window wnd && !wnd.IsVisible) {
+                        Placement = PlacementMode.AbsolutePoint;
+                    }
                     ComputeOffset();
                 }
-                ((Window)_holder).Activated += YT_PopupBase_Activated;
-                ((Window)_holder).Deactivated += YT_PopupBase_Deactivated; ;
-                ((Window)_holder).LocationChanged += (s, e) => UpdateLocation();
-                ((Window)_holder).SizeChanged += YT_PopupBase_SizeChanged; ;
-                ((Window)_holder).IsVisibleChanged += _holder_IsVisibleChanged;
-                PlacementTarget.IsVisibleChanged += PlacementTarget_IsVisibleChanged;
+                RemoveAttachWindowHook();
+                AddAttachWindowHook();
             }
-            _update = false;
+        }
+
+        /// <summary>
+        /// 关联窗体事件
+        /// </summary>
+        private void AddAttachWindowHook() {
+            _holder.Activated += YT_PopupBase_Activated;
+            _holder.Deactivated += YT_PopupBase_Deactivated; ;
+            _holder.LocationChanged += (s, e) => UpdateLocation();
+            _holder.SizeChanged += YT_PopupBase_SizeChanged; ;
+            _holder.IsVisibleChanged += _holder_IsVisibleChanged;
+            PlacementTarget.IsVisibleChanged += PlacementTarget_IsVisibleChanged;
+        }
+
+        /// <summary>
+        /// 取消关联窗体事件
+        /// </summary>
+        private void RemoveAttachWindowHook() {
+            _holder.Activated -= YT_PopupBase_Activated;
+            _holder.Deactivated -= YT_PopupBase_Deactivated; ;
+            _holder.LocationChanged -= (s, e) => UpdateLocation();
+            _holder.SizeChanged -= YT_PopupBase_SizeChanged; ;
+            _holder.IsVisibleChanged -= _holder_IsVisibleChanged;
+            PlacementTarget.IsVisibleChanged -= PlacementTarget_IsVisibleChanged;
         }
 
         private void YT_PopupBase_Deactivated(object sender, EventArgs e) {
@@ -299,6 +327,16 @@ namespace YControls.FlowControls {
         }
 
         /// <summary>
+        /// 无闪烁跟随窗口移动
+        /// </summary>
+        private void UpdateLocation() {
+            if (IsOpen) {
+                typeof(Popup).GetMethod("UpdatePosition",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(this, null);
+            }
+        }
+
+        /// <summary>
         /// 目标窗体的可视性发生改变时
         /// 重新安排消息弹窗位置
         /// </summary>
@@ -309,6 +347,7 @@ namespace YControls.FlowControls {
                 Placement = PlacementMode.RelativePoint;
             else
                 Placement = PlacementMode.AbsolutePoint;
+            _update = true;
             ComputeOffset();
         }
 
@@ -346,17 +385,18 @@ namespace YControls.FlowControls {
                     Child.Measure(infinity);
                 finalsize.Width = Child.DesiredSize.Width;
                 finalsize.Height = Child.DesiredSize.Height;
-                if (Child.DesiredSize.Width == 0 || Double.IsNaN(Child.DesiredSize.Width)) {
+                if (Child.DesiredSize.Width == 0) {
                     if (!IsMeasureValid)
                         Measure(infinity);
                     finalsize.Width = Width;
                 }
-                if (Child.DesiredSize.Height == 0 || Double.IsNaN(Child.DesiredSize.Height)) {
+                if (Child.DesiredSize.Height == 0) {
                     if (!IsMeasureValid)
                         Measure(infinity);
                     finalsize.Height = Height;
                 }
                 ArrangePopup(finalsize);
+                _update = false;
             }
         }
 
@@ -374,23 +414,25 @@ namespace YControls.FlowControls {
                 if (PlacementTarget != null) {
                     switch (RelativeMode) {
                         case PopupRelativeMode.LeftTop:
-                            PlacementRectangle = new Rect(RelativeRect.X, RelativeRect.Y, 0, 0);
+                            PlacementRectangle = new Rect(RelativeRectToTarget.X, RelativeRectToTarget.Y, 0, 0);
                             break;
                         case PopupRelativeMode.LeftBottom:
-                            PlacementRectangle = new Rect(RelativeRect.X, PlacementTarget.RenderSize.Height - contentsize.Height - RelativeRect.Y, 0, 0);
+                            PlacementRectangle = new Rect(RelativeRectToTarget.X, PlacementTarget.RenderSize.Height - contentsize.Height - RelativeRectToTarget.Y, 0, 0);
                             break;
                         case PopupRelativeMode.RightTop:
-                            PlacementRectangle = new Rect(PlacementTarget.RenderSize.Width - contentsize.Width - RelativeRect.X, RelativeRect.Y, 0, 0);
+                            PlacementRectangle = new Rect(PlacementTarget.RenderSize.Width - contentsize.Width - RelativeRectToTarget.X, RelativeRectToTarget.Y, 0, 0);
                             break;
                         case PopupRelativeMode.RightBottom:
-                            PlacementRectangle = new Rect(PlacementTarget.RenderSize.Width - contentsize.Width - RelativeRect.X,
-                                PlacementTarget.RenderSize.Height - contentsize.Height - RelativeRect.Y, 0, 0);
+                            PlacementRectangle = new Rect(PlacementTarget.RenderSize.Width - contentsize.Width - RelativeRectToTarget.X,
+                                PlacementTarget.RenderSize.Height - contentsize.Height - RelativeRectToTarget.Y, 0, 0);
                             break;
                     }
                 }
             }
-            if (IsOpen)
+            if (IsOpen) {
                 UpdateLocation();
+                UpdateZlayer();
+            }
         }
 
         /// <summary>
@@ -400,7 +442,7 @@ namespace YControls.FlowControls {
             CustomPopupPlacement placement1 =
                 new CustomPopupPlacement(new Point(RelativeRect.X, targetSize.Height + RelativeRect.Y), PopupPrimaryAxis.Vertical);
             CustomPopupPlacement placement2 =
-                new CustomPopupPlacement(new Point(0, 0), PopupPrimaryAxis.Horizontal);
+                new CustomPopupPlacement(new Point(RelativeRectToTarget.X, targetSize.Height + RelativeRectToTarget.Y), PopupPrimaryAxis.Horizontal);
             CustomPopupPlacement[] ttplaces =
                 new CustomPopupPlacement[] { placement1, placement2 };
             return ttplaces;

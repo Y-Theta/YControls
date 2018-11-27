@@ -82,7 +82,7 @@
         <Setter Property="VerticalContentAlignment"
                 Value="Stretch" />
         <Setter Property="LabelFontSize"
-                Value="12" />
+                Value="12.6" />
         <Setter Property="FontSize"
                 Value="14" />
         <Setter Property="Height"
