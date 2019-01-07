@@ -32,7 +32,7 @@ namespace YControls.AreaIconWindow {
         }
 
         /// <summary>
-        /// 将显示在托盘区的鼠标提示
+        /// 将显示在托盘区的通知提示
         /// </summary>
         public string AreaText {
             get => _flowicon.Text;

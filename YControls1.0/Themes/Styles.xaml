@@ -4,7 +4,8 @@
                     xmlns:button="clr-namespace:YControls.FontIconButtons"
                     xmlns:winx="clr-namespace:YControls.WinXStyleControls"
                     xmlns:flow="clr-namespace:YControls.FlowControls"
-                    xmlns:conv="clr-namespace:YControls.Converters">
+                    xmlns:conv="clr-namespace:YControls.Converters"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <FontFamily x:Key="Segoe">
         pack://application:,,,/YControls;component/Resources/Segoe.ttf#Segoe
@@ -18,6 +19,36 @@
               Member="conv:NumberConverter.Singleton" />
     <x:Static x:Key="ColorConverter"
               Member="conv:ColorConverter.Singleton" />
+
+    <sys:Double x:Key="DefaultToolTipFontSize">12</sys:Double>
+    <Style x:Key="DefaultToolTipStyle"
+           TargetType="ToolTip">
+        <Setter Property="Placement"
+                Value="MousePoint" />
+        <Setter Property="HorizontalOffset"
+                Value="8" />
+        <Setter Property="VerticalOffset"
+                Value="24" />
+        <Setter Property="Padding"
+                Value="0" />
+        <Setter Property="BorderBrush"
+                Value="#A0A0A0" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Background"
+                Value="#2B2B2B" />
+        <Setter Property="DataContext"
+                Value="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}" />
+    </Style>
+    <Style x:Key="DefaultToolTipTextBlockStyle"
+           TargetType="TextBlock">
+        <Setter Property="Foreground"
+                Value="White" />
+        <Setter Property="FontWeight"
+                Value="Light" />
+        <Setter Property="FontSize"
+                Value="{StaticResource DefaultToolTipFontSize}" />
+    </Style>
 
     <!--#region                                                         Frame-->
     <Style x:Key="DefaultFrame"

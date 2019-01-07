@@ -20,27 +20,6 @@
     <!--#region                                                         ButtonAbout-->
 
     <!--FontIconButton-->
-    <sys:Double x:Key="DefaultToolTipFontSize">12</sys:Double>
-    <Style x:Key="DefaultToolTipStyle"
-           TargetType="ToolTip">
-        <Setter Property="Placement"
-                Value="MousePoint" />
-        <Setter Property="HorizontalOffset"
-                Value="8" />
-        <Setter Property="VerticalOffset"
-                Value="24" />
-        <Setter Property="Padding"
-                Value="0" />
-        <Setter Property="DataContext"
-                Value="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}" />
-    </Style>
-    <Style x:Key="DefaultToolTipTextBlockStyle"
-           TargetType="TextBlock">
-        <Setter Property="Margin"
-                Value="6,3" />
-        <Setter Property="FontSize"
-                Value="{StaticResource DefaultToolTipFontSize}" />
-    </Style>
     <Style TargetType="fontbutton:FIconButton">
         <Setter Property="FontFamily"
                 Value="{StaticResource Segoe}" />
@@ -83,8 +62,10 @@
                 <ToolTip Style="{Binding ToolTipStyle}"
                          Visibility="{Binding ToolTipString,Converter={StaticResource VisibilityConverter}}"
                          DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-                    <TextBlock Style="{Binding ToolTipTextStyle}"
-                               Text="{Binding ToolTipString}" />
+                    <Border Margin="8,4">
+                        <TextBlock Style="{Binding ToolTipTextStyle}"
+                                   Text="{Binding ToolTipString}" />
+                    </Border>
                 </ToolTip>
             </Setter.Value>
         </Setter>
@@ -376,8 +357,10 @@
                 <ToolTip Style="{Binding ToolTipStyle}"
                          Visibility="{Binding ToolTipString,Converter={StaticResource VisibilityConverter}}"
                          DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-                    <TextBlock Style="{Binding ToolTipTextStyle}"
-                               Text="{Binding ToolTipString}" />
+                    <Border Margin="8,4">
+                        <TextBlock Style="{Binding ToolTipTextStyle}"
+                                   Text="{Binding ToolTipString}" />
+                    </Border>
                 </ToolTip>
             </Setter.Value>
         </Setter>
@@ -1008,7 +991,7 @@
                               Margin="{TemplateBinding Padding}">
                             <TextBlock x:Name="YT_PlaceHolder"
                                        IsHitTestVisible="False"
-                                       Foreground="{TemplateBinding Foreground}"
+                                       Foreground="{TemplateBinding PlaceHolderTextForeground}"
                                        Visibility="{Binding PlaceHolderText, RelativeSource={RelativeSource Mode=TemplatedParent},Converter={StaticResource VisibilityConverter}}"
                                        Text="{TemplateBinding PlaceHolderText}"
                                        FontSize="{TemplateBinding FontSize}"
@@ -1356,8 +1339,10 @@
                 <ToolTip Style="{Binding ToolTipStyle}"
                          Visibility="{Binding ToolTipVisibility}"
                          DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-                    <TextBlock Style="{Binding ToolTipTextStyle}"
-                               Text="{Binding ToolTipString}" />
+                    <Border Margin="8,4">
+                        <TextBlock Style="{Binding ToolTipTextStyle}"
+                                   Text="{Binding ToolTipString}" />
+                    </Border>
                 </ToolTip>
             </Setter.Value>
         </Setter>

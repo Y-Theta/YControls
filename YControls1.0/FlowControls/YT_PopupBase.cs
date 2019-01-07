@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using YControls.AreaIconWindow;
@@ -22,6 +23,7 @@ namespace YControls.FlowControls {
         private const int WM_WINDOWPOSCHANGED = 0x0047;
 
         private bool _topmostparent;
+        private bool _passiveActive;
 
         /// <summary>
         /// 自动淡出计时器
@@ -37,6 +39,11 @@ namespace YControls.FlowControls {
         /// 指示popup是需要刷新位置
         /// </summary>
         private bool _update { get; set; }
+
+        /// <summary>
+        /// 初始化时设置Blur效果需在控件可视后设置
+        /// </summary>
+        private Action _firstEnableBlur;
 
         /// <summary>
         /// 关闭popup
@@ -156,10 +163,7 @@ namespace YControls.FlowControls {
         public static readonly DependencyProperty MessageProperty =
             DependencyProperty.Register("Message", typeof(bool),
                 typeof(YT_PopupBase), new FrameworkPropertyMetadata(false,
-                    FrameworkPropertyMetadataOptions.Inherits, OnMessageChanged));
-        private static void OnMessageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-
-        }
+                    FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// 启用毛玻璃效果
@@ -171,7 +175,10 @@ namespace YControls.FlowControls {
         public static readonly DependencyProperty EnableBlurProperty =
             DependencyProperty.Register("EnableBlur", typeof(bool),
                 typeof(YT_PopupBase), new FrameworkPropertyMetadata(false,
-                    FrameworkPropertyMetadataOptions.Inherits));
+                    FrameworkPropertyMetadataOptions.Inherits, OnEnableBlurChanged));
+        private static void OnEnableBlurChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((YT_PopupBase)d).SetBlur((bool)e.NewValue);
+        }
 
         /// <summary>
         /// 依赖对象改变事件
@@ -196,10 +203,10 @@ namespace YControls.FlowControls {
         protected override void OnOpened(EventArgs e) {
             if (_update)
                 OnPlacementTargetChanged();
-            if (AutoHide)
-                _autohide.Enabled = true;
             base.OnOpened(e);
             UpdateZlayer();
+            if (AutoHide)
+                _autohide.Enabled = true;
         }
 
         protected override void OnMouseMove(MouseEventArgs e) {
@@ -220,17 +227,37 @@ namespace YControls.FlowControls {
         private void UpdateZlayer() {
             if (Child is null)
                 return;
-            //是否启用Aero玻璃效果
-            if (EnableBlur)
-                BlurEffect.SetBlur(HandleHelper.GetVisualHandle(Child), DllImportMethods.AccentState.ACCENT_ENABLE_BLURBEHIND);
-            else
-                BlurEffect.SetBlur(HandleHelper.GetVisualHandle(Child), DllImportMethods.AccentState.ACCENT_DISABLED);
+            _firstEnableBlur?.Invoke();
             //刷新排放位置
             _childhwnd = HandleHelper.GetVisualHandle(Child);
             SetTopMostParent(true);
-            if (_holder != null && _holder.IsVisible) {
+            if (_holder != null && _holder.IsVisible && Message) {
                 _holder.Activate();
             }
+        }
+
+        /// <summary>
+        /// 设置毛玻璃
+        /// </summary>
+        private void SetBlur(bool enable) {
+            if (Child is null) {
+                if (enable)
+                    _firstEnableBlur = FirstEnableBlur;
+                return;
+            }
+            //是否启用Aero玻璃效果
+            if (enable)
+                BlurEffect.SetBlur(HandleHelper.GetVisualHandle(Child), DllImportMethods.AccentState.ACCENT_ENABLE_BLURBEHIND);
+            else
+                BlurEffect.SetBlur(HandleHelper.GetVisualHandle(Child), DllImportMethods.AccentState.ACCENT_DISABLED);
+        }
+
+        /// <summary>
+        /// 初始化开启Blur
+        /// </summary>
+        private void FirstEnableBlur() {
+            BlurEffect.SetBlur(HandleHelper.GetVisualHandle(Child), DllImportMethods.AccentState.ACCENT_ENABLE_BLURBEHIND);
+            _firstEnableBlur = null;
         }
 
         /// <summary>
@@ -278,9 +305,9 @@ namespace YControls.FlowControls {
         /// </summary>
         private void AddAttachWindowHook() {
             _holder.Activated += YT_PopupBase_Activated;
-            _holder.Deactivated += YT_PopupBase_Deactivated; ;
+            _holder.Deactivated += YT_PopupBase_Deactivated;
             _holder.LocationChanged += (s, e) => UpdateLocation();
-            _holder.SizeChanged += YT_PopupBase_SizeChanged; ;
+            _holder.SizeChanged += YT_PopupBase_SizeChanged;
             _holder.IsVisibleChanged += _holder_IsVisibleChanged;
             PlacementTarget.IsVisibleChanged += PlacementTarget_IsVisibleChanged;
         }
@@ -290,21 +317,26 @@ namespace YControls.FlowControls {
         /// </summary>
         private void RemoveAttachWindowHook() {
             _holder.Activated -= YT_PopupBase_Activated;
-            _holder.Deactivated -= YT_PopupBase_Deactivated; ;
+            _holder.Deactivated -= YT_PopupBase_Deactivated;
             _holder.LocationChanged -= (s, e) => UpdateLocation();
-            _holder.SizeChanged -= YT_PopupBase_SizeChanged; ;
+            _holder.SizeChanged -= YT_PopupBase_SizeChanged;
             _holder.IsVisibleChanged -= _holder_IsVisibleChanged;
             PlacementTarget.IsVisibleChanged -= PlacementTarget_IsVisibleChanged;
         }
 
         private void YT_PopupBase_Deactivated(object sender, EventArgs e) {
             if (_topmostparent) {
+                if (_passiveActive) {
+                    _passiveActive = false;
+                    return;
+                }
                 SetTopMostParent(false);
             }
         }
 
         private void YT_PopupBase_Activated(object sender, EventArgs e) {
             if (!_topmostparent && !TopMost) {
+                _passiveActive = true;
                 SetTopMostParent(true);
             }
         }
@@ -314,6 +346,7 @@ namespace YControls.FlowControls {
         /// </summary>
         private void SetTopMostParent(bool topmost) {
             if (DllImportMethods.GetWindowRect(_childhwnd, out DllImportMethods.RECT rect)) {
+                _topmostparent = topmost;
                 if (topmost) {
                     DllImportMethods.SetWindowPos(_childhwnd, -1, rect.Left, rect.Top, (int)Width, (int)Height, 0);
                 }
@@ -323,7 +356,6 @@ namespace YControls.FlowControls {
                     DllImportMethods.SetWindowPos(_childhwnd, -2, rect.Left, rect.Top, (int)Width, (int)Height, 0);
                 }
             }
-            _topmostparent = topmost;
         }
 
         /// <summary>
@@ -385,14 +417,10 @@ namespace YControls.FlowControls {
                     Child.Measure(infinity);
                 finalsize.Width = Child.DesiredSize.Width;
                 finalsize.Height = Child.DesiredSize.Height;
-                if (Child.DesiredSize.Width == 0) {
-                    if (!IsMeasureValid)
-                        Measure(infinity);
+                if (Child.DesiredSize.Width == 0 || !Width.Equals(double.NaN)) {
                     finalsize.Width = Width;
                 }
-                if (Child.DesiredSize.Height == 0) {
-                    if (!IsMeasureValid)
-                        Measure(infinity);
+                if (Child.DesiredSize.Height == 0 || !Height.Equals(double.NaN)) {
                     finalsize.Height = Height;
                 }
                 ArrangePopup(finalsize);
@@ -405,6 +433,7 @@ namespace YControls.FlowControls {
         /// </summary>
         private void ArrangePopup(Size contentsize) {
             if (Placement == PlacementMode.AbsolutePoint) {
+                //使自带的参数无效
                 HorizontalOffset = 0;
                 VerticalOffset = 0;
                 PlacementRectangle = new Rect(SystemParameters.WorkArea.Width - contentsize.Width - RelativeRect.X,
@@ -412,19 +441,37 @@ namespace YControls.FlowControls {
             }
             else if (Placement == PlacementMode.RelativePoint) {
                 if (PlacementTarget != null) {
+                    double x = 0, y = 0;
                     switch (RelativeMode) {
                         case PopupRelativeMode.LeftTop:
                             PlacementRectangle = new Rect(RelativeRectToTarget.X, RelativeRectToTarget.Y, 0, 0);
                             break;
                         case PopupRelativeMode.LeftBottom:
-                            PlacementRectangle = new Rect(RelativeRectToTarget.X, PlacementTarget.RenderSize.Height - contentsize.Height - RelativeRectToTarget.Y, 0, 0);
+                            y = PlacementTarget.RenderSize.Height - contentsize.Height;
+                            PlacementRectangle = new Rect(RelativeRectToTarget.X, y - RelativeRectToTarget.Y, 0, 0);
                             break;
                         case PopupRelativeMode.RightTop:
-                            PlacementRectangle = new Rect(PlacementTarget.RenderSize.Width - contentsize.Width - RelativeRectToTarget.X, RelativeRectToTarget.Y, 0, 0);
+                            x = PlacementTarget.RenderSize.Width - contentsize.Width;
+                            PlacementRectangle = new Rect(x - RelativeRectToTarget.X, RelativeRectToTarget.Y, 0, 0);
                             break;
                         case PopupRelativeMode.RightBottom:
-                            PlacementRectangle = new Rect(PlacementTarget.RenderSize.Width - contentsize.Width - RelativeRectToTarget.X,
-                                PlacementTarget.RenderSize.Height - contentsize.Height - RelativeRectToTarget.Y, 0, 0);
+                            x = PlacementTarget.RenderSize.Width - contentsize.Width;
+                            y = PlacementTarget.RenderSize.Height - contentsize.Height;
+                            PlacementRectangle = new Rect(x - RelativeRectToTarget.X, y - RelativeRectToTarget.Y, 0, 0);
+                            break;
+                        case PopupRelativeMode.CenterTarget:
+                            x = (PlacementTarget.RenderSize.Width - contentsize.Width) / 2;
+                            y = (PlacementTarget.RenderSize.Height - contentsize.Height) / 2;
+                            PlacementRectangle = new Rect(x + RelativeRectToTarget.X, y + RelativeRectToTarget.Y, 0, 0);
+                            break;
+                        case PopupRelativeMode.TopTarget:
+                            x = (PlacementTarget.RenderSize.Width - contentsize.Width) / 2;
+                            PlacementRectangle = new Rect(x + RelativeRectToTarget.X, RelativeRectToTarget.Y, 0, 0);
+                            break;
+                        case PopupRelativeMode.BottomTarget:
+                            x = (PlacementTarget.RenderSize.Width - contentsize.Width) / 2;
+                            y = PlacementTarget.RenderSize.Height - contentsize.Height;
+                            PlacementRectangle = new Rect(x + RelativeRectToTarget.X, y + RelativeRectToTarget.Y, 0, 0);
                             break;
                     }
                 }

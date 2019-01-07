@@ -25,6 +25,18 @@ namespace YControls.FlowControls {
         /// 原点在目标右下角
         /// </summary>
         RightBottom,
+        /// <summary>
+        /// 放置在目标的居中位置
+        /// </summary>
+        CenterTarget,
+        /// <summary>
+        /// 放置在目标的下方居中
+        /// </summary>
+        BottomTarget,
+        /// <summary>
+        /// 放置在目标的上方居中
+        /// </summary>
+        TopTarget,
     }
 
 }

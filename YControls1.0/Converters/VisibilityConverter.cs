@@ -25,8 +25,15 @@ namespace YControls.Converters {
             else if (value is bool) {
                 if (parameter is null)
                     return (bool)value ? Visibility.Visible : Visibility.Collapsed;
+                else if (parameter is string para) {
+                    switch (para) {
+                        case "YH":
+                            return (bool)value ? Visibility.Visible : Visibility.Hidden;
+                        default: return (bool)value ? Visibility.Collapsed : Visibility.Visible;
+                    }
+                }
                 else
-                    return (bool)value ? Visibility.Collapsed : Visibility.Visible;
+                    return Visibility.Visible;
             }
             else if (value is Enum) {
                 return value.ToString().Equals(parameter.ToString()) ? Visibility.Visible : Visibility.Collapsed;

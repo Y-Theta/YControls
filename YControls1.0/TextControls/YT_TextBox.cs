@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace YControls.TextControls {
     /// <summary>
@@ -33,6 +34,17 @@ namespace YControls.TextControls {
         public static readonly DependencyProperty PlaceHolderTextProperty =
             DependencyProperty.Register("PlaceHolderText", typeof(string),
                 typeof(YT_TextBox), new FrameworkPropertyMetadata("this is a place_holder text", FrameworkPropertyMetadataOptions.Inherits));
+
+        /// <summary>
+        /// 占位文本的颜色
+        /// </summary>
+        public Brush PlaceHolderTextForeground {
+            get { return (Brush)GetValue(PlaceHolderTextForegroundProperty); }
+            set { SetValue(PlaceHolderTextForegroundProperty, value); }
+        }
+        public static readonly DependencyProperty PlaceHolderTextForegroundProperty =
+            DependencyProperty.Register("PlaceHolderTextForeground", typeof(Brush),
+                typeof(YT_TextBox), new FrameworkPropertyMetadata(Brushes.White, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// 文字相对于控件的布局
@@ -123,9 +135,6 @@ namespace YControls.TextControls {
         #endregion
 
         #region Constructors
-        public YT_TextBox() {
-        }
-
         static YT_TextBox() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(YT_TextBox), new FrameworkPropertyMetadata(typeof(YT_TextBox), FrameworkPropertyMetadataOptions.Inherits));
         }
