@@ -906,7 +906,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="windowbase:YT_Window">
                     <Border x:Name="rborder"
+                            BorderBrush="{TemplateBinding BorderBrush}"
                             Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
                             Margin="{TemplateBinding Margin}">
                         <Grid x:Name="rgrid"
                               Margin="{TemplateBinding Padding}"
@@ -927,8 +929,8 @@
                             <windowbase:YT_SizeBorder x:Name="YT_SizeBorder"
                                                       Grid.Row="0"
                                                       Grid.RowSpan="2"
-                                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                                      BorderThickness="{TemplateBinding BorderThickness}" />
+                                                      BorderBrush="Transparent"
+                                                      BorderThickness="{TemplateBinding SizeBorderThickness}" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -946,7 +948,7 @@
                             <Setter TargetName="rborder"
                                     Property="Background"
                                     Value="{Binding AeroModeBackground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter TargetName="YT_SizeBorder"
+                            <Setter TargetName="rborder"
                                     Property="BorderBrush"
                                     Value="{Binding AeroModeBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>

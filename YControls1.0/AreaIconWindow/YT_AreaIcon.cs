@@ -39,6 +39,11 @@ namespace YControls.AreaIconWindow {
             set => _flowicon.Text = value;
         }
 
+        /// <summary>
+        /// 托盘图标的裁剪矩形
+        /// </summary>
+        private Rectangle _flowiconloc;
+
         #region AttachedWindow
         /// <summary>
         /// 与图标关联的窗体
@@ -102,7 +107,17 @@ namespace YControls.AreaIconWindow {
         }
         public static readonly DependencyProperty DContextmenuProperty =
             DependencyProperty.Register("DContextmenu", typeof(ContextMenu),
-                typeof(YT_AreaIcon), new PropertyMetadata(null));
+                typeof(YT_AreaIcon), new PropertyMetadata(null, new PropertyChangedCallback(ContextMenuChanged)));
+        private static void ContextMenuChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            YT_AreaIcon aic = (YT_AreaIcon)d;
+            if (e.NewValue != null && e.NewValue is ContextMenu menu) {
+                if (menu.Placement != PlacementMode.Mouse && menu.Placement != PlacementMode.MousePoint) {
+                    aic._flowiconloc = AreaIconTool.GetIconRect(aic._flowicon);
+                    menu.HorizontalOffset = aic._flowiconloc.X;
+                    menu.VerticalOffset = aic._flowiconloc.Y ;
+                }
+            }
+        }
         #endregion
 
         /// <summary>
@@ -132,6 +147,24 @@ namespace YControls.AreaIconWindow {
         #endregion
 
         #region Method
+        /// <summary>
+        /// 获取图标的裁剪矩形
+        /// </summary>
+        public Rectangle GetIconLoc() {
+            return AreaIconTool.GetIconRect(_flowicon);
+        }
+
+        private void TestLocation() {
+            if (DContextmenu.Placement != PlacementMode.Mouse && DContextmenu.Placement != PlacementMode.MousePoint) {
+                Rectangle pos = AreaIconTool.GetIconRect(_flowicon);
+                if (!pos.Equals(_flowiconloc)) {
+                    _flowiconloc = pos;
+                    DContextmenu.HorizontalOffset = _flowiconloc.X;
+                    DContextmenu.VerticalOffset = _flowiconloc.Y;
+                }
+            }
+        }
+
         protected virtual void _flowicon_MouseClick(object sender, MouseEventArgs e) {
             switch (e.Button) {
                 case MouseButtons.Right:
@@ -139,6 +172,7 @@ namespace YControls.AreaIconWindow {
                         return;
                     if (DContextmenu.IsOpen)
                         return;
+                    TestLocation();
                     DContextmenu.IsOpen = true;
                     break;
                 case MouseButtons.Left:

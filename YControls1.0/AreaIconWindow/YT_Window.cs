@@ -20,7 +20,7 @@ namespace YControls.AreaIconWindow {
         /// <summary>
         /// 与窗体关联的标题栏
         /// </summary>
-        protected YT_TitleBar _titlebar { get; set; }
+        protected YT_TitleBar _titlebar;
 
         /// <summary>
         /// 窗口所拥有的托盘图标
@@ -64,6 +64,17 @@ namespace YControls.AreaIconWindow {
                 typeof(YT_Window), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
+        /// 可拖拽缩放边框的宽度
+        /// </summary>
+        public Thickness SizeBorderThickness {
+            get { return (Thickness)GetValue(SizeBorderThicknessProperty); }
+            set { SetValue(SizeBorderThicknessProperty, value); }
+        }
+        public static readonly DependencyProperty SizeBorderThicknessProperty =
+            DependencyProperty.Register("SizeBorderThickness", typeof(Thickness), 
+                typeof(YT_Window), new FrameworkPropertyMetadata(new Thickness(4), FrameworkPropertyMetadataOptions.Inherits));
+
+        /// <summary>
         /// 是否将窗口内容扩充至标题栏
         /// </summary>
         public bool ExtendToTitleBar {
@@ -96,6 +107,9 @@ namespace YControls.AreaIconWindow {
             DependencyProperty.Register("TitleBarMode", typeof(TitleBarMode),
                 typeof(YT_Window), new FrameworkPropertyMetadata(TitleBarMode.Normal, FrameworkPropertyMetadataOptions.Inherits));
 
+        /// <summary>
+        /// 标题栏高度 默认24
+        /// </summary>
         public double TitleHeight {
             get { return (double)GetValue(TitleHeightProperty); }
             set { SetValue(TitleHeightProperty, value); }
@@ -104,6 +118,9 @@ namespace YControls.AreaIconWindow {
             DependencyProperty.Register("TitleHeight", typeof(double),
                 typeof(YT_Window), new FrameworkPropertyMetadata(24.0, FrameworkPropertyMetadataOptions.Inherits));
 
+        /// <summary>
+        /// 拖拽模式 默认只能通过标题栏拖动窗口
+        /// </summary>
         public DragMode DragingMode {
             get { return (DragMode)GetValue(DragingModeProperty); }
             set { SetValue(DragingModeProperty, value); }
