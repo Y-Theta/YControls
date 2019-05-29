@@ -1595,7 +1595,13 @@
                                               Interval="{StaticResource DefaultScrollbarInterval}" />
                             </Track.DecreaseRepeatButton>
                             <Track.Thumb>
-                                <slide:YT_Thumb Style="{TemplateBinding ThumbVertival}" />
+                                <slide:YT_Thumb Style="{TemplateBinding ThumbVertival}"
+                                                IconBgNormal="{TemplateBinding ThumbStroke}"
+                                                IconFgNormal="{TemplateBinding ThumbFill}"
+                                                IconBgOver="{TemplateBinding ThumbStroke_O}"
+                                                IconFgOver="{TemplateBinding ThumbFill_O}"
+                                                IconBgPressed="{TemplateBinding ThumbStroke_P}"
+                                                IconFgPressed="{TemplateBinding ThumbFill_P}" />
                             </Track.Thumb>
                             <Track.IncreaseRepeatButton>
                                 <RepeatButton x:Name="VeticalLargeIncrease"
@@ -1638,7 +1644,13 @@
                                                       Interval="{StaticResource DefaultScrollbarInterval}" />
                                     </Track.DecreaseRepeatButton>
                                     <Track.Thumb>
-                                        <slide:YT_Thumb Style="{TemplateBinding ThumbHorizontal}" />
+                                        <slide:YT_Thumb Style="{TemplateBinding ThumbHorizontal}"
+                                                        IconBgNormal="{TemplateBinding ThumbStroke}"
+                                                        IconFgNormal="{TemplateBinding ThumbFill}"
+                                                        IconBgOver="{TemplateBinding ThumbStroke_O}"
+                                                        IconFgOver="{TemplateBinding ThumbFill_O}"
+                                                        IconBgPressed="{TemplateBinding ThumbStroke_P}"
+                                                        IconFgPressed="{TemplateBinding ThumbFill_P}" />
                                     </Track.Thumb>
                                     <Track.IncreaseRepeatButton>
                                         <RepeatButton x:Name="HorizontalLargeIncrease"
@@ -1710,6 +1722,13 @@
                                                     Maximum="{TemplateBinding ScrollableHeight}"
                                                     Minimum="0"
                                                     Orientation="Vertical"
+                                                    ThumbStroke="{TemplateBinding ThumbStroke}"
+                                                    ThumbFill="{TemplateBinding ThumbFill}"
+                                                    ThumbStroke_O="{TemplateBinding ThumbStroke_O}"
+                                                    ThumbFill_O="{TemplateBinding ThumbFill_O}"
+                                                    ThumbStroke_P="{TemplateBinding ThumbStroke_P}"
+                                                    ThumbFill_P="{TemplateBinding ThumbFill_P}"
+                                                    ThumbVertival="{TemplateBinding ThumbVertical}"
                                                     Style="{TemplateBinding VerticalScrollBarStyle}"
                                                     ViewportSize="{TemplateBinding ViewportHeight}"
                                                     Value="{TemplateBinding VerticalOffset}"
@@ -1730,6 +1749,13 @@
                                                     Maximum="{TemplateBinding ScrollableWidth}"
                                                     Minimum="0"
                                                     Orientation="Horizontal"
+                                                    ThumbStroke="{TemplateBinding ThumbStroke}"
+                                                    ThumbFill="{TemplateBinding ThumbFill}"
+                                                    ThumbStroke_O="{TemplateBinding ThumbStroke_O}"
+                                                    ThumbFill_O="{TemplateBinding ThumbFill_O}"
+                                                    ThumbStroke_P="{TemplateBinding ThumbStroke_P}"
+                                                    ThumbFill_P="{TemplateBinding ThumbFill_P}"
+                                                    ThumbHorizontal="{TemplateBinding ThumbHorizontal}"
                                                     Style="{TemplateBinding HorizontalScrollBarStyle}"
                                                     ViewportSize="{TemplateBinding ViewportWidth}"
                                                     Value="{TemplateBinding HorizontalOffset}"

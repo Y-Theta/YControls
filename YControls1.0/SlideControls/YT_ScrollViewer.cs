@@ -182,6 +182,82 @@ namespace YControls.SlideControls {
         public static readonly DependencyProperty HorizontalScrollBarStyleProperty =
             DependencyProperty.Register("HorizontalScrollBarStyle", typeof(Style),
                 typeof(YT_ScrollViewer), new PropertyMetadata(null));
+
+        /// <summary>
+        /// 暴露出竖直滚动条滑块的样式
+        /// </summary>
+        public Style ThumbVertical {
+            get { return (Style)GetValue(ThumbVerticalProperty); }
+            set { SetValue(ThumbVerticalProperty, value); }
+        }
+        public static readonly DependencyProperty ThumbVerticalProperty =
+            DependencyProperty.Register("ThumbVertical", typeof(Style),
+                typeof(YT_ScrollViewer), new PropertyMetadata(null));
+
+        /// <summary>
+        /// 暴露出水平滚动条滑块的样式
+        /// </summary>
+        public Style ThumbHorizontal {
+            get { return (Style)GetValue(ThumbHorizontalProperty); }
+            set { SetValue(ThumbHorizontalProperty, value); }
+        }
+        public static readonly DependencyProperty ThumbHorizontalProperty =
+            DependencyProperty.Register("ThumbHorizontal", typeof(Style),
+                typeof(YT_ScrollViewer), new PropertyMetadata(null));
+
+        /// <summary>
+        /// 滑块颜色控制
+        /// </summary>
+        #region ThumbColorControl
+        public Brush ThumbFill {
+            get { return (Brush)GetValue(ThumbFillProperty); }
+            set { SetValue(ThumbFillProperty, value); }
+        }
+        public static readonly DependencyProperty ThumbFillProperty =
+            DependencyProperty.Register("ThumbFill", typeof(Brush),
+                typeof(YT_ScrollViewer), new PropertyMetadata(null));
+
+        public Brush ThumbStroke {
+            get { return (Brush)GetValue(ThumbStrokeProperty); }
+            set { SetValue(ThumbStrokeProperty, value); }
+        }
+        public static readonly DependencyProperty ThumbStrokeProperty =
+            DependencyProperty.Register("ThumbStroke", typeof(Brush),
+                typeof(YT_ScrollViewer), new PropertyMetadata(null));
+
+        public Brush ThumbFill_O {
+            get { return (Brush)GetValue(ThumbFill_OProperty); }
+            set { SetValue(ThumbFill_OProperty, value); }
+        }
+        public static readonly DependencyProperty ThumbFill_OProperty =
+            DependencyProperty.Register("ThumbFill_O", typeof(Brush),
+                typeof(YT_ScrollViewer), new PropertyMetadata(null));
+
+        public Brush ThumbStroke_O {
+            get { return (Brush)GetValue(ThumbStroke_OProperty); }
+            set { SetValue(ThumbStroke_OProperty, value); }
+        }
+        public static readonly DependencyProperty ThumbStroke_OProperty =
+            DependencyProperty.Register("ThumbStroke_O", typeof(Brush),
+                typeof(YT_ScrollViewer), new PropertyMetadata(null));
+
+        public Brush ThumbFill_P {
+            get { return (Brush)GetValue(ThumbFill_PProperty); }
+            set { SetValue(ThumbFill_PProperty, value); }
+        }
+        public static readonly DependencyProperty ThumbFill_PProperty =
+            DependencyProperty.Register("ThumbFill_P", typeof(Brush),
+                typeof(YT_ScrollViewer), new PropertyMetadata(null));
+
+        public Brush ThumbStroke_P {
+            get { return (Brush)GetValue(ThumbStroke_PProperty); }
+            set { SetValue(ThumbStroke_PProperty, value); }
+        }
+        public static readonly DependencyProperty ThumbStroke_PProperty =
+            DependencyProperty.Register("ThumbStroke_P", typeof(Brush),
+                typeof(YT_ScrollViewer), new PropertyMetadata(null));
+        #endregion
+
         #endregion
 
         #region Methods
