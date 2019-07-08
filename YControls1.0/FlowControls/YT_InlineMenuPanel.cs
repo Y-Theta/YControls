@@ -13,7 +13,6 @@ namespace YControls.FlowControls {
     /// <summary>
     /// 在视觉树中的菜单控件
     /// </summary>
-    [TemplatePart(Name = "PART_MaskTranslate", Type = typeof(TranslateTransform))]
     public class YT_InlineMenuPanel : ContentControl {
         #region Properties
 

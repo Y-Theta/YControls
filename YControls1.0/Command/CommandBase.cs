@@ -8,13 +8,13 @@ namespace YControls.Command {
 
         private event EnableEventHandler _enable;
         public event EnableEventHandler Enable {
-            add => _enable = value;
+            add => _enable += value;
             remove => _enable -= value;
         }
 
         private event CommandEventHandler _execution;
         public event CommandEventHandler Execution {
-            add => _execution = value;
+            add => _execution += value;
             remove => _execution -= value;
         }
         #endregion
