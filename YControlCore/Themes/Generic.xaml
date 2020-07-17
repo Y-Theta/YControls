@@ -1161,6 +1161,10 @@
         </Setter>
     </Style>
 
+    <Style TargetType="winbase:Y_Dialog">
+        
+    </Style>
+
     <!--#endregion-->
 
 
