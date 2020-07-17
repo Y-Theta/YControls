@@ -1,16 +1,23 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.Remoting.Metadata;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using YControls.FlowControls;
+using YControls.IFontIcon;
+
+using Brush = System.Windows.Media.Brush;
+using Color = System.Windows.Media.Color;
+using FontFamily = System.Windows.Media.FontFamily;
 
 namespace YControls.FontIconButtons {
     /// <summary>
     /// 使用字体图标的按钮
     /// </summary>
     public class FIconButton : Button, IFontIconButton {
-
+        
         #region Properties
         protected virtual bool _initpopupmenu { get; set; }
 
@@ -103,7 +110,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty IconFgDisabledProperty =
             DependencyProperty.Register("IconFgDisabled", typeof(Brush),
-                typeof(FIconToggleButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 120, 120, 120)),
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 120, 120, 120)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush IconBgNormal {
@@ -263,7 +270,7 @@ namespace YControls.FontIconButtons {
         }
         public static readonly DependencyProperty LabelFgDisabledProperty =
             DependencyProperty.Register("LabelFgDisabled", typeof(Brush),
-                typeof(FIconToggleButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 120, 120, 120)),
+                typeof(FIconButton), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 120, 120, 120)),
                     FrameworkPropertyMetadataOptions.Inherits));
 
         public Brush LabelBgNormal {
@@ -337,6 +344,7 @@ namespace YControls.FontIconButtons {
             get { return (YT_PopupBase)GetValue(PopupMenuProperty); }
             set { SetValue(PopupMenuProperty, value); }
         }
+
         public static readonly DependencyProperty PopupMenuProperty =
             DependencyProperty.Register("PopupMenu", typeof(YT_PopupBase),
                 typeof(FIconButton), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, OnPopupMenuChnaged));

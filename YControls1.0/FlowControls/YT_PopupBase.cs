@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -309,6 +310,7 @@ namespace YControls.FlowControls {
             _holder.LocationChanged += (s, e) => UpdateLocation();
             _holder.SizeChanged += YT_PopupBase_SizeChanged;
             _holder.IsVisibleChanged += _holder_IsVisibleChanged;
+            ((FrameworkElement)Child).SizeChanged += YT_PopupBase_SizeChanged;
             PlacementTarget.IsVisibleChanged += PlacementTarget_IsVisibleChanged;
         }
 
@@ -321,6 +323,7 @@ namespace YControls.FlowControls {
             _holder.LocationChanged -= (s, e) => UpdateLocation();
             _holder.SizeChanged -= YT_PopupBase_SizeChanged;
             _holder.IsVisibleChanged -= _holder_IsVisibleChanged;
+            ((FrameworkElement)Child).SizeChanged -= YT_PopupBase_SizeChanged;
             PlacementTarget.IsVisibleChanged -= PlacementTarget_IsVisibleChanged;
         }
 
@@ -384,7 +387,9 @@ namespace YControls.FlowControls {
         }
 
         /// <summary>
-        /// 在目标窗体大小变化时重新计算位置并刷新
+        /// <para>在以下因素大小变化时重新计算位置并刷新</para>
+        /// <para>目标窗体 <see cref="Popup.PlacementTarget"/></para>
+        /// <para>内容控件 <see cref="Popup.Child"/></para>
         /// </summary>
         private void YT_PopupBase_SizeChanged(object sender, SizeChangedEventArgs e) {
             _update = true;

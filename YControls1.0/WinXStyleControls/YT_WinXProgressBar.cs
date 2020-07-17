@@ -27,23 +27,23 @@ namespace YControls.WinXStyleControls {
 
         #region AnimationAbout
         private SplineDoubleKeyFrame _e1frame1;
-        private EasingDoubleKeyFrame _e1frame2;
+        private DiscreteDoubleKeyFrame _e1frame2;
         private SplineDoubleKeyFrame _e1frame3;
 
         private SplineDoubleKeyFrame _e2frame1;
-        private EasingDoubleKeyFrame _e2frame2;
+        private DiscreteDoubleKeyFrame _e2frame2;
         private SplineDoubleKeyFrame _e2frame3;
 
         private SplineDoubleKeyFrame _e3frame1;
-        private EasingDoubleKeyFrame _e3frame2;
+        private DiscreteDoubleKeyFrame _e3frame2;
         private SplineDoubleKeyFrame _e3frame3;
 
         private SplineDoubleKeyFrame _e4frame1;
-        private EasingDoubleKeyFrame _e4frame2;
+        private DiscreteDoubleKeyFrame _e4frame2;
         private SplineDoubleKeyFrame _e4frame3;
 
         private SplineDoubleKeyFrame _e5frame1;
-        private EasingDoubleKeyFrame _e5frame2;
+        private DiscreteDoubleKeyFrame _e5frame2;
         private SplineDoubleKeyFrame _e5frame3;
 
         private DoubleAnimation _panelmove;
@@ -52,6 +52,7 @@ namespace YControls.WinXStyleControls {
 
         private double _endPosition;
         #endregion  
+
         /// <summary>
         /// 百分比路径
         /// </summary>
@@ -259,23 +260,23 @@ namespace YControls.WinXStyleControls {
                 _backPanel = GetTemplateChild("BackPanel") as Rectangle;
 
                 _e1frame1 = GetTemplateChild("E1Frame1") as SplineDoubleKeyFrame;
-                _e1frame2 = GetTemplateChild("E1Frame2") as EasingDoubleKeyFrame;
+                _e1frame2 = GetTemplateChild("E1Frame2") as DiscreteDoubleKeyFrame;
                 _e1frame3 = GetTemplateChild("E1Frame3") as SplineDoubleKeyFrame;
 
                 _e2frame1 = GetTemplateChild("E2Frame1") as SplineDoubleKeyFrame;
-                _e2frame2 = GetTemplateChild("E2Frame2") as EasingDoubleKeyFrame;
+                _e2frame2 = GetTemplateChild("E2Frame2") as DiscreteDoubleKeyFrame;
                 _e2frame3 = GetTemplateChild("E2Frame3") as SplineDoubleKeyFrame;
 
                 _e3frame1 = GetTemplateChild("E3Frame1") as SplineDoubleKeyFrame;
-                _e3frame2 = GetTemplateChild("E3Frame2") as EasingDoubleKeyFrame;
+                _e3frame2 = GetTemplateChild("E3Frame2") as DiscreteDoubleKeyFrame;
                 _e3frame3 = GetTemplateChild("E3Frame3") as SplineDoubleKeyFrame;
 
                 _e4frame1 = GetTemplateChild("E4Frame1") as SplineDoubleKeyFrame;
-                _e4frame2 = GetTemplateChild("E4Frame2") as EasingDoubleKeyFrame;
+                _e4frame2 = GetTemplateChild("E4Frame2") as DiscreteDoubleKeyFrame;
                 _e4frame3 = GetTemplateChild("E4Frame3") as SplineDoubleKeyFrame;
 
                 _e5frame1 = GetTemplateChild("E5Frame1") as SplineDoubleKeyFrame;
-                _e5frame2 = GetTemplateChild("E5Frame2") as EasingDoubleKeyFrame;
+                _e5frame2 = GetTemplateChild("E5Frame2") as DiscreteDoubleKeyFrame;
                 _e5frame3 = GetTemplateChild("E5Frame3") as SplineDoubleKeyFrame;
 
                 _panelmove = GetTemplateChild("PanelMove") as DoubleAnimation;

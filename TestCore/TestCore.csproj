@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="BitmapPreview.bmp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Res\BMP\BitmapPreview.bmp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\YControlCore\YControlCore.csproj" />
+  </ItemGroup>
+
+</Project>

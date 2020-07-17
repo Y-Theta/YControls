@@ -23,8 +23,8 @@ namespace YControls.SlideControls {
 
         /// <summary>
         /// 判断是否已知进度
-        /// 已知：　数值显示
-        /// 未知：　加载动画
+        /// <para>已知：　数值显示</para>
+        /// <para>未知：　加载动画</para>
         /// </summary>
         public bool IsIndeterminate {
             get { return (bool)GetValue(IsIndeterminateProperty); }

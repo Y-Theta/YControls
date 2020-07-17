@@ -1,0 +1,1170 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:YControlCore"
+                    xmlns:winbase="clr-namespace:YControlCore.WindowBase"
+                    xmlns:content="clr-namespace:YControlCore.ContentControl"
+                    xmlns:base="clr-namespace:YControlCore.ControlBase"
+                    xmlns:primit="clr-namespace:YControlCore.Primitives"
+                    xmlns:range="clr-namespace:YControlCore.RangeControl"
+                    xmlns:conv="clr-namespace:YControlCore.Converter">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/YControlCore;component/Themes/Styles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <!--#region                                                         -->
+    <!--YControls Default Styles-->
+    <!--#endregion-->
+
+
+    <!--#region                                                         ContentControl-->
+
+    <!-- NavigateBar -->
+    <KeySpline x:Key="NavigateBar_Anime_Spline"
+               ControlPoint1="0.215, 0.61"
+               ControlPoint2="0.355, 1" />
+    <KeySpline x:Key="easeOutExpo"
+               ControlPoint1=".3, .9"
+               ControlPoint2=".6, 1" />
+    <KeyTime x:Key="NavigateBar_Anime_Time">0:0:0.32</KeyTime>
+    <KeyTime x:Key="NavigateBar_Anime_Opacity_Time">0:0:0.12</KeyTime>
+    <KeyTime x:Key="NavigateBar_Anime_Opacity_Time_Left">0:0:0.20</KeyTime>
+    <Style TargetType="content:Y_NavigateBar">
+        <Setter Property="Direction"
+                Value="Right" />
+        <Setter Property="HorizontalAlignment"
+                Value="Left" />
+        <Setter Property="VerticalAlignment"
+                Value="Stretch" />
+        <Setter Property="ExpandSize"
+                Value="144" />
+        <Setter Property="CollapsedSize"
+                Value="32" />
+        <Setter Property="IsExpand"
+                Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="content:Y_NavigateBar">
+                    <Border Name="rootborder"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup>
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition To="Expand">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames x:Name="Expand_Trans_A1"
+                                                                           Storyboard.TargetName="MaskTanslate">
+                                                <DiscreteDoubleKeyFrame x:Name="Expand_Trans_F3"
+                                                                        KeyTime="0" />
+                                                <SplineDoubleKeyFrame x:Name="Expand_Trans_F1"
+                                                                      KeyTime="{StaticResource NavigateBar_Anime_Time}"
+                                                                      KeySpline="{StaticResource NavigateBar_Anime_Spline}" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames x:Name="Expand_Trans_A2"
+                                                                           Storyboard.TargetName="MaskSize">
+                                                <DiscreteDoubleKeyFrame x:Name="Expand_Trans_F2"
+                                                                        KeyTime="0" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="MiniContent"
+                                                                           Storyboard.TargetProperty="Opacity">
+                                                <DiscreteDoubleKeyFrame KeyTime="0"
+                                                                        Value="1" />
+                                                <SplineDoubleKeyFrame KeyTime="{StaticResource NavigateBar_Anime_Opacity_Time}"
+                                                                      KeySpline="{StaticResource easeOutExpo}"
+                                                                      Value="0" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Content"
+                                                                           Storyboard.TargetProperty="Opacity">
+                                                <DiscreteDoubleKeyFrame KeyTime="{StaticResource NavigateBar_Anime_Opacity_Time}"
+                                                                        Value="0" />
+                                                <SplineDoubleKeyFrame KeyTime="{StaticResource NavigateBar_Anime_Opacity_Time}"
+                                                                      KeySpline="{StaticResource easeOutExpo}"
+                                                                      Value="1" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MiniContent"
+                                                                           Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="{StaticResource NavigateBar_Anime_Opacity_Time}"
+                                                                        Value="{StaticResource Collapsed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content"
+                                                                           Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                                        Value="{StaticResource Visible}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition To="Collapsed">
+                                        <Storyboard FillBehavior="Stop">
+                                            <DoubleAnimationUsingKeyFrames x:Name="Collapsed_Trans_A1"
+                                                                           Storyboard.TargetName="MaskTanslate">
+                                                <DiscreteDoubleKeyFrame x:Name="Collapsed_Trans_F3"
+                                                                        KeyTime="0" />
+                                                <SplineDoubleKeyFrame x:Name="Collapsed_Trans_F1"
+                                                                      KeyTime="{StaticResource NavigateBar_Anime_Time}"
+                                                                      KeySpline="{StaticResource NavigateBar_Anime_Spline}" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames x:Name="Collapsed_Trans_A2"
+                                                                           Storyboard.TargetName="MaskSize">
+                                                <DiscreteDoubleKeyFrame x:Name="Collapsed_Trans_F2"
+                                                                        KeyTime="{StaticResource NavigateBar_Anime_Time}" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="MiniContent"
+                                                                           Storyboard.TargetProperty="Opacity">
+                                                <DiscreteDoubleKeyFrame KeyTime="{StaticResource NavigateBar_Anime_Opacity_Time_Left}"
+                                                                        Value="0" />
+                                                <SplineDoubleKeyFrame KeyTime="{StaticResource NavigateBar_Anime_Opacity_Time}"
+                                                                      KeySpline="{StaticResource easeOutExpo}"
+                                                                      Value="1" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Content"
+                                                                           Storyboard.TargetProperty="Opacity">
+                                                <DiscreteDoubleKeyFrame KeyTime="0"
+                                                                        Value="1" />
+                                                <SplineDoubleKeyFrame KeyTime="{StaticResource NavigateBar_Anime_Opacity_Time}"
+                                                                      KeySpline="{StaticResource easeOutExpo}"
+                                                                      Value="0" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MiniContent"
+                                                                           Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                                        Value="{StaticResource Visible}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content"
+                                                                           Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="{StaticResource NavigateBar_Anime_Opacity_Time}"
+                                                                        Value="{StaticResource Collapsed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Expand">
+                                    <Storyboard>
+                                        <!--<DoubleAnimationUsingKeyFrames x:Name="Expand_A1"
+                                                                       Storyboard.TargetName="MaskTanslate">
+                                            <DiscreteDoubleKeyFrame x:Name="Expand_F1"
+                                                                    KeyTime="0" />
+                                        </DoubleAnimationUsingKeyFrames>-->
+                                        <DoubleAnimationUsingKeyFrames x:Name="Expand_A2"
+                                                                       Storyboard.TargetName="MaskSize">
+                                            <DiscreteDoubleKeyFrame x:Name="Expand_F2"
+                                                                    KeyTime="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="MiniContent"
+                                                                       Storyboard.TargetProperty="Opacity">
+                                            <DiscreteDoubleKeyFrame KeyTime="0"
+                                                                    Value="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Content"
+                                                                       Storyboard.TargetProperty="Opacity">
+                                            <DiscreteDoubleKeyFrame KeyTime="0"
+                                                                    Value="1" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MiniContent"
+                                                                       Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource Collapsed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content"
+                                                                       Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Collapsed">
+                                    <Storyboard>
+                                        <!--<DoubleAnimationUsingKeyFrames x:Name="Collapsed_A1"
+                                                                       Storyboard.TargetName="MaskTanslate">
+                                            <DiscreteDoubleKeyFrame x:Name="Collapsed_F1"
+                                                                    KeyTime="0" />
+                                        </DoubleAnimationUsingKeyFrames>-->
+                                        <DoubleAnimationUsingKeyFrames x:Name="Collapsed_A2"
+                                                                       Storyboard.TargetName="MaskSize">
+                                            <DiscreteDoubleKeyFrame x:Name="Collapsed_F2"
+                                                                    KeyTime="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="MiniContent"
+                                                                       Storyboard.TargetProperty="Opacity">
+                                            <DiscreteDoubleKeyFrame KeyTime="0"
+                                                                    Value="1" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Content"
+                                                                       Storyboard.TargetProperty="Opacity">
+                                            <DiscreteDoubleKeyFrame KeyTime="0"
+                                                                    Value="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MiniContent"
+                                                                       Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content"
+                                                                       Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource Collapsed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid x:Name="MaskSize"
+                              Background="{TemplateBinding Background}">
+                            <Grid.Clip>
+                                <RectangleGeometry x:Name="ClipMask">
+                                    <RectangleGeometry.Transform>
+                                        <TranslateTransform x:Name="MaskTanslate" />
+                                    </RectangleGeometry.Transform>
+                                </RectangleGeometry>
+                            </Grid.Clip>
+                            <ContentPresenter x:Name="MiniContent"
+                                              Content="{TemplateBinding MiniContent}"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch">
+                            </ContentPresenter>
+                            <ContentPresenter x:Name="Content"
+                                              Content="{TemplateBinding Content}"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              Opacity="0"
+                                              Visibility="Collapsed">
+                            </ContentPresenter>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Direction"
+                     Value="Bottom">
+                <Setter Property="VerticalAlignment"
+                        Value="Top" />
+                <Setter Property="HorizontalAlignment"
+                        Value="Stretch" />
+            </Trigger>
+            <Trigger Property="Direction"
+                     Value="Top">
+                <Setter Property="VerticalAlignment"
+                        Value="Bottom" />
+                <Setter Property="HorizontalAlignment"
+                        Value="Stretch" />
+            </Trigger>
+            <Trigger Property="Direction"
+                     Value="Left">
+                <Setter Property="VerticalAlignment"
+                        Value="Stretch" />
+                <Setter Property="HorizontalAlignment"
+                        Value="Right" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <!-- CollpaseMenu -->
+    <KeySpline x:Key="CollpaseMenu_Anime_Spline"
+               ControlPoint1="0.445,0.05"
+               ControlPoint2="0.55,0.95" />
+    <KeyTime x:Key="CollpaseMenu_Anime_Time">0:0:0.64</KeyTime>
+    <Style TargetType="content:Y_CollapseControl">
+        <Setter Property="BorderBrush"
+                Value="{x:Null}" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="VerticalAlignment"
+                Value="Top" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="Direction"
+                Value="Bottom" />
+        <Setter Property="IsExpand"
+                Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="content:Y_CollapseControl">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            ClipToBounds="True">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup>
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition To="Expand">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames x:Name="Expand_Transition"
+                                                                           Storyboard.TargetName="PART_ContentTranslate"
+                                                                           Storyboard.TargetProperty="Y">
+                                                <SplineDoubleKeyFrame KeyTime="{StaticResource CollpaseMenu_Anime_Time}"
+                                                                      KeySpline="{StaticResource CollpaseMenu_Anime_Spline}"
+                                                                      Value="0" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition To="Collapsed">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames x:Name="Collapsed_Transition"
+                                                                           Storyboard.TargetName="PART_ContentTranslate"
+                                                                           Storyboard.TargetProperty="Y">
+                                                <SplineDoubleKeyFrame x:Name="Collapsed_Transition_F1"
+                                                                      KeyTime="{StaticResource CollpaseMenu_Anime_Time}"
+                                                                      KeySpline="{StaticResource CollpaseMenu_Anime_Spline}" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Expand">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames x:Name="ContentTranslate_Expand"
+                                                                       Storyboard.TargetName="PART_ContentTranslate"
+                                                                       Storyboard.TargetProperty="Y">
+                                            <DiscreteDoubleKeyFrame  x:Name="ContentTranslate_Expand_F1"
+                                                                     KeyTime="0"
+                                                                     Value="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Collapsed">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames x:Name="ContentTranslate_Collapsed"
+                                                                       Storyboard.TargetName="PART_ContentTranslate"
+                                                                       Storyboard.TargetProperty="Y">
+                                            <DiscreteDoubleKeyFrame x:Name="ContentTranslate_Collapsed_F1"
+                                                                    KeyTime="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid MinHeight="{TemplateBinding MinHeight}"
+                              MinWidth="{TemplateBinding MinWidth}">
+                            <ContentPresenter  x:Name="PART_Content"
+                                               Content="{TemplateBinding Content}"
+                                               HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch">
+                                <ContentPresenter.RenderTransform>
+                                    <TranslateTransform x:Name="PART_ContentTranslate" />
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Direction"
+                     Value="Right">
+                <Setter Property="VerticalAlignment"
+                        Value="Stretch" />
+                <Setter Property="HorizontalAlignment"
+                        Value="Left" />
+            </Trigger>
+            <Trigger Property="Direction"
+                     Value="Top">
+                <Setter Property="VerticalAlignment"
+                        Value="Bottom" />
+                <Setter Property="HorizontalAlignment"
+                        Value="Stretch" />
+            </Trigger>
+            <Trigger Property="Direction"
+                     Value="Left">
+                <Setter Property="VerticalAlignment"
+                        Value="Stretch" />
+                <Setter Property="HorizontalAlignment"
+                        Value="Right" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Y_PopupBase -->
+    <Style TargetType="primit:Y_PopupBase">
+        <Setter Property="AllowsTransparency"
+                Value="True" />
+    </Style>
+
+    <!--#endregion-->
+
+
+    <!--#region                                                         Button -->
+
+    <!--FontIconButton-->
+    <Style TargetType="base:FIconButton">
+        <Setter Property="FontFamily"
+                Value="{StaticResource Segoe}" />
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="IconFgNormal"
+                Value="Black" />
+        <Setter Property="IconTextAlignment"
+                Value="Center" />
+        <Setter Property="IconHorizontalAlignment"
+                Value="Center" />
+        <Setter Property="IconVerticalAlignment"
+                Value="Center" />
+        <Setter Property="LabelFontSize"
+                Value="12" />
+        <Setter Property="LabelFgNormal"
+                Value="Black" />
+        <Setter Property="LabelTextAlignment"
+                Value="Center" />
+        <Setter Property="LabelVerticalAlignment"
+                Value="Center" />
+        <Setter Property="LabelHorizontalAlignment"
+                Value="Center" />
+        <Setter Property="Background"
+                Value="#808080" />
+        <Setter Property="VerticalAlignment"
+                Value="Stretch" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="ToolTipStyle"
+                Value="{StaticResource DefaultToolTipStyle}" />
+        <Setter Property="ToolTipTextStyle"
+                Value="{StaticResource DefaultToolTipTextBlockStyle}" />
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip Style="{Binding ToolTipStyle}"
+                         Visibility="{Binding ToolTipString,Converter={StaticResource VisibilityConv}}"
+                         DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                    <Border Margin="8,4">
+                        <TextBlock Style="{Binding ToolTipTextStyle}"
+                                   Text="{Binding ToolTipString}" />
+                    </Border>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="base:FIconButton">
+                    <Border x:Name="rborder"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Margin="{TemplateBinding Margin}"
+                            SnapsToDevicePixels="True">
+                        <Grid x:Name="rgrid"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Margin="{TemplateBinding Padding}"
+                              SnapsToDevicePixels="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid x:Name="B_Icon_layer"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="1"
+                                  Grid.Row="0"
+                                  Grid.RowSpan="3"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Visibility="{TemplateBinding IconVisibility}"
+                                  Background="{TemplateBinding IconBgNormal}">
+                                <TextBlock x:Name="B_Icon"
+                                           SnapsToDevicePixels="True"
+                                           Text="{TemplateBinding Content}"
+                                           FontFamily="{TemplateBinding FontFamily}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           FontWeight="{TemplateBinding FontWeight}"
+                                           Margin="{TemplateBinding IconMargin}"
+                                           TextAlignment="{TemplateBinding IconTextAlignment}"
+                                           HorizontalAlignment="{TemplateBinding IconHorizontalAlignment}"
+                                           VerticalAlignment="{TemplateBinding IconVerticalAlignment}"
+                                           Foreground="{TemplateBinding IconFgNormal}" />
+                            </Grid>
+                            <Grid x:Name="B_Label_layer"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan="2"
+                                  Grid.Row="0"
+                                  Grid.RowSpan="3"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Visibility="{TemplateBinding LabelVisibility}"
+                                  Background="{TemplateBinding LabelBgNormal}">
+                                <TextBlock x:Name="B_Label"
+                                           SnapsToDevicePixels="True"
+                                           Text="{TemplateBinding LabelString}"
+                                           FontFamily="{TemplateBinding LabelFontFamily}"
+                                           FontSize="{TemplateBinding LabelFontSize}"
+                                           FontWeight="{TemplateBinding LabelFontWeight}"
+                                           Margin="{TemplateBinding LabelMargin}"
+                                           TextAlignment="{TemplateBinding LabelTextAlignment}"
+                                           HorizontalAlignment="{TemplateBinding LabelHorizontalAlignment}"
+                                           VerticalAlignment="{TemplateBinding LabelVerticalAlignment}"
+                                           Foreground="{TemplateBinding LabelFgNormal}" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="LabelVisibility"
+                                 Value="Collapsed">
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="1" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="B_Icon"
+                                    Property="Foreground"
+                                    Value="{Binding IconFgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Background"
+                                    Value="{Binding IconBgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label"
+                                    Property="Foreground"
+                                    Value="{Binding LabelFgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Background"
+                                    Value="{Binding LabelBgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="B_Icon"
+                                    Property="Foreground"
+                                    Value="{Binding IconFgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Background"
+                                    Value="{Binding IconBgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label"
+                                    Property="Foreground"
+                                    Value="{Binding LabelFgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Background"
+                                    Value="{Binding LabelBgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="B_Icon"
+                                    Property="Foreground"
+                                    Value="{Binding IconFgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Background"
+                                    Value="{Binding IconBgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label"
+                                    Property="Foreground"
+                                    Value="{Binding LabelFgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Background"
+                                    Value="{Binding LabelBgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <MultiTrigger x:Name="Normal_LabelLeft">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IconLayout"
+                                           Value="LabelLeft" />
+                                <Condition Property="LabelVisibility"
+                                           Value="Visible" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Column"
+                                    Value="2" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="1" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="2" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="3" />
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Normal_IconTop">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IconLayout"
+                                           Value="IconTop" />
+                                <Condition Property="LabelVisibility"
+                                           Value="Visible" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="1" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Row"
+                                    Value="1" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="2" />
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Normal_LabelTop">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IconLayout"
+                                           Value="LabelTop" />
+                                <Condition Property="LabelVisibility"
+                                           Value="Visible" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Row"
+                                    Value="2" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="1" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="2" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--FIconToggleButton-->
+    <Style TargetType="content:FIconToggleButton">
+        <Setter Property="FontFamily"
+                Value="{StaticResource Segoe}" />
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="IconFgNormal"
+                Value="Black" />
+        <Setter Property="IconTextAlignment"
+                Value="Center" />
+        <Setter Property="IconHorizontalAlignment"
+                Value="Center" />
+        <Setter Property="IconVerticalAlignment"
+                Value="Center" />
+        <Setter Property="LabelFontSize"
+                Value="12" />
+        <Setter Property="LabelFgNormal"
+                Value="Black" />
+        <Setter Property="LabelTextAlignment"
+                Value="Center" />
+        <Setter Property="LabelVerticalAlignment"
+                Value="Center" />
+        <Setter Property="LabelHorizontalAlignment"
+                Value="Center" />
+        <Setter Property="Background"
+                Value="#808080" />
+        <Setter Property="VerticalAlignment"
+                Value="Stretch" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="ToolTipStyle"
+                Value="{StaticResource DefaultToolTipStyle}" />
+        <Setter Property="ToolTipTextStyle"
+                Value="{StaticResource DefaultToolTipTextBlockStyle}" />
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip Style="{Binding ToolTipStyle}"
+                         Visibility="{Binding ToolTipString,Converter={StaticResource VisibilityConv}}"
+                         DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                    <Border Margin="8,4">
+                        <TextBlock Style="{Binding ToolTipTextStyle}"
+                                   Text="{Binding ToolTipString}" />
+                    </Border>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="content:FIconToggleButton">
+                    <Border x:Name="rborder"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                        <Grid x:Name="rgrid"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Margin="{TemplateBinding Padding}"
+                              SnapsToDevicePixels="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid x:Name="B_Icon_layer"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="1"
+                                  Grid.Row="0"
+                                  Grid.RowSpan="3"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Visibility="{TemplateBinding IconVisibility}"
+                                  Background="{TemplateBinding IconBgNormal}">
+                                <TextBlock x:Name="B_Icon"
+                                           Text="{TemplateBinding Content}"
+                                           FontFamily="{TemplateBinding FontFamily}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           FontWeight="{TemplateBinding FontWeight}"
+                                           Margin="{TemplateBinding IconMargin}"
+                                           TextAlignment="{TemplateBinding IconTextAlignment}"
+                                           HorizontalAlignment="{TemplateBinding IconHorizontalAlignment}"
+                                           VerticalAlignment="{TemplateBinding IconVerticalAlignment}"
+                                           Foreground="{TemplateBinding IconFgNormal}" />
+                            </Grid>
+                            <Grid x:Name="B_Label_layer"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan="2"
+                                  Grid.Row="0"
+                                  Grid.RowSpan="3"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Visibility="{TemplateBinding LabelVisibility}"
+                                  Background="{TemplateBinding LabelBgNormal}">
+                                <TextBlock x:Name="B_Label"
+                                           Storyboard.Target=""
+                                           Text="{TemplateBinding LabelString}"
+                                           FontFamily="{TemplateBinding LabelFontFamily}"
+                                           FontSize="{TemplateBinding LabelFontSize}"
+                                           FontWeight="{TemplateBinding LabelFontWeight}"
+                                           Margin="{TemplateBinding LabelMargin}"
+                                           TextAlignment="{TemplateBinding LabelTextAlignment}"
+                                           HorizontalAlignment="{TemplateBinding LabelHorizontalAlignment}"
+                                           VerticalAlignment="{TemplateBinding LabelVerticalAlignment}"
+                                           Foreground="{TemplateBinding LabelFgNormal}" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked"
+                                 Value="True">
+                            <Setter TargetName="B_Icon"
+                                    Property="Foreground"
+                                    Value="{Binding IconSelectFgNormal,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Background"
+                                    Value="{Binding IconSelectBgNormal,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label"
+                                    Property="Foreground"
+                                    Value="{Binding LabelSelectFgNormal,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Background"
+                                    Value="{Binding LabelSelectBgNormal,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Icon"
+                                    Property="Text"
+                                    Value="{Binding IconSelect, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="B_Label"
+                                    Property="Text"
+                                    Value="{Binding LabelSelect, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <Trigger Property="LabelVisibility"
+                                 Value="Collapsed">
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="1" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="1" />
+                        </Trigger>
+                        <MultiTrigger x:Name="UnCheck_Over">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconFgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconBgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelFgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelBgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Check_Over">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconSelectFgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconSelectBgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelSelectFgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelSelectBgOver,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="UnCheck_Press">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPressed"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconFgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconBgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelFgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelBgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Check_Press">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPressed"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconSelectFgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconSelectBgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelSelectFgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelSelectBgPressed,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="UnCheck_Disable">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled"
+                                           Value="False" />
+                                <Condition Property="IsChecked"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconFgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconBgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelFgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelBgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Check_Disable">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled"
+                                           Value="False" />
+                                <Condition Property="IsChecked"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="B_Icon"
+                                        Property="Foreground"
+                                        Value="{Binding IconSelectFgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Icon_layer"
+                                        Property="Background"
+                                        Value="{Binding IconSelectBgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label"
+                                        Property="Foreground"
+                                        Value="{Binding LabelSelectFgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter TargetName="B_Label_layer"
+                                        Property="Background"
+                                        Value="{Binding LabelSelectBgDisabled,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Normal_LabelLeft">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IconLayout"
+                                           Value="LabelLeft" />
+                                <Condition Property="LabelVisibility"
+                                           Value="Visible" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Column"
+                                    Value="2" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="1" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="2" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="3" />
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Normal_IconTop">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IconLayout"
+                                           Value="IconTop" />
+                                <Condition Property="LabelVisibility"
+                                           Value="Visible" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="1" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Row"
+                                    Value="1" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="2" />
+                        </MultiTrigger>
+                        <MultiTrigger x:Name="Normal_LabelTop">
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IconLayout"
+                                           Value="LabelTop" />
+                                <Condition Property="LabelVisibility"
+                                           Value="Visible" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.Row"
+                                    Value="2" />
+                            <Setter TargetName="B_Icon_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="1" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.ColumnSpan"
+                                    Value="3" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.Row"
+                                    Value="0" />
+                            <Setter TargetName="B_Label_layer"
+                                    Property="Grid.RowSpan"
+                                    Value="2" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+
+
+    <!--#region                                                         Window-->
+
+    <!--YT_SizeBorder-->
+    <Style TargetType="winbase:Y_Border">
+        <Setter Property="BorderThickness"
+                Value="2" />
+        <Setter Property="BorderBrush"
+                Value="Transparent" />
+    </Style>
+
+    <Style TargetType="winbase:Y_Window">
+        <Setter Property="WindowStyle"
+                Value="None" />
+        <Setter Property="AllowsTransparency"
+                Value="True" />
+        <Setter Property="Width"
+                Value="720" />
+        <Setter Property="Height"
+                Value="480" />
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="Foreground"
+                Value="Black" />
+        <Setter Property="AeroModeBackground"
+                Value="#20000000" />
+        <Setter Property="AeroModeBorderBrush"
+                Value="#20ffffff" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="BorderBrush"
+                Value="Black" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="winbase:Y_Window">
+                    <Border x:Name="rborder"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Margin="{TemplateBinding Margin}">
+                        <Grid x:Name="rgrid"
+                              Margin="{TemplateBinding Padding}"
+                              ClipToBounds="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <AdornerDecorator x:Name="Content"
+                                              Grid.Row="1">
+                                <ContentPresenter Content="{TemplateBinding Content}" />
+                            </AdornerDecorator>
+                            <content:Y_CollapseControl x:Name="PART_TitleBar"
+                                                       Height="{TemplateBinding TitleHeight}"
+                                                       HorizontalAlignment="Stretch"
+                                                       Direction="Bottom"
+                                                       Content="{TemplateBinding TitleArea}" />
+                            <winbase:Y_Border Grid.Row="0"
+                                              Grid.RowSpan="2"
+                                              BorderBrush="Transparent"
+                                              BorderThickness="{TemplateBinding SizeBorderThickness}" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="EnableAeroGlass"
+                                 Value="True">
+                            <Setter TargetName="rborder"
+                                    Property="Background"
+                                    Value="{Binding AeroModeBackground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="rborder"
+                                    Property="BorderBrush"
+                                    Value="{Binding AeroModeBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+
+
+
+
+</ResourceDictionary>

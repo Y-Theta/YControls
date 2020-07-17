@@ -14,6 +14,7 @@ namespace YControls.AreaIconWindow {
     /// <summary>
     /// 将托盘图标包装成xaml的控件
     /// </summary>
+    [ToolboxBitmap(typeof(YT_AreaIcon))]
     public class YT_AreaIcon : Control {
 
         #region Properties
@@ -114,7 +115,7 @@ namespace YControls.AreaIconWindow {
                 if (menu.Placement != PlacementMode.Mouse && menu.Placement != PlacementMode.MousePoint) {
                     aic._flowiconloc = AreaIconTool.GetIconRect(aic._flowicon);
                     menu.HorizontalOffset = aic._flowiconloc.X;
-                    menu.VerticalOffset = aic._flowiconloc.Y ;
+                    menu.VerticalOffset = aic._flowiconloc.Y;
                 }
             }
         }

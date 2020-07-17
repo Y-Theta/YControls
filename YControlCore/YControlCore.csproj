@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <Import Project="./common.props" />
+  
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net45</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'net45'">
+    <Nullable>annotations</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <Reference Include="PresentationCore" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\BMP\1.png" />
+    <None Remove="Resources\BMP\test.bmp" />
+    <None Remove="Resources\BMP\test16.bmp" />
+    <None Remove="Resources\BMP\Y_AreaIcon.bmp" />
+    <None Remove="Resources\segmdl2.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\TTF\segmdl2.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\BMP\" />
+    <Folder Include="WindowsNativeControl\" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Windows.Forms.dll</HintPath>
+    </Reference>
+  </ItemGroup>-->
+
+</Project>

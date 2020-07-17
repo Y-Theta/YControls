@@ -9,6 +9,7 @@ using System.Windows.Media;
 using YControls.WinAPI;
 
 namespace YControls.AreaIconWindow {
+
     public class YT_SizeBorder : Border {
         private int resDirection;
         public int ResDirection {
@@ -19,15 +20,15 @@ namespace YControls.AreaIconWindow {
         #region DirectionDictionary
         private Dictionary<int, Cursor> cursors = new Dictionary<int, Cursor>
         {
-            {4,Cursors.SizeNWSE},//"LeftTop"
-            {8,Cursors.SizeNWSE},//"RightBottom"
-            {3,Cursors.SizeNS },//"Top"
-            {6,Cursors.SizeNS },//"Bottom"
-            {5,Cursors.SizeNESW },//"RightTop"
-            {7,Cursors.SizeNESW },//"LeftBottom"
-            {1,Cursors.SizeWE },//"Left"
-            {2,Cursors.SizeWE }//"Right"
-        };
+                {4,Cursors.SizeNWSE},//"LeftTop"
+                {8,Cursors.SizeNWSE},//"RightBottom"
+                {3,Cursors.SizeNS },//"Top"
+                {6,Cursors.SizeNS },//"Bottom"
+                {5,Cursors.SizeNESW },//"RightTop"
+                {7,Cursors.SizeNESW },//"LeftBottom"
+                {1,Cursors.SizeWE },//"Left"
+                {2,Cursors.SizeWE }//"Right"
+            };
         #endregion
 
         public Window AttachedWindow {
@@ -68,7 +69,7 @@ namespace YControls.AreaIconWindow {
                                 p.X >= Wid - TK && p.Y <= Hig - TK ? 2 :
                                 p.X >= Wid - TK && p.Y >= Hig - TK ? 8 :
                                 p.X <= Wid - TK && p.X >= TK && p.Y <= TK ? 3 :
-                                p.X <= Wid - TK && p.X >= TK && p.Y >= Hig - TK ? 6 :0;
+                                p.X <= Wid - TK && p.X >= TK && p.Y >= Hig - TK ? 6 : 0;
 
                 if (AttachedWindow.WindowState != WindowState.Maximized)
                     Cursor = cursors[ResDirection];

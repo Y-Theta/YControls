@@ -1722,6 +1722,7 @@
                                                     Maximum="{TemplateBinding ScrollableHeight}"
                                                     Minimum="0"
                                                     Orientation="Vertical"
+                                                    Style="{TemplateBinding VerticalScrollBarStyle}"
                                                     ThumbStroke="{TemplateBinding ThumbStroke}"
                                                     ThumbFill="{TemplateBinding ThumbFill}"
                                                     ThumbStroke_O="{TemplateBinding ThumbStroke_O}"
@@ -1729,7 +1730,6 @@
                                                     ThumbStroke_P="{TemplateBinding ThumbStroke_P}"
                                                     ThumbFill_P="{TemplateBinding ThumbFill_P}"
                                                     ThumbVertival="{TemplateBinding ThumbVertical}"
-                                                    Style="{TemplateBinding VerticalScrollBarStyle}"
                                                     ViewportSize="{TemplateBinding ViewportHeight}"
                                                     Value="{TemplateBinding VerticalOffset}"
                                                     Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}">
@@ -1749,6 +1749,7 @@
                                                     Maximum="{TemplateBinding ScrollableWidth}"
                                                     Minimum="0"
                                                     Orientation="Horizontal"
+                                                    Style="{TemplateBinding HorizontalScrollBarStyle}"
                                                     ThumbStroke="{TemplateBinding ThumbStroke}"
                                                     ThumbFill="{TemplateBinding ThumbFill}"
                                                     ThumbStroke_O="{TemplateBinding ThumbStroke_O}"
@@ -1756,7 +1757,6 @@
                                                     ThumbStroke_P="{TemplateBinding ThumbStroke_P}"
                                                     ThumbFill_P="{TemplateBinding ThumbFill_P}"
                                                     ThumbHorizontal="{TemplateBinding ThumbHorizontal}"
-                                                    Style="{TemplateBinding HorizontalScrollBarStyle}"
                                                     ViewportSize="{TemplateBinding ViewportWidth}"
                                                     Value="{TemplateBinding HorizontalOffset}"
                                                     Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}">

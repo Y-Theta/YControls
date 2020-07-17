@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:conv="clr-namespace:YControlCore.Converter">
+
+    <FontFamily x:Key="Segoe">
+        pack://application:,,,/YControlCore;component/Resources/TTF/Segoe.ttf#Segoe
+    </FontFamily>
+
+    <x:Static x:Key="BooleanConv"
+              MemberType="{x:Type conv:BooleanConverter}"
+              Member="Singleton" />
+    <x:Static x:Key="VisibilityConv"
+              MemberType="{x:Type conv:VisibilityConverter}"
+              Member="Singleton" />
+
+    <Visibility x:Key="Collapsed">Collapsed</Visibility>
+    <Visibility x:Key="Visible">Visible</Visibility>
+
+
+</ResourceDictionary>

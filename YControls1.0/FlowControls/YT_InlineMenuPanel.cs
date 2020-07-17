@@ -13,6 +13,7 @@ namespace YControls.FlowControls {
     /// <summary>
     /// 在视觉树中的菜单控件
     /// </summary>
+    [TemplatePart (Name = "PART_MaskTranslate")]
     public class YT_InlineMenuPanel : ContentControl {
         #region Properties
 
@@ -193,8 +194,6 @@ namespace YControls.FlowControls {
         private void _toHide_Completed(object sender, EventArgs e) {
             Visibility = Visibility.Collapsed;
         }
-
-  
 
         public override void OnApplyTemplate() {
             _part_MaskTranslate = GetTemplateChild("PART_MaskTranslate") as TranslateTransform;
