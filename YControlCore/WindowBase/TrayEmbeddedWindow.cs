@@ -26,6 +26,18 @@ namespace YControlCore.WindowBase {
 
     /// <summary>
     /// Class Embedded in Tray (not notification icon and width can be customed)
+    /// used with <see cref="hsystrayembed.dll"/>
+    ///  <para>When you want to free it use follow code ,or it will not exit after you main process dead,and you have to restart explorer to unload the hook</para>
+    ///  <code>
+    ///  use it as
+    ///  <para> private TrayEmbeddedWindow _window </para>
+    ///  <para> _window.Content = "a costumed control"  </para>
+    ///  <para> _window.Show();  </para>
+    ///  free it as
+    ///  <para> _window?.Dispose();</para>
+    ///  <para> _window?.Close();</para>
+    ///  <para> window = null;</para>
+    ///  </code>
     /// </summary>
     public class TrayEmbeddedWindow : Window, IDisposable {
         #region Properties
@@ -184,6 +196,7 @@ namespace YControlCore.WindowBase {
             HwndSource source = (HwndSource)HwndSource.FromVisual((Visual)sender);
 
             _pHandle = source.Handle;
+            //without following code the dll can't set this window topmost 
             _taskbar = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Shell_TrayWnd", null);
             var interop = new WindowInteropHelper(this);
             interop.Owner = _taskbar;

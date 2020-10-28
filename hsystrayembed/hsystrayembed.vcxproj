@@ -83,7 +83,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\Debug\netcoreapp3.1</OutDir>
-    <IncludePath>D:\Program\Visual C++\SourceCode\spdlog-1.x\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Program\Visual C#\C#_TempleteWork\SelfLibraries\YControls1.0\YControls1.0\hsystrayembed\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
