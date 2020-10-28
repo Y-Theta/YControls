@@ -1,57 +1,56 @@
-﻿///------------------------------------------------------------------------------
-/// @ Y_Theta
-///------------------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Interop;
-using System.Threading.Tasks;
-using System.Threading;
-#if NETCOREAPP3_1
-using System.Drawing.Imaging;
-#endif
+﻿namespace YControlCore.Interop {
+    ///-----------------------------------------------------------------------------
+    /// @ Y_Theta
+    /// 
+    /// Codes for Platform-Invoke ,for more infomation https://www.pinvoke.net/
+    /// 
+    /// Managed Type Reference :
+    /// 
+    /// C++                                  C#
+    /// ----------------------------------------------------------------------------    
+    /// void                                 <see cref="System.Void"/>
+    /// bool                                 <see cref="System.Boolean"/>
+    /// signed char                          <see cref="System.SByte"/>
+    /// unsigned char                        <see cref="System.Byte"/>
+    /// wchar_t                              <see cref="System.Char"/>
+    /// short / signed short                 <see cref="System.Int16"/>
+    /// unsigned short                       <see cref="System.UInt16"/>
+    /// int / signed int                  
+    /// long / signed long                   <see cref="System.Int32"/>
+    /// unsigned int                      
+    /// unsigned long                        <see cref="System.UInt32"/>
+    /// __int64                           
+    /// signed __int64                       <see cref="System.Int64"/>
+    /// unsigned __int64                     <see cref="System.UInt64"/>
+    /// float                                <see cref="System.Single"/>
+    /// double / long double                 <see cref="System.Double"/>
+    /// 
+    /// 
+    /// 
+    /// 
+    ///-----------------------------------------------------------------------------
 
-namespace YControlCore.Interop {
+    #region Using
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using System.Windows.Interop;
+    using System.Threading.Tasks;
+    using System.Threading;
+#if NETCOREAPP3_1
+    using System.Drawing.Imaging;
+    using System.Reflection;
+#endif
+    #endregion
+
 
     public class Core {
-
-        #region Const 
-
-        public const uint WM_SYSCOMMAND = 0x0112;
-        public const uint WM_NCLBUTTONDOWN = 0x00A1;
-        public const uint WM_LBUTTONDOWN = 0x0201;
-        public const uint WM_NCPAINT = 0x0085;
-        public const uint WM_NCCALCSIZE = 0x0083;
-        public const uint WM_NCACTIVATE = 0x0086;
-        public const uint WM_PAINT = 0x000F;
-        public const uint WM_USER = 0x0400;
-
-        public const uint SC_MONITORPOWER = 0xF170;
-        public const uint SC_MOVE = 0xF010;
-
-
-        public const uint SWP_NOSIZE = 0x0001;
-        public const uint SWP_NOMOVE = 0x0002;
-        public const uint SWP_NOZORDER = 0x0004;
-        public const uint SWP_NOREDRAW = 0x0008;
-        public const uint SWP_NOACTIVATE = 0x0010;
-        public const uint SWP_FRAMECHANGED = 0x0020; /*; The frame changed: send WM_NCCALCSIZE */
-        public const uint SWP_SHOWWINDOW = 0x0040;
-        public const uint SWP_HIDEWINDOW = 0x0080;
-        public const uint SWP_NOCOPYBITS = 0x0100;
-        public const uint SWP_NOOWNERZORDER = 0x0200;/* Don't do owner Z ordering */
-        public const uint SWP_NOSENDCHANGING = 0x0400;/* Don't send WM_WINDOWPOSCHANGING */
-
-        public const int HTCAPTION = 0x0002;
-        #endregion
-
-
 
         #region Method
 
@@ -61,17 +60,8 @@ namespace YControlCore.Interop {
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowRect(IntPtr hWnd, out _RECT lpRect);
 
-        /// <summary>
-        /// 设置窗口位置
-        /// </summary>
-        [DllImport("user32", EntryPoint = "SetWindowPos")]
-        public static extern int SetWindowPos(IntPtr hWnd, int hwndInsertAfter, int x, int y, int cx, int cy, int wFlags);
-
-        /// <summary>
-        /// 钩子回调
-        /// </summary>
-        public delegate int HookProc(int nCode, Int32 wParam, IntPtr lParam);
-
+        [DllImport("user32.dll")]
+        public static extern bool InvalidateRect(IntPtr hWnd, IntPtr lpRect, bool bErase);
         /// <summary>
         ///     Retrieves a handle to the top-level window whose class name and window name match the specified strings. This
         ///     function does not search child windows. This function does not perform a case-sensitive search. To search child
@@ -115,6 +105,33 @@ namespace YControlCore.Interop {
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr FindWindowEx(IntPtr parentHandle, IntPtr childAfter, string className, string windowTitle);
 
+        [DllImport("User32.dll")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        /// <summary>
+        /// Retrieves a handle to a window that has the specified relationship (Z-Order or owner) to the specified window.
+        /// </summary>
+        /// <remarks>The EnumChildWindows function is more reliable than calling GetWindow in a loop. An application that
+        /// calls GetWindow to perform this task risks being caught in an infinite loop or referencing a handle to a window
+        /// that has been destroyed.</remarks>
+        /// <param name="hWnd">A handle to a window. The window handle retrieved is relative to this window, based on the
+        /// value of the uCmd parameter.</param>
+        /// <param name="uCmd">The relationship between the specified window and the window whose handle is to be
+        /// retrieved.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is a window handle. If no window exists with the specified relationship
+        /// to the specified window, the return value is NULL. To get extended error information, call GetLastError.
+        /// </returns>
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr GetWindow(IntPtr hWnd, GetWindowType uCmd);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Ansi)]
+        public static extern IntPtr GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
+        [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Ansi)]
+        public static extern IntPtr GetParent(IntPtr hWnd);
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -154,16 +171,17 @@ namespace YControlCore.Interop {
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, _SWP uFlags);
 
         [DllImport("user32.dll")]
         public static extern bool UpdateWindow(IntPtr hWnd);
 
         /// <summary>
         /// 挂钩函数
+        /// <para>需要保存回调委托（以成员变量），若不保持则会被垃圾回收</para>
         /// </summary>
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hInstance, uint threadId);
+        public static extern int SetWindowsHookEx(_WH idHook, HookProc lpfn, IntPtr hInstance, uint threadId);
 
         /// <summary>
         /// 脱钩函数
@@ -201,7 +219,27 @@ namespace YControlCore.Interop {
         /// 发送Windows消息
         /// </summary>
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern uint RegisterWindowMessage(string lpString);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern bool ChangeWindowMessageFilter(uint message, int dwFlag);
 
         /// <summary>
         /// 获取按键名称
@@ -215,7 +253,6 @@ namespace YControlCore.Interop {
         [DllImport("user32", EntryPoint = "GetKeyboardState")]
         private static extern int GetKeyboardState(byte[] pbKeyState);
 
-
         /// <summary>
         /// 获得窗体线程ID
         /// </summary>
@@ -227,7 +264,7 @@ namespace YControlCore.Interop {
 
         // This static method is required because legacy OSes do not support
         // SetWindowLongPtr
-        public static IntPtr SetWindowLongPtr(HandleRef hWnd, int nIndex, IntPtr dwNewLong) {
+        public static IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong) {
             if (IntPtr.Size == 8)
                 return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
             else
@@ -235,14 +272,14 @@ namespace YControlCore.Interop {
         }
 
         [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
-        private static extern int SetWindowLong32(HandleRef hWnd, int nIndex, int dwNewLong);
+        private static extern int SetWindowLong32(IntPtr hWnd, int nIndex, int dwNewLong);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
-        private static extern IntPtr SetWindowLongPtr64(HandleRef hWnd, int nIndex, IntPtr dwNewLong);
+        private static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
         [DllImport("user32.dll")]
         internal static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
-        #endregion User32
+               #endregion User32
 
         #region Shell32
 
@@ -257,7 +294,10 @@ namespace YControlCore.Interop {
         /// 释放指针对象
         /// </summary>
         [DllImport("gdi32.dll", SetLastError = true)]
-        private static extern bool DeleteObject(IntPtr hObject);
+        public static extern bool DeleteObject(IntPtr hObject);
+
+        [DllImport("gdi32.dll")]
+        public static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 
         #endregion GDI32
 
@@ -268,6 +308,25 @@ namespace YControlCore.Interop {
         /// </summary>
         [DllImport("kernel32.dll")]
         public static extern IntPtr GetModuleHandle(string name);
+
+        /// <summary>
+        /// 加载非托管动态链接库
+        /// </summary>
+        [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Ansi)]
+        public static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpFileName);
+
+        /// <summary>
+        /// 释放非托管动态链接库
+        /// </summary>
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool FreeLibrary(IntPtr hModule);
+
+        /// <summary>
+        /// 获得非托管导出方法
+        /// </summary>
+        [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+        public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
         #endregion kernel32
 
         /// <summary>
@@ -288,13 +347,6 @@ namespace YControlCore.Interop {
         /// </summary>
         /// <param name="visual"></param>
         /// <returns></returns>
-        public static IntPtr GetVisualHandleAsync(Visual visual) {
-            var soure = PresentationSource.FromVisual(visual);
-            IntPtr hwnd = ((HwndSource)soure).Handle;
-            return hwnd;
-        }
-       
-
         public static IntPtr GetVisualHandle(DependencyObject visual) {
             IntPtr hwnd = IntPtr.Zero;
             var source = PresentationSource.FromDependencyObject(visual);
@@ -308,7 +360,7 @@ namespace YControlCore.Interop {
         /// </summary>
         public static ImageSource ToImageSource(Bitmap bitmap) {
 
-//#if NET45
+            //#if NET45
             IntPtr hBitmap = bitmap.GetHbitmap();
 
             ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(
@@ -320,7 +372,7 @@ namespace YControlCore.Interop {
             DeleteObject(hBitmap);
             return wpfBitmap;
 
-//#elif NETCOREAPP3_1
+            //#elif NETCOREAPP3_1
 
             //if (bitmap == null)
             //    throw new ArgumentNullException("bitmap");
@@ -349,40 +401,68 @@ namespace YControlCore.Interop {
             //    bitmap.UnlockBits(bitmapData);
             //}
 
-//#endif
+            //#endif
         }
 
         #endregion
 
     }
 
-    #region Struct
+    public static class ExtendStruct {
+        public static string ToString(this _RECT obj,bool t) {
+            return $" < {obj.left} {obj.top} {obj.right} {obj.bottom} > ";
+        }
+    }
+
+    public class Extend {
+
+        /// <summary>
+        /// 为当前进程创建全局鼠标钩子
+        /// </summary>
+        /// <param name="id">钩子id 用于脱钩</param>
+        /// <param name="callback">若调用成功</param>
+        public static void HookGlobalMouseEvent(ref int id, HookProc callback) {
+            if (id == 0) {
+                id = Core.SetWindowsHookEx(
+                    _WH.WH_MOUSE_LL,
+                    callback,
+                    //Core.GetModuleHandle(Assembly.GetExecutingAssembly().GetName().Name),
+                    Marshal.GetHINSTANCE(System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0]),
+                    0);
+                if (id == 0) {
+                    throw new Exception("SetWindowsHookEx failed.");
+                }
+            }
+        }
+
+        public static void UnHookGlobalMouseEvent(ref int id) {
+            if (id != 0) {
+                if (Core.UnhookWindowsHookEx(id)) {
+                    id = 0;
+                } else {
+                    throw new Exception("UnhookWindowsHookEx failed.");
+                }
+            }
+
+        }
 
 
+    }
+
+    #region Deleget
     /// <summary>
-    /// 控件特效
+    /// 钩子回调
     /// </summary>
-    public enum AccentState {
-        /// <summary>
-        /// 不启用
-        /// </summary>
-        ACCENT_DISABLED,
-        /// <summary>
-        /// 不明
-        /// </summary>
-        ACCENT_ENABLE_GRADIENT,
-        ACCENT_ENABLE_TRANSPARENTGRADIENT,
-        /// <summary>
-        /// 毛玻璃
-        /// </summary>
-        ACCENT_ENABLE_BLURBEHIND,
-        ACCENT_INVALID_STATE,
-    }
+    public delegate int HookProc(
+        int nCode, 
+        Int32 wParam, 
+        IntPtr lParam
+        );
 
-    internal enum WindowCompositionAttribute {
-        // 省略其他未使用的字段
-        WCA_ACCENT_POLICY = 19,
-    }
+    public delegate void MouseProc(int nCode, _WM wParam, IntPtr lParam);
+    #endregion
+
+    #region Struct
 
     [StructLayout(LayoutKind.Sequential)]
     internal struct AccentPolicy {
@@ -421,6 +501,18 @@ namespace YControlCore.Interop {
         public int bottom;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    public struct _LRECT {
+        [MarshalAs(UnmanagedType.U8)]
+        public long left;
+        [MarshalAs(UnmanagedType.U8)]
+        public long top;
+        [MarshalAs(UnmanagedType.U8)]
+        public long right;
+        [MarshalAs(UnmanagedType.U8)]
+        public long bottom;
+    }
+
 
     [StructLayout(LayoutKind.Sequential)]
     public struct WINDOWINFO {
@@ -435,13 +527,13 @@ namespace YControlCore.Interop {
         public ushort atomWindowType;
         public ushort wCreatorVersion;
 
-        public WINDOWINFO(Boolean? filler) : this()   // Allows automatic initialization of "cbSize" with "new WINDOWINFO(null/true/false)".
+        public WINDOWINFO(Boolean? filler)
+            : this()   // Allows automatic initialization of "cbSize" with "new WINDOWINFO(null/true/false)".
         {
             cbSize = (UInt32)(Marshal.SizeOf(typeof(WINDOWINFO)));
         }
 
     }
-
 
     [StructLayout(LayoutKind.Sequential)]
     public struct NOTIFYICONIDENTIFIER {
@@ -450,6 +542,19 @@ namespace YControlCore.Interop {
         public Int32 uID;
         public Guid guidItem;
     }
+
+    /// <summary>
+    /// 鼠标信息结构
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MSLLHOOKSTRUCT {
+        public POINT pt;
+        public int mouseData; // be careful, this must be ints, not uints (was wrong before I changed it...). regards, cmew.
+        public int flags;
+        public int time;
+        public UIntPtr dwExtraInfo;
+    }
+
     #endregion
 }
 

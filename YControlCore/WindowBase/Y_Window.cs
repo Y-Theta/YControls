@@ -172,12 +172,9 @@ namespace YControlCore.WindowBase {
 
         #endregion
 
-
         #region override
         protected override void OnInitialized(EventArgs e) {
-            SourceInitialized += (sender, args) => {
-                (PresentationSource.FromVisual((Visual)sender) as HwndSource).AddHook(new HwndSourceHook(WndProc));
-            };
+     
             base.OnInitialized(e);
         }
 
@@ -288,6 +285,9 @@ namespace YControlCore.WindowBase {
 
         public Y_Window() : base() {
             Loaded += Y_Window_Loaded;
+            SourceInitialized += (sender, args) => {
+                (PresentationSource.FromVisual((Visual)sender) as HwndSource).AddHook(new HwndSourceHook(WndProc));
+            };
         }
 
         #endregion

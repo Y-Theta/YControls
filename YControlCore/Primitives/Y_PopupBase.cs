@@ -389,11 +389,11 @@ namespace YControlCore.Primitives {
             if (GetWindowRect(_childhwnd, out _RECT rect)) {
                 _topmostparent = topmost;
                 if (topmost) {
-                    SetWindowPos(_childhwnd, -1, rect.left, rect.top, (int)Width, (int)Height, 0);
+                    SetWindowPos(_childhwnd, (IntPtr)(-1), rect.left, rect.top, (int)Width, (int)Height, 0);
                 } else {
-                    SetWindowPos(_childhwnd, 1, rect.left, rect.top, (int)Width, (int)Height, 0);
-                    SetWindowPos(_childhwnd, 0, rect.left, rect.top, (int)Width, (int)Height, 0);
-                    SetWindowPos(_childhwnd, -2, rect.left, rect.top, (int)Width, (int)Height, 0);
+                    SetWindowPos(_childhwnd, (IntPtr)(1), rect.left, rect.top, (int)Width, (int)Height, 0);
+                    SetWindowPos(_childhwnd, IntPtr.Zero, rect.left, rect.top, (int)Width, (int)Height, 0);
+                    SetWindowPos(_childhwnd, (IntPtr)(-2), rect.left, rect.top, (int)Width, (int)Height, 0);
                 }
             }
         }

@@ -24,6 +24,7 @@ using Image = System.Drawing.Image;
 using Size = System.Drawing.Size;
 
 using YControlCore.WindowBase;
+using System.Text.RegularExpressions;
 
 namespace TestCore {
     /// <summary>
@@ -76,12 +77,19 @@ namespace TestCore {
         public MainWindow() {
             InitializeComponent();
 
+            string test = File.ReadAllText(@"C:\Users\Y_Theta\Desktop\Untitled-1.txt");
+            //Debug.WriteLine(test);
+            Regex pattern = new Regex("href=\"(/.+/(.+?\\.(ttf|woff)2*))\"");
+            var collection = pattern.Matches(test);
+            Debug.WriteLine(collection[0].Groups[2].Value);
+
+            App.Current.Shutdown();
             //typeof(SystemParameters).GetProperties(BindingFlags.Static | BindingFlags.Public).ToList().ForEach(prop => {
             //    object val = null;
 
             //    Debug.WriteLine($" name - {prop.Name.PadRight(48)}  value - {prop.GetValue(null)}");
             //});
-            
+
 
             //    List<string> res = new List<string>(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames());
             //    res.ForEach(r => { Debug.WriteLine(r); });

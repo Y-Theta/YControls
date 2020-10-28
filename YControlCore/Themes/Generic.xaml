@@ -13,8 +13,7 @@
     <!--#region                                                         -->
     <!--YControls Default Styles-->
     <!--#endregion-->
-
-
+    
     <!--#region                                                         ContentControl-->
 
     <!-- NavigateBar -->
@@ -1082,10 +1081,9 @@
     <!--#endregion-->
 
 
-
     <!--#region                                                         Window-->
 
-    <!--YT_SizeBorder-->
+    <!--Y_Border-->
     <Style TargetType="winbase:Y_Border">
         <Setter Property="BorderThickness"
                 Value="2" />
@@ -1093,6 +1091,7 @@
                 Value="Transparent" />
     </Style>
 
+    <!--Y_Windowbase-->
     <Style TargetType="winbase:Y_Window">
         <Setter Property="WindowStyle"
                 Value="None" />
@@ -1161,6 +1160,24 @@
         </Setter>
     </Style>
 
+    <!--TrayEmbeddedWindow-->
+    <Style TargetType="winbase:TrayEmbeddedWindow">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="winbase:TrayEmbeddedWindow">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}">
+                        <Grid >
+                            <ContentPresenter Content="{TemplateBinding Content}"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--Y_Dialog-->
     <Style TargetType="winbase:Y_Dialog">
         
     </Style>

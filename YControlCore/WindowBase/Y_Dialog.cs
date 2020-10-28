@@ -12,25 +12,6 @@ namespace YControlCore.WindowBase {
     /// <summary>
     /// 
     /// </summary>
-    [Flags]
-    public enum DialogButton {
-        /// <summary>
-        /// 只有取消按钮
-        /// </summary>
-        Cancle,
-        /// <summary>
-        /// 只有确认按钮
-        /// </summary>
-        Yes,
-        /// <summary>
-        /// 只有否认按钮
-        /// </summary>
-        No
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
     public class Y_Dialog : Window {
         #region Properties
 
@@ -51,7 +32,7 @@ namespace YControlCore.WindowBase {
 
         static Y_Dialog() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Y_Dialog),
-                new FrameworkPropertyMetadata((typeof(Y_Dialog), FrameworkPropertyMetadataOptions.Inherits)));
+                new FrameworkPropertyMetadata(typeof(Y_Dialog), FrameworkPropertyMetadataOptions.Inherits));
         }
         #endregion
     }
