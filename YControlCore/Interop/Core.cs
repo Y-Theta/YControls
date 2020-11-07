@@ -279,7 +279,15 @@
 
         [DllImport("user32.dll")]
         internal static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
-               #endregion User32
+
+        /// <summary>
+        /// Synthesizes keystrokes, mouse motions, and button clicks.
+        /// </summary>
+        [DllImport("user32.dll")]
+        internal static extern uint SendInput(uint nInputs,
+           [MarshalAs(UnmanagedType.LPArray), In] INPUT[] pInputs,
+           int cbSize);
+        #endregion User32
 
         #region Shell32
 
@@ -553,6 +561,44 @@
         public int flags;
         public int time;
         public UIntPtr dwExtraInfo;
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct INPUT {
+        [FieldOffset(0)]
+        public uint type;
+        [FieldOffset(4)]
+        public MouseInputData mi;
+        [FieldOffset(4)]
+        public KEYBDINPUT ki;
+        [FieldOffset(4)]
+        public HARDWAREINPUT hi;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MouseInputData {
+        public int dx;
+        public int dy;
+        public uint mouseData;
+        public _MEF dwFlags;
+        public uint time;
+        public IntPtr dwExtraInfo;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct KEYBDINPUT {
+        public ushort wVk;
+        public ushort wScan;
+        public uint dwFlags;
+        public uint time;
+        public IntPtr dwExtraInfo;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct HARDWAREINPUT {
+        public int uMsg;
+        public short wParamL;
+        public short wParamH;
     }
 
     #endregion

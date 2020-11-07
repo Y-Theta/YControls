@@ -25,8 +25,8 @@ using System.Windows.Controls.Primitives;
 namespace YControlCore.WindowBase {
 
     /// <summary>
-    /// Class Embedded in Tray (not notification icon and width can be customed)
-    /// used with <see cref="hsystrayembed.dll"/>
+    ///  window Embedded in Tray (not notification icon and width can be customed)
+    ///  use with <see cref="hsystrayembed.dll"/>
     ///  <para>When you want to free it use follow code ,or it will not exit after you main process dead,and you have to restart explorer to unload the hook</para>
     ///  <code>
     ///  use it as
