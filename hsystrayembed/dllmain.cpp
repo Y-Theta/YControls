@@ -4,6 +4,10 @@
 
 using namespace std;
 
+/// <summary>
+/// used for YControlCore.WindowBase.TrayEmbeddedWindow to hook taskbar
+/// <para>must be placed in the same directory with the TrayEmbeddedWindow process</para>
+/// </summary>
 BOOL APIENTRY DllMain (HMODULE hModule,
 	DWORD  ul_reason_for_call,
 	LPVOID lpReserved
@@ -62,6 +66,7 @@ void Hook (HWND pin) {
 		char classname[80];
 		_shelltraywnd = FindWindowExA (NULL, NULL, "shell_traywnd", NULL);
 		if (_shelltraywnd) {
+			_gs_rebar = FindWindowExA (_shelltraywnd, NULL, "ReBarWindow32", NULL);
 			_traynotifywnd = FindWindowExA (_shelltraywnd, NULL, "traynotifywnd", NULL);
 			if (_traynotifywnd) {
 				HWND child = _traynotifywnd;
@@ -70,7 +75,9 @@ void Hook (HWND pin) {
 					GetClassNameA (child, classname, _countof (classname));
 					if (!_strcmpi (classname, "TrayInputIndicatorWClass")) {
 						_tohook = child;
-						break;
+					}
+					if (!_strcmpi (classname, "TrayClockWClass")) {
+						_gs_clock = child;
 					}
 				}
 				DWORD dwThreadId = GetWindowThreadProcessId (_shelltraywnd, NULL);
@@ -135,6 +142,8 @@ void End () {
 	WaitForSingleObject (g_exit_lock, 0);
 	LOG ("End Wait");
 	RemoveWindowSubclass (_gs_tray, ShellTray_PROC, 0);
+	RemoveWindowSubclass (_gs_clock, ShellClock_PROC, 0);
+	RemoveWindowSubclass (_gs_rebar, ShellTask_PROC, 0);
 	RemoveWindowSubclass (_Instance, WndTray_PROC, 0);
 	_beginthread (SelfDestruct, 0, NULL);
 	LOG ("End");
@@ -155,6 +164,8 @@ LRESULT CALLBACK ONPROC (int nCode, WPARAM wParam, LPARAM lParam) {
 			_gs_tray = GetParent (cwp->hwnd);
 			_gs_taskbar = GetParent (_gs_tray);
 			SetWindowSubclass (_gs_tray, ShellTray_PROC, 0, 0);
+			SetWindowSubclass (_gs_clock, ShellClock_PROC, 0, 0);
+			SetWindowSubclass (_gs_rebar, ShellTask_PROC, 0, 0);
 			SetWindowSubclass (cwp->hwnd, WndTray_PROC, 0, 0);
 
 			PostMessage (_gs_taskbar, WM_SIZE, SIZE_RESTORED, 0);
@@ -164,6 +175,36 @@ LRESULT CALLBACK ONPROC (int nCode, WPARAM wParam, LPARAM lParam) {
 		}
 	}
 	return CallNextHookEx (NULL, nCode, wParam, lParam);
+}
+
+
+static LRESULT CALLBACK ShellTask_PROC (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam,
+	UINT_PTR uIdSubclass, DWORD_PTR dwRefData) {
+	switch (message) {
+	case WM_LBUTTONDOWN: {
+		LOG ("TSK SIZE ING");
+		break;
+	}
+	case WM_LBUTTONUP: {
+		LOG ("TSK SIZE");
+
+		break;
+	}
+	}
+	return DefSubclassProc (hwnd, message, wParam, lParam);
+}
+
+static LRESULT CALLBACK ShellClock_PROC (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam,
+	UINT_PTR uIdSubclass, DWORD_PTR dwRefData) {
+	switch (message) {
+	case WM_WINDOWPOSCHANGING: {
+		//prevent clock flash while changing
+		WINDOWPOS* wpf = (WINDOWPOS*)lParam;
+		wpf->flags |= SWP_NOCOPYBITS;
+		break;
+	}
+	}
+	return DefSubclassProc (hwnd, message, wParam, lParam);
 }
 
 /// <summary>
@@ -193,7 +234,6 @@ static LRESULT CALLBACK ShellTray_PROC (HWND hwnd, UINT message, WPARAM wParam, 
 	}
 	case WM_NOTIFY: {
 		if (!_rotating) {
-
 			NMHDR* nmh = (NMHDR*)lParam;
 			LRESULT ret;
 			RECT sibling_rc, taskbar, pos1, pos2;
@@ -210,16 +250,66 @@ static LRESULT CALLBACK ShellTray_PROC (HWND hwnd, UINT message, WPARAM wParam, 
 			GetClientRect (_gs_taskbar, &taskbar);
 			GetWindowRect (_Instance, &pos1);
 			_horizental = (taskbar.right - taskbar.left) > (taskbar.bottom - taskbar.top);
+			LOG ("WM_NOTIFY  {}", _horizental);
 			if (_horizental) {
 				syspager_pos = sibling_rc.left;
+				//next_pos = sibling_rc.left + sibling_rc.right + _VirtualRect.left;
 				next_pos = sibling_rc.left + sibling_rc.right + _VirtualRect.left;
 				SetWindowPos (_Phinstance, (HWND)-1, pos1.left + sibling_rc.right, pos1.top, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE);
 			}
 			else {
 				syspager_pos = sibling_rc.top;
+				//next_pos = sibling_rc.top + sibling_rc.bottom + _VirtualRect.top;
 				next_pos = sibling_rc.top + sibling_rc.bottom + _VirtualRect.top;
 				SetWindowPos (_Phinstance, (HWND)-1, pos1.left, pos1.top + sibling_rc.bottom, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE);
 			}
+			//int windowsrepos = 0;
+			//PLIST node, last, list = (PLIST)malloc (sizeof (LIST));
+			//node = list;
+			//list->next = nullptr;
+			//for (sibling = GetWindow (_Instance, GW_HWNDNEXT); sibling; sibling = GetWindow (sibling, GW_HWNDNEXT)) {
+			//	GetClientRect (sibling, &sibling_rc);
+			//	MapWindowPoints (sibling, hwnd, (POINT*)&sibling_rc, 1);
+			//	if (_horizental) {
+			//		if (sibling_rc.left < syspager_pos) // Win10 orders the controls properly, but others don't
+			//			continue;
+			//		node->p.x = next_pos;
+			//		next_pos += sibling_rc.right;
+			//		node->p.y = sibling_rc.top;
+			//	}
+			//	else {
+			//		if (sibling_rc.top < syspager_pos)
+			//			continue;
+			//		node->p.x = sibling_rc.left;
+			//		node->p.y = next_pos;
+			//		next_pos += sibling_rc.bottom;
+			//	}
+			//	node->h = sibling;
+			//	last = node;
+			//	node->next = (PLIST)malloc (sizeof (LIST));
+			//	node = node->next;
+			//	node->next = nullptr;
+			//	windowsrepos++;
+			//}
+			//free (last->next);
+			//last->next = nullptr;
+			//HDWP hdwp = BeginDeferWindowPos (windowsrepos + 1);
+			//node = list;
+			//DWORD err;
+			//for (; node != nullptr; node = node->next) {
+			//		hdwp = DeferWindowPos (hdwp, node->h, 0, node->p.x, node->p.y, 0, 0,
+			//			SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOSIZE);
+			//}
+			//int error = EndDeferWindowPos (hdwp);
+			//if (error == 0) {
+			//	err = GetLastError ();
+			//}
+			////freelist
+			//for (; list != nullptr;) {
+			//	node = list;
+			//	list = list->next;
+			//	free (node);
+			//}
 			for (sibling = GetWindow (_Instance, GW_HWNDNEXT); sibling; sibling = GetWindow (sibling, GW_HWNDNEXT)) {
 				GetClientRect (sibling, &sibling_rc);
 				MapWindowPoints (sibling, hwnd, (POINT*)&sibling_rc, 1);
@@ -238,14 +328,11 @@ static LRESULT CALLBACK ShellTray_PROC (HWND hwnd, UINT message, WPARAM wParam, 
 				SetWindowPos (sibling, 0, sibling_rc.left, sibling_rc.top, 0, 0, SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOSIZE);
 			}
 			PostMessage (_Phinstance, WMC_SIZE, 0, 0);
+			InvalidateRect (_gs_taskbar, NULL, 1);
+
 			return ret;
 		}
 	}
-	case WM_LBUTTONDOWN:
-		_rotating = TRUE;
-		break;
-	case WM_LBUTTONUP:
-		_rotating = FALSE;
 	default:
 		break;
 	}
@@ -267,9 +354,9 @@ static LRESULT CALLBACK WndTray_PROC (HWND hwnd, UINT message, WPARAM wParam, LP
 	case WMC_SIZE:
 		_VirtualRect.left = HIWORD (lParam);
 		_VirtualRect.top = LOWORD (lParam);
-#ifdef _SPDLOG_
-		LOG ("WMC_SIZE  {}-{}", _VirtualRect.left, _VirtualRect.top);
-#endif 
+		//#ifdef _SPDLOG_
+		//		LOG ("WMC_SIZE  {}-{}", _VirtualRect.left, _VirtualRect.top);
+		//#endif 
 		PostMessage (_gs_taskbar, WM_SIZE, SIZE_RESTORED, 0);
 		InvalidateRect (_gs_taskbar, NULL, 1);
 		return 1;

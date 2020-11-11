@@ -32,9 +32,12 @@ HWND _Instance = NULL;
 HWND _shelltraywnd = NULL;
 HWND _tohook = NULL;
 HWND _gs_tray = NULL;
+HWND _gs_clock = NULL;
 HWND _gs_taskbar = NULL;
+HWND _gs_rebar = NULL;
 
 bool _rotating = FALSE;
+bool _redraw = FALSE;
 
 #ifndef __GNUC__
 #	pragma data_seg()
@@ -44,6 +47,12 @@ HANDLE g_exit_lock;
 static bool _horizental = TRUE;
 HWND _traynotifywnd = NULL;
 
+typedef struct LinkedList {
+	POINT p;
+	HWND h;
+	LinkedList* next;
+}*PLIST, LIST;
+
 #pragma endregion
 
 typedef void (*HOOKFUN)(int code, WPARAM wParam, LPARAM lParam);
@@ -52,6 +61,10 @@ extern "C" __declspec(dllexport) void Hook (HWND pin);
 extern "C" __declspec(dllexport) void UnHook ();
 extern "C" __declspec(dllexport) void Exit ();
 
+static LRESULT CALLBACK ShellClock_PROC (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam,
+	UINT_PTR uIdSubclass, DWORD_PTR dwRefData);
+static LRESULT CALLBACK ShellTask_PROC (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam,
+	UINT_PTR uIdSubclass, DWORD_PTR dwRefData);
 LRESULT CALLBACK ONPROC (int nCode, WPARAM wParam, LPARAM lParam);
 static LRESULT CALLBACK ShellTray_PROC (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam,
 	UINT_PTR uIdSubclass, DWORD_PTR dwRefData);
