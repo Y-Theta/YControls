@@ -77,6 +77,12 @@ namespace YControlCore.Interop {
         XBUTTON2 = 0x00000002
     }
 
+    public enum SendInputEventType : uint {
+        MOUSE = 0,
+        KEYBOARD = 1,
+        HARDWARE = 2
+    }
+
     /// <summary>
     /// 挂钩类型
     /// </summary>

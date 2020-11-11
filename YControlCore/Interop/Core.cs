@@ -60,6 +60,9 @@
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowRect(IntPtr hWnd, out _RECT lpRect);
 
+        [DllImport("user32", ExactSpelling = true, SetLastError = true)]
+        internal static extern int MapWindowPoints(IntPtr hWndFrom, IntPtr hWndTo, [In, Out] ref _RECT rect, [MarshalAs(UnmanagedType.U4)] int cPoints);
+
         [DllImport("user32.dll")]
         public static extern bool InvalidateRect(IntPtr hWnd, IntPtr lpRect, bool bErase);
         /// <summary>
@@ -284,7 +287,7 @@
         /// Synthesizes keystrokes, mouse motions, and button clicks.
         /// </summary>
         [DllImport("user32.dll")]
-        internal static extern uint SendInput(uint nInputs,
+        public static extern uint SendInput(uint nInputs,
            [MarshalAs(UnmanagedType.LPArray), In] INPUT[] pInputs,
            int cbSize);
         #endregion User32
@@ -510,19 +513,6 @@
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct _LRECT {
-        [MarshalAs(UnmanagedType.U8)]
-        public long left;
-        [MarshalAs(UnmanagedType.U8)]
-        public long top;
-        [MarshalAs(UnmanagedType.U8)]
-        public long right;
-        [MarshalAs(UnmanagedType.U8)]
-        public long bottom;
-    }
-
-
-    [StructLayout(LayoutKind.Sequential)]
     public struct WINDOWINFO {
         public uint cbSize;
         public _RECT rcWindow;
@@ -563,17 +553,25 @@
         public UIntPtr dwExtraInfo;
     }
 
-    [StructLayout(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct INPUT {
-        [FieldOffset(0)]
-        public uint type;
-        [FieldOffset(4)]
-        public MouseInputData mi;
-        [FieldOffset(4)]
-        public KEYBDINPUT ki;
-        [FieldOffset(4)]
-        public HARDWAREINPUT hi;
+        public SendInputEventType type;
+        public MouseKeybdhardwareInputUnion input;
+
     }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct MouseKeybdhardwareInputUnion {
+        [FieldOffset(0)]
+        public MouseInputData mi; // mouse input
+
+        [FieldOffset(0)]
+        public KEYBDINPUT ki; // keyboard input
+
+        [FieldOffset(0)]
+        public HARDWAREINPUT hi; // hardware input
+    }
+
 
     [StructLayout(LayoutKind.Sequential)]
     public struct MouseInputData {
@@ -582,7 +580,7 @@
         public uint mouseData;
         public _MEF dwFlags;
         public uint time;
-        public IntPtr dwExtraInfo;
+        public UIntPtr dwExtraInfo;
     }
 
     [StructLayout(LayoutKind.Sequential)]

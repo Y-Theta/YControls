@@ -30,7 +30,7 @@ namespace YControlCore.WindowBase {
     ///  <para>When you want to free it use follow code ,or it will not exit after you main process dead,and you have to restart explorer to unload the hook</para>
     ///  <code>
     ///  use it as
-    ///  <para> private TrayEmbeddedWindow _window </para>
+    ///  <para> private TrayEmbeddedWindow _window = new  TrayEmbeddedWindow()</para>
     ///  <para> _window.Content = "a costumed control"  </para>
     ///  <para> _window.Show();  </para>
     ///  free it as
