@@ -338,7 +338,27 @@
         /// </summary>
         [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
         public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr LocalFree(IntPtr hMem);
         #endregion kernel32
+
+        #region advapi32
+
+        [DllImport("advapi32", CharSet = CharSet.Auto, SetLastError = true)]
+       public  static extern bool ConvertSidToStringSid(
+            IntPtr pSID,
+            out IntPtr ptrSid);
+
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        public static extern bool GetTokenInformation(
+            IntPtr TokenHandle,
+            TOKEN_INFORMATION_CLASS TokenInformationClass,
+            IntPtr TokenInformation,
+            uint TokenInformationLength,
+            out uint ReturnLength);
+        #endregion
 
         /// <summary>
         /// 获取控件的句柄

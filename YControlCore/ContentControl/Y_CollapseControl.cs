@@ -58,7 +58,7 @@ namespace YControlCore.ContentControl {
                 typeof(Y_CollapseControl), new PropertyMetadata(ExpandDirection.Bottom, OnOrientationChanged));
         private static void OnOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             Y_CollapseControl cm = (Y_CollapseControl)d;
-            cm.changeorientation();
+            cm.ChangeOrientation();
         }
 
         #endregion
@@ -67,7 +67,7 @@ namespace YControlCore.ContentControl {
         /// <summary>
         /// 
         /// </summary>
-        private void changeorientation() {
+        private void ChangeOrientation() {
             if (_ContentTranslate_Collapsed != null) {
                 if (Direction.Equals(ExpandDirection.Bottom) || Direction.Equals(ExpandDirection.Top)) {
                     Storyboard.SetTargetProperty(_ContentTranslate_Expand, new PropertyPath(TranslateTransform.YProperty));
@@ -81,10 +81,10 @@ namespace YControlCore.ContentControl {
                     Storyboard.SetTargetProperty(_Collapsed_Transition, new PropertyPath(TranslateTransform.XProperty));
                 }
             }
-            resetanimateparam();
+            ResetAnimateParam();
         }
 
-        private void resetanimateparam() {
+        private void ResetAnimateParam() {
             if (_ContentTranslate_Collapsed_F1 != null) {
                 _Collapsed_Transition_F1.Value = _ContentTranslate_Collapsed_F1.Value
                     = Direction.Equals(ExpandDirection.Bottom) ? -RenderSize.Height :
@@ -99,7 +99,7 @@ namespace YControlCore.ContentControl {
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo) {
             base.OnRenderSizeChanged(sizeInfo);
-            resetanimateparam();
+            ResetAnimateParam();
         }
 
         public override void OnApplyTemplate() {
@@ -111,7 +111,7 @@ namespace YControlCore.ContentControl {
             _Collapsed_Transition_F1 = GetTemplateChild("Collapsed_Transition_F1") as SplineDoubleKeyFrame;
 
             base.OnApplyTemplate();
-            changeorientation();
+            ChangeOrientation();
         }
 
         #endregion

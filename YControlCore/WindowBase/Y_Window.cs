@@ -31,6 +31,16 @@ namespace YControlCore.WindowBase {
         protected Y_CollapseControl _titlebar;
 
         /// <summary>
+        /// 窗口句柄
+        /// </summary>
+        public IntPtr Handel { get; private set; } = IntPtr.Zero;
+
+        /// <summary>
+        /// 句柄是否创建
+        /// </summary>
+        public bool IsHandelCreated { get; private set; } = false;
+
+        /// <summary>
         /// 窗口所拥有的托盘图标
         /// </summary>
         public Dictionary<string, Y_AreaIcon> AreaIcons { get; private set; }
@@ -244,6 +254,17 @@ namespace YControlCore.WindowBase {
             BlurEffect.EnableBlur(GetVisualHandle(this), AccentState.ACCENT_ENABLE_BLURBEHIND);
         }
 
+        private void Y_Window_TryInitSource(object? sender, EventArgs e)
+        {
+            HwndSource? source = PresentationSource.FromVisual((Visual)sender) as HwndSource;
+            if (source != null)
+            {
+                this.IsHandelCreated = true;
+                this.Handel = source.Handle;
+                source.AddHook(new HwndSourceHook(WndProc));
+            }
+        }
+
         /// <summary>
         /// windows消息循环
         /// </summary>
@@ -285,9 +306,7 @@ namespace YControlCore.WindowBase {
 
         public Y_Window() : base() {
             Loaded += Y_Window_Loaded;
-            SourceInitialized += (sender, args) => {
-                (PresentationSource.FromVisual((Visual)sender) as HwndSource).AddHook(new HwndSourceHook(WndProc));
-            };
+            SourceInitialized += Y_Window_TryInitSource;
         }
 
         #endregion
