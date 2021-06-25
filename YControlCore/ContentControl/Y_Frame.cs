@@ -14,11 +14,15 @@ using System.Windows.Shapes;
 namespace YControlCore.ContentControl
 {
     /// <summary>
-    /// 
+    /// Frame with no navigate buttons
     /// </summary>
     public class Y_Frame : Frame
     {
 
+
+        public Y_Frame()
+        {
+        }
 
 
         static Y_Frame()

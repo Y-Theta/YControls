@@ -120,11 +120,11 @@ namespace YControlCore.Base {
 
         }
 
-        public static CommandBase NewAsync(Action<object> handler, Action<IAsyncResult> callback = null, Func<object, bool> check = null) 
+        public static CommandBase NewAsync(Action<object> handler, Action<IAsyncResult> callback = null, Func<object, bool> check = null)
             => new CommandBase(handler, check, callback, true);
-        
 
-        public static CommandBase New(Action<object> handler, Func<object, bool> check = null) 
+
+        public static CommandBase New(Action<object> handler, Func<object, bool> check = null)
             => new CommandBase(handler, check, null, false);
         #endregion
     }

@@ -39,6 +39,7 @@
   <ItemGroup>
     <Folder Include="Resources\BMP\" />
     <Folder Include="WindowsNativeControl\" />
+    <Folder Include="UIContract\" />
   </ItemGroup>
 
   <!--<ItemGroup>

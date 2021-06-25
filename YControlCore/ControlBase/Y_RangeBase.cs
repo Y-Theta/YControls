@@ -12,7 +12,7 @@ namespace YControlCore.ControlBase {
     /// <summary>
     /// 自定义范围控件基类
     /// </summary>
-    public class Y_RangeBase :RangeBase {
+    public class Y_RangeBase : RangeBase {
         #region Properties
         #endregion
 
