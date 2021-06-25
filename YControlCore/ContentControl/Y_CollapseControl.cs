@@ -11,13 +11,15 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using YControlCore.ControlBase;
 
-namespace YControlCore.ContentControl {
+namespace YControlCore.ContentControl
+{
 
     /// <summary>
     /// 隐藏菜单控件 用于实现可滑动隐藏的菜单栏
     /// </summary>
     [ContentProperty(nameof(Content))]
-    public class Y_CollapseControl : ToggleStateControl {
+    public class Y_CollapseControl : ToggleStateControl
+    {
         #region Properties
 
         private DoubleAnimationUsingKeyFrames _ContentTranslate_Collapsed;
@@ -30,7 +32,8 @@ namespace YControlCore.ContentControl {
         /// <summary>
         /// 
         /// </summary>
-        private static void OnIsExpandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        private static void OnIsExpandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
             Y_CollapseControl cm = (Y_CollapseControl)d;
             cm.expand((bool)e.NewValue);
         }
@@ -38,7 +41,8 @@ namespace YControlCore.ContentControl {
         /// <summary>
         /// 
         /// </summary>
-        public object Content {
+        public object Content
+        {
             get { return (object)GetValue(ContentProperty); }
             set { SetValue(ContentProperty, value); }
         }
@@ -49,14 +53,16 @@ namespace YControlCore.ContentControl {
         /// <summary>
         /// 
         /// </summary>
-        public ExpandDirection Direction {
+        public ExpandDirection Direction
+        {
             get { return (ExpandDirection)GetValue(DirectionProperty); }
             set { SetValue(DirectionProperty, value); }
         }
         public static readonly DependencyProperty DirectionProperty =
             DependencyProperty.Register("Direction", typeof(ExpandDirection),
                 typeof(Y_CollapseControl), new PropertyMetadata(ExpandDirection.Bottom, OnOrientationChanged));
-        private static void OnOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        private static void OnOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
             Y_CollapseControl cm = (Y_CollapseControl)d;
             cm.ChangeOrientation();
         }
@@ -67,25 +73,30 @@ namespace YControlCore.ContentControl {
         /// <summary>
         /// 
         /// </summary>
-        private void ChangeOrientation() {
-            if (_ContentTranslate_Collapsed != null) {
-                if (Direction.Equals(ExpandDirection.Bottom) || Direction.Equals(ExpandDirection.Top)) {
-                    Storyboard.SetTargetProperty(_ContentTranslate_Expand, new PropertyPath(TranslateTransform.YProperty));
-                    Storyboard.SetTargetProperty(_ContentTranslate_Collapsed, new PropertyPath(TranslateTransform.YProperty));
-                    Storyboard.SetTargetProperty(_Expand_Transition, new PropertyPath(TranslateTransform.YProperty));
-                    Storyboard.SetTargetProperty(_Collapsed_Transition, new PropertyPath(TranslateTransform.YProperty));
-                } else {
-                    Storyboard.SetTargetProperty(_ContentTranslate_Expand, new PropertyPath(TranslateTransform.XProperty));
-                    Storyboard.SetTargetProperty(_ContentTranslate_Collapsed, new PropertyPath(TranslateTransform.XProperty));
-                    Storyboard.SetTargetProperty(_Expand_Transition, new PropertyPath(TranslateTransform.XProperty));
-                    Storyboard.SetTargetProperty(_Collapsed_Transition, new PropertyPath(TranslateTransform.XProperty));
-                }
+        private void ChangeOrientation()
+        {
+            if (_ContentTranslate_Collapsed != null)
+            {
+                ChangeOrientation(Direction.Equals(ExpandDirection.Bottom) || Direction.Equals(ExpandDirection.Top) ?
+                                  TranslateTransform.YProperty :
+                                  TranslateTransform.XProperty);
+
             }
             ResetAnimateParam();
         }
 
-        private void ResetAnimateParam() {
-            if (_ContentTranslate_Collapsed_F1 != null) {
+        private void ChangeOrientation(object param)
+        {
+            Storyboard.SetTargetProperty(_ContentTranslate_Expand, new PropertyPath(param));
+            Storyboard.SetTargetProperty(_ContentTranslate_Collapsed, new PropertyPath(param));
+            Storyboard.SetTargetProperty(_Expand_Transition, new PropertyPath(param));
+            Storyboard.SetTargetProperty(_Collapsed_Transition, new PropertyPath(param));
+        }
+
+        private void ResetAnimateParam()
+        {
+            if (_ContentTranslate_Collapsed_F1 != null)
+            {
                 _Collapsed_Transition_F1.Value = _ContentTranslate_Collapsed_F1.Value
                     = Direction.Equals(ExpandDirection.Bottom) ? -RenderSize.Height :
                       Direction.Equals(ExpandDirection.Right) ? -RenderSize.Width :
@@ -93,16 +104,19 @@ namespace YControlCore.ContentControl {
             }
         }
 
-        private void expand(bool flag) {
+        private void expand(bool flag)
+        {
             VisualStateManager.GoToState(this, flag ? "Expand" : "Collapsed", UseAnimate);
         }
 
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo) {
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
             base.OnRenderSizeChanged(sizeInfo);
             ResetAnimateParam();
         }
 
-        public override void OnApplyTemplate() {
+        public override void OnApplyTemplate()
+        {
             _ContentTranslate_Expand = GetTemplateChild("ContentTranslate_Expand") as DoubleAnimationUsingKeyFrames;
             _ContentTranslate_Collapsed = GetTemplateChild("ContentTranslate_Collapsed") as DoubleAnimationUsingKeyFrames;
             _Expand_Transition = GetTemplateChild("Expand_Transition") as DoubleAnimationUsingKeyFrames;
@@ -117,7 +131,8 @@ namespace YControlCore.ContentControl {
         #endregion
 
         #region Constructors
-        static Y_CollapseControl() {
+        static Y_CollapseControl()
+        {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Y_CollapseControl), new FrameworkPropertyMetadata(typeof(Y_CollapseControl)));
             IsExpandProperty.OverrideMetadata(typeof(Y_CollapseControl), new FrameworkPropertyMetadata(true, OnIsExpandChanged));
         }

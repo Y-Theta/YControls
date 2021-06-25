@@ -33,12 +33,12 @@ namespace YControlCore.WindowBase {
         /// <summary>
         /// 窗口句柄
         /// </summary>
-        public IntPtr Handel { get; private set; } = IntPtr.Zero;
+        public IntPtr Handle { get; private set; } = IntPtr.Zero;
 
         /// <summary>
         /// 句柄是否创建
         /// </summary>
-        public bool IsHandelCreated { get; private set; } = false;
+        public bool IsHandleCreated { get; private set; } = false;
 
         /// <summary>
         /// 窗口所拥有的托盘图标
@@ -259,8 +259,8 @@ namespace YControlCore.WindowBase {
             HwndSource? source = PresentationSource.FromVisual((Visual)sender) as HwndSource;
             if (source != null)
             {
-                this.IsHandelCreated = true;
-                this.Handel = source.Handle;
+                this.IsHandleCreated = true;
+                this.Handle = source.Handle;
                 source.AddHook(new HwndSourceHook(WndProc));
             }
         }

@@ -56,6 +56,9 @@
 
         #region User32
 
+        [DllImport("user32.dll", EntryPoint = "DestroyIcon", SetLastError = true)]
+        public static extern int DestroyIcon(IntPtr hIcon);
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowRect(IntPtr hWnd, out _RECT lpRect);
@@ -294,6 +297,9 @@
 
         #region Shell32
 
+        [DllImport("Shell32.dll", SetLastError = false)]
+        public static extern Int32 SHGetStockIconInfo(SHSTOCKICONID siid, SHGSI uFlags, ref SHSTOCKICONINFO psii);
+
         [DllImport("shell32.dll", SetLastError = true)]
         public static extern int Shell_NotifyIconGetRect([In] ref NOTIFYICONIDENTIFIER identifier, [Out] out _RECT iconLocation);
 
@@ -494,6 +500,17 @@
     #endregion
 
     #region Struct
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    public struct SHSTOCKICONINFO
+    {
+        public UInt32 cbSize;
+        public IntPtr hIcon;
+        public Int32 iSysIconIndex;
+        public Int32 iIcon;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+        public string szPath;
+    }
 
     [StructLayout(LayoutKind.Sequential)]
     internal struct AccentPolicy {

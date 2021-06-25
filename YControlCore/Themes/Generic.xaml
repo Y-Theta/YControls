@@ -371,6 +371,21 @@
         </Style.Triggers>
     </Style>
 
+    <!-- Y_Frame -->
+    <Style TargetType="{x:Type content:Y_Frame}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type content:Y_Frame}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    
     <!-- Y_PopupBase -->
     <Style TargetType="primit:Y_PopupBase">
         <Setter Property="AllowsTransparency"
@@ -782,7 +797,6 @@
                                   Visibility="{TemplateBinding LabelVisibility}"
                                   Background="{TemplateBinding LabelBgNormal}">
                                 <TextBlock x:Name="B_Label"
-                                           Storyboard.Target=""
                                            Text="{TemplateBinding LabelString}"
                                            FontFamily="{TemplateBinding LabelFontFamily}"
                                            FontSize="{TemplateBinding LabelFontSize}"
