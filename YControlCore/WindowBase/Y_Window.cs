@@ -166,6 +166,28 @@ namespace YControlCore.WindowBase {
         }
 
         /// <summary>
+        /// 标题栏是否可见
+        /// </summary>
+        public bool IsTitleVisible {
+            get { return (bool)GetValue(IsTitleVisibleProperty); }
+            set { SetValue(IsTitleVisibleProperty, value); }
+        }
+        public static readonly DependencyProperty IsTitleVisibleProperty =
+            DependencyProperty.Register("IsTitleVisible", typeof(bool), 
+                typeof(Y_Window), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.Inherits));
+
+        /// <summary>
+        /// 标题栏是否启用动画
+        /// </summary>
+        public bool IsTitleAnimate {
+            get { return (bool)GetValue(IsTitleAnimateProperty); }
+            set { SetValue(IsTitleAnimateProperty, value); }
+        }
+        public static readonly DependencyProperty IsTitleAnimateProperty =
+            DependencyProperty.Register("IsTitleAnimate", typeof(bool), 
+                typeof(Y_Window), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.Inherits));
+
+        /// <summary>
         /// 最小化
         /// </summary>
         public static readonly RoutedCommand MiniCommand = new RoutedCommand("Minimize", typeof(Y_Window));

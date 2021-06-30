@@ -13,7 +13,7 @@
     <!--#region                                                         -->
     <!--YControls Default Styles-->
     <!--#endregion-->
-    
+
     <!--#region                                                         ContentControl-->
 
     <!-- NavigateBar -->
@@ -385,8 +385,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    
+
+
     <!-- Y_PopupBase -->
     <Style TargetType="primit:Y_PopupBase">
         <Setter Property="AllowsTransparency"
@@ -1107,6 +1107,88 @@
     </Style>
 
     <!--Y_Windowbase-->
+    <ControlTemplate x:Key="WinTitleBarDocked"
+                     TargetType="winbase:Y_Window">
+        <Border x:Name="rborder"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Margin="{TemplateBinding Margin}">
+            <Grid x:Name="rgrid"
+                  Margin="{TemplateBinding Padding}"
+                  ClipToBounds="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <AdornerDecorator x:Name="Content"
+                                  Grid.Row="1">
+                    <ContentPresenter Content="{TemplateBinding Content}" />
+                </AdornerDecorator>
+                <content:Y_CollapseControl x:Name="PART_TitleBar"
+                                           Grid.Row="0"
+                                           Height="{TemplateBinding TitleHeight}"
+                                           HorizontalAlignment="Stretch"
+                                           Direction="Bottom"
+                                           IsExpand="{TemplateBinding IsTitleVisible}"
+                                           UseAnimate="{TemplateBinding IsTitleAnimate}"
+                                           Content="{TemplateBinding TitleArea}" />
+                <winbase:Y_Border Grid.Row="0"
+                                  Grid.RowSpan="2"
+                                  BorderBrush="Transparent"
+                                  BorderThickness="{TemplateBinding SizeBorderThickness}" />
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="EnableAeroGlass"
+                     Value="True">
+                <Setter TargetName="rborder"
+                        Property="Background"
+                        Value="{Binding AeroModeBackground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Setter TargetName="rborder"
+                        Property="BorderBrush"
+                        Value="{Binding AeroModeBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="WinTitleBarOver"
+                     TargetType="winbase:Y_Window">
+        <Border x:Name="rborder"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Margin="{TemplateBinding Margin}">
+            <Grid x:Name="rgrid"
+                  Margin="{TemplateBinding Padding}"
+                  ClipToBounds="True">
+                <AdornerDecorator x:Name="Content">
+                    <ContentPresenter Content="{TemplateBinding Content}" />
+                </AdornerDecorator>
+                <content:Y_CollapseControl x:Name="PART_TitleBar"
+                                           Height="{TemplateBinding TitleHeight}"
+                                           HorizontalAlignment="Stretch"
+                                           Direction="Bottom"
+                                           IsExpand="{TemplateBinding IsTitleVisible}"
+                                           UseAnimate="{TemplateBinding IsTitleAnimate}"
+                                           Content="{TemplateBinding TitleArea}" />
+                <winbase:Y_Border Grid.Row="0"
+                                  Grid.RowSpan="2"
+                                  BorderBrush="Transparent"
+                                  BorderThickness="{TemplateBinding SizeBorderThickness}" />
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="EnableAeroGlass"
+                     Value="True">
+                <Setter TargetName="rborder"
+                        Property="Background"
+                        Value="{Binding AeroModeBackground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Setter TargetName="rborder"
+                        Property="BorderBrush"
+                        Value="{Binding AeroModeBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
     <Style TargetType="winbase:Y_Window">
         <Setter Property="WindowStyle"
                 Value="None" />
@@ -1128,52 +1210,15 @@
                 Value="1" />
         <Setter Property="BorderBrush"
                 Value="Black" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="winbase:Y_Window">
-                    <Border x:Name="rborder"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Margin="{TemplateBinding Margin}">
-                        <Grid x:Name="rgrid"
-                              Margin="{TemplateBinding Padding}"
-                              ClipToBounds="True">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <AdornerDecorator x:Name="Content"
-                                              Grid.Row="1">
-                                <ContentPresenter Content="{TemplateBinding Content}" />
-                            </AdornerDecorator>
-                            <content:Y_CollapseControl x:Name="PART_TitleBar"
-                                                       Height="{TemplateBinding TitleHeight}"
-                                                       HorizontalAlignment="Stretch"
-                                                       Direction="Bottom"
-                                                       IsExpand="True"
-                                                       Content="{TemplateBinding TitleArea}" />
-                            <winbase:Y_Border Grid.Row="0"
-                                              Grid.RowSpan="2"
-                                              BorderBrush="Transparent"
-                                              BorderThickness="{TemplateBinding SizeBorderThickness}" />
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-
-                        <Trigger Property="EnableAeroGlass"
-                                 Value="True">
-                            <Setter TargetName="rborder"
-                                    Property="Background"
-                                    Value="{Binding AeroModeBackground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter TargetName="rborder"
-                                    Property="BorderBrush"
-                                    Value="{Binding AeroModeBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Template"
+                Value="{StaticResource WinTitleBarOver}" />
+        <Style.Triggers>
+            <Trigger Property="TitleBarMode"
+                     Value="Dock">
+                <Setter Property="Template"
+                        Value="{StaticResource WinTitleBarDocked}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!--TrayEmbeddedWindow-->
@@ -1184,18 +1229,18 @@
                     <Border BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{TemplateBinding Background}">
-                        <Grid >
-                            <ContentPresenter Content="{TemplateBinding Content}"/>
+                        <Grid>
+                            <ContentPresenter Content="{TemplateBinding Content}" />
                         </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <!--Y_Dialog-->
     <Style TargetType="winbase:Y_Dialog">
-        
+
     </Style>
 
     <!--#endregion-->
