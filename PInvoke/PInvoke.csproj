@@ -6,4 +6,8 @@
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="COM\" />
+  </ItemGroup>
+
 </Project>

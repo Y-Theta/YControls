@@ -24,13 +24,21 @@ namespace PInvoke {
         public static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out int pvAttribute, int cbAttribute);
 
         [DllImport(Native.KERNEL32, EntryPoint = "SetLastError")]
-        static extern void SetLastError(int dwErrorCode);
+        public static extern void SetLastError(int dwErrorCode);
+
+        [DllImport("Ole32.dll")]
+        public static extern int CoRegisterClassObject(
+        [MarshalAs(UnmanagedType.LPStruct)] Guid rclsid,
+        [MarshalAs(UnmanagedType.IUnknown)] object pUnk,
+        uint dwClsContext,
+        uint flags,
+        out uint lpdwRegister);
 
         /// <summary>
         /// 系统版本 >= 8.1 {AB4C8EB9-3A17-4EB5-82AD-A7375D56FFCB}
         /// </summary>
         [DllImport("SHCORE")]
-        internal static extern int GetDpiForMonitor(IntPtr hMonitor, MonitorDpiType dpiType, out uint dpiX, out uint dpiY);
+        public static extern int GetDpiForMonitor(IntPtr hMonitor, MonitorDpiType dpiType, out uint dpiX, out uint dpiY);
 
 
         #region      WindowAbout
