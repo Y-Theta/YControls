@@ -1099,7 +1099,7 @@
     <!--#region                                                         Window-->
 
     <!--Y_Border-->
-    <Style TargetType="winbase:Y_Border">
+    <Style TargetType="winbase:BorderEx">
         <Setter Property="BorderThickness"
                 Value="2" />
         <Setter Property="BorderBrush"
@@ -1108,7 +1108,7 @@
 
     <!--Y_Windowbase-->
     <ControlTemplate x:Key="WinTitleBarDocked"
-                     TargetType="winbase:Y_Window">
+                     TargetType="winbase:WindowBaseEx">
         <Border x:Name="rborder"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 Background="{TemplateBinding Background}"
@@ -1133,7 +1133,7 @@
                                            IsExpand="{TemplateBinding IsTitleVisible}"
                                            UseAnimate="{TemplateBinding IsTitleAnimate}"
                                            Content="{TemplateBinding TitleArea}" />
-                <winbase:Y_Border Grid.Row="0"
+                <winbase:BorderEx Grid.Row="0"
                                   Grid.RowSpan="2"
                                   BorderBrush="Transparent"
                                   BorderThickness="{TemplateBinding SizeBorderThickness}" />
@@ -1152,7 +1152,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <ControlTemplate x:Key="WinTitleBarOver"
-                     TargetType="winbase:Y_Window">
+                     TargetType="winbase:WindowBaseEx">
         <Border x:Name="rborder"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 Background="{TemplateBinding Background}"
@@ -1171,7 +1171,7 @@
                                            IsExpand="{TemplateBinding IsTitleVisible}"
                                            UseAnimate="{TemplateBinding IsTitleAnimate}"
                                            Content="{TemplateBinding TitleArea}" />
-                <winbase:Y_Border Grid.Row="0"
+                <winbase:BorderEx Grid.Row="0"
                                   Grid.RowSpan="2"
                                   BorderBrush="Transparent"
                                   BorderThickness="{TemplateBinding SizeBorderThickness}" />
@@ -1189,7 +1189,7 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <Style TargetType="winbase:Y_Window">
+    <Style TargetType="winbase:WindowBaseEx">
         <Setter Property="WindowStyle"
                 Value="None" />
         <Setter Property="AllowsTransparency"

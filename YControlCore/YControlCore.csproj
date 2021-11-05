@@ -7,8 +7,9 @@
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>8.0</LangVersion>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>YControl.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Y_Theta.pfx</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'net45'">
@@ -23,6 +24,13 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="WindowsNativeControl\**" />
+    <EmbeddedResource Remove="WindowsNativeControl\**" />
+    <None Remove="WindowsNativeControl\**" />
+    <Page Remove="WindowsNativeControl\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,8 +49,11 @@
 
   <ItemGroup>
     <Folder Include="Resources\BMP\" />
-    <Folder Include="WindowsNativeControl\" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="set oripackage=&quot;$(SolutionDir)$(ProjectName)\bin\$(ConfigurationName)\YControlCore.1.0.0.nupkg&quot;&#xD;&#xA;echo %25oripackage%25&#xD;&#xA;IF EXIST %25oripackage%25 (&#xD;&#xA;   if exist &quot;D:\nugetLocal&quot; (&#xD;&#xA;        xcopy   %25oripackage%25 &quot;D:\nugetLocal&quot; &#xD;&#xA;   )&#xD;&#xA;)" />
+  </Target>
 
   <!--<ItemGroup>
     <Reference Include="System.Windows.Forms">

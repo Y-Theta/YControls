@@ -21,7 +21,7 @@ namespace YControlCore.WindowBase {
     /// 自定义边框组件用于改变无边框窗体大小
     /// 
     /// </summary>
-    public class Y_Border : Border {
+    public class BorderEx : Border {
         private int resDirection;
         public int ResDirection {
             get { return resDirection; }
@@ -48,7 +48,7 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty AttachedWindowProperty =
             DependencyProperty.Register("AttachedWindow", typeof(Window),
-                typeof(Y_Border), new FrameworkPropertyMetadata(null));
+                typeof(BorderEx), new FrameworkPropertyMetadata(null));
 
         private void GetRootWindow() {
             if (AttachedWindow is null) {
@@ -59,7 +59,7 @@ namespace YControlCore.WindowBase {
                     root = VisualTreeHelper.GetParent(root);
                 }
                 AttachedWindow = root as Window;
-                if (AttachedWindow is null) throw new Exception("Y_Border must place over a window control");
+                if (AttachedWindow is null) throw new Exception("BorderEx must place over a window control");
             }
         }
 
@@ -94,12 +94,12 @@ namespace YControlCore.WindowBase {
                  SendMessage(new WindowInteropHelper(AttachedWindow as Window).Handle, 0x112, (IntPtr)(61440 + resDirection), IntPtr.Zero);
         }
 
-        public Y_Border() {
+        public BorderEx() {
 
         }
 
-        static Y_Border() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Y_Border), new FrameworkPropertyMetadata(typeof(Y_Border)));
+        static BorderEx() {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BorderEx), new FrameworkPropertyMetadata(typeof(BorderEx)));
         }
     }
 

@@ -22,7 +22,7 @@ namespace YControlCore.WindowBase {
     /// <para> - 带托盘图标 </para>
     /// </summary>
     [TemplatePart(Name = "PART_TitleBar", Type = typeof(Y_CollapseControl))]
-    public class Y_Window : Window {
+    public class WindowBaseEx : Window {
         #region Properties
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty EnableAeroGlassProperty =
             DependencyProperty.Register("EnableAeroGlass", typeof(bool),
-                typeof(Y_Window), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits, OnEnableAeroGlassChanged));
+                typeof(WindowBaseEx), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits, OnEnableAeroGlassChanged));
         private static void OnEnableAeroGlassChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            ((Y_Window)d).ActiveBlur((bool)e.NewValue);
+            ((WindowBaseEx)d).ActiveBlur((bool)e.NewValue);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty AeroModeBackgroundProperty =
             DependencyProperty.Register("AeroModeBackground", typeof(Brush),
-                typeof(Y_Window), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+                typeof(WindowBaseEx), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// 毛玻璃下的边框颜色
@@ -79,7 +79,7 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty AeroModeBorderBrushProperty =
             DependencyProperty.Register("AeroModeBorderBrush", typeof(Brush),
-                typeof(Y_Window), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+                typeof(WindowBaseEx), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// 可拖拽缩放边框的宽度
@@ -90,7 +90,7 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty SizeBorderThicknessProperty =
             DependencyProperty.Register("SizeBorderThickness", typeof(Thickness),
-                typeof(Y_Window), new FrameworkPropertyMetadata(new Thickness(4), FrameworkPropertyMetadataOptions.Inherits));
+                typeof(WindowBaseEx), new FrameworkPropertyMetadata(new Thickness(4), FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// 是否将窗口内容扩充至标题栏
@@ -101,7 +101,7 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty ExtendToTitleBarProperty =
             DependencyProperty.Register("ExtendToTitleBar", typeof(bool),
-                typeof(Y_Window), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
+                typeof(WindowBaseEx), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// 标题区域
@@ -112,7 +112,7 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty TitleAreaProperty =
             DependencyProperty.Register("TitleArea", typeof(FrameworkElement),
-                typeof(Y_Window), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+                typeof(WindowBaseEx), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// 标题栏是否自动隐藏
@@ -123,7 +123,7 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty TitleBarModeProperty =
             DependencyProperty.Register("TitleBarMode", typeof(Float),
-                typeof(Y_Window), new FrameworkPropertyMetadata(Float.Dock, FrameworkPropertyMetadataOptions.Inherits));
+                typeof(WindowBaseEx), new FrameworkPropertyMetadata(Float.Dock, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// 标题栏高度 默认24
@@ -134,7 +134,7 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty TitleHeightProperty =
             DependencyProperty.Register("TitleHeight", typeof(double),
-                typeof(Y_Window), new FrameworkPropertyMetadata(24.0, FrameworkPropertyMetadataOptions.Inherits));
+                typeof(WindowBaseEx), new FrameworkPropertyMetadata(24.0, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// 拖拽模式 默认只能通过标题栏拖动窗口
@@ -156,13 +156,13 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty AllowAreaIconProperty =
             DependencyProperty.Register("AllowAreaIcon", typeof(bool),
-                typeof(Y_Window), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits,
+                typeof(WindowBaseEx), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits,
                     AllowAreaIconChanged));
         private static void AllowAreaIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if ((bool)e.NewValue)
-                ((Y_Window)d).AreaIcons = new Dictionary<string, Y_AreaIcon>();
+                ((WindowBaseEx)d).AreaIcons = new Dictionary<string, Y_AreaIcon>();
             else
-                ((Y_Window)d).AreaIcons = null;
+                ((WindowBaseEx)d).AreaIcons = null;
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty IsTitleVisibleProperty =
             DependencyProperty.Register("IsTitleVisible", typeof(bool), 
-                typeof(Y_Window), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.Inherits));
+                typeof(WindowBaseEx), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// 标题栏是否启用动画
@@ -185,22 +185,22 @@ namespace YControlCore.WindowBase {
         }
         public static readonly DependencyProperty IsTitleAnimateProperty =
             DependencyProperty.Register("IsTitleAnimate", typeof(bool), 
-                typeof(Y_Window), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.Inherits));
+                typeof(WindowBaseEx), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// 最小化
         /// </summary>
-        public static readonly RoutedCommand MiniCommand = new RoutedCommand("Minimize", typeof(Y_Window));
+        public static readonly RoutedCommand MiniCommand = new RoutedCommand("Minimize", typeof(WindowBaseEx));
 
         /// <summary>
         /// 正常
         /// </summary>
-        public static readonly RoutedCommand NormalCommand = new RoutedCommand("Normal", typeof(Y_Window));
+        public static readonly RoutedCommand NormalCommand = new RoutedCommand("Normal", typeof(WindowBaseEx));
 
         /// <summary>
         /// 最大化
         /// </summary>
-        public static readonly RoutedCommand MaxCommand = new RoutedCommand("Maxmize", typeof(Y_Window));
+        public static readonly RoutedCommand MaxCommand = new RoutedCommand("Maxmize", typeof(WindowBaseEx));
 
         #endregion
 
@@ -297,9 +297,9 @@ namespace YControlCore.WindowBase {
         #region Command process
 
         private static void OnWindowCommand(object sender, ExecutedRoutedEventArgs e) {
-            Y_Window window = (Y_Window)sender;
+            WindowBaseEx window = (WindowBaseEx)sender;
 
-            if (e.Command == Y_Window.MaxCommand) {
+            if (e.Command == WindowBaseEx.MaxCommand) {
                 window.WindowState = WindowState.Maximized;
             } else if (e.Command == NormalCommand) {
                 window.WindowState = WindowState.Normal;
@@ -319,14 +319,14 @@ namespace YControlCore.WindowBase {
         #region Constructor
 
 
-        static Y_Window() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Y_Window), new FrameworkPropertyMetadata(typeof(Y_Window)));
+        static WindowBaseEx() {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(WindowBaseEx), new FrameworkPropertyMetadata(typeof(WindowBaseEx)));
 
-            MiniCommand.RegisterHandler(typeof(Y_Window), OnWindowCommand, OnQueryWindowCommand);
+            MiniCommand.RegisterHandler(typeof(WindowBaseEx), OnWindowCommand, OnQueryWindowCommand);
         }
 
 
-        public Y_Window() : base() {
+        public WindowBaseEx() : base() {
             Loaded += Y_Window_Loaded;
             SourceInitialized += Y_Window_TryInitSource;
         }
